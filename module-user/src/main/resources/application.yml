@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-app
+  datasource:
+    url: jdbc:postgresql://192.168.9.230:5432/solon_demo?useUnicode=true&characterEncoding=utf8&ssl=false
+    username: solon
+    password: solon@dev_2026
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      connection-timeout: 30000
+      keepalive-time: 60000
+      max-lifetime: 1800000
+      validation-timeout: 5000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: false
+
+logging:
+  level:
+    root: INFO
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+  show-actuator: true
+
+# 配置数据源对应的 easy-query 信息
+easy-query:
+  db_master:
+    name-conversion: underlined
+    database: pgsql
+    print-sql: true
+    delete-throw: true

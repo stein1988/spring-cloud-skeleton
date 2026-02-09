@@ -1,21 +1,22 @@
 package com.lonbon.cloud.demo;
 
 import com.easy.query.api.proxy.client.EasyEntityQuery;
-import com.easy.query.solon.annotation.Db;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EasyQueryController {
 
-    @Db("db_master")//注意这边使用sql-solon-plugin包下的Db注解
-    private EasyEntityQuery easyEntityQuery;
+    private final EasyEntityQuery easyEntityQuery;
 
-    @Mapping("/query")
-    public List<Topic> query(@Param(defaultValue = "world") String name) {
+    @GetMapping("/query")
+    public List<Topic> query(@RequestParam(defaultValue = "world") String name) {
         return easyEntityQuery.queryable(Topic.class).toList();
     }
 }
