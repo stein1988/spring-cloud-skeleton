@@ -3,18 +3,18 @@ package com.lonbon.cloud.user.application.service;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.repository.UserRepository;
 import com.lonbon.cloud.user.domain.service.UserService;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class UserServiceImpl implements UserService {
 
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Override

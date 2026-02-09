@@ -3,17 +3,17 @@ package com.lonbon.cloud.user.infrastructure.repository;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Repository
 public class TenantRepositoryImpl implements TenantRepository {
 
-    @Inject
+    @Autowired
     private EasyEntityQuery easyEntityQuery;
 
     @Override

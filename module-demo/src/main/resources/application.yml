@@ -35,9 +35,3 @@ springdoc:
 easy-query:
   database: pgsql
   name-conversion: underlined
-  # 配置数据源对应的 easy-query 信息
-  db_master:
-    name-conversion: underlined
-    database: pgsql
-    print-sql: true
-    delete-throw: true

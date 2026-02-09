@@ -3,18 +3,18 @@ package com.lonbon.cloud.user.application.service;
 import com.lonbon.cloud.user.domain.entity.Team;
 import com.lonbon.cloud.user.domain.repository.TeamRepository;
 import com.lonbon.cloud.user.domain.service.TeamService;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class TeamServiceImpl implements TeamService {
 
-    @Inject
+    @Autowired
     private TeamRepository teamRepository;
 
     @Override

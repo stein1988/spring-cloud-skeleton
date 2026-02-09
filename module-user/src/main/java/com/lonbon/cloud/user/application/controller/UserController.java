@@ -3,29 +3,30 @@ package com.lonbon.cloud.user.application.controller;
 import com.lonbon.cloud.common.utils.Response;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.UserService;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Delete;
-import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Post;
-import org.noear.solon.annotation.Put;
-import org.noear.solon.annotation.Path;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Controller
-@Mapping("/api/users")
+@RestController
+@RequestMapping("/api/users")
 public class UserController {
 
-    @Inject
+    @Autowired
     private UserService userService;
 
-    @Post
-    @Mapping
-    public Response<User> createUser(User user) {
+    @PostMapping
+    public Response<User> createUser(@RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
             return Response.success(createdUser, "User created successfully");
@@ -34,9 +35,8 @@ public class UserController {
         }
     }
 
-    @Put
-    @Mapping
-    public Response<User> updateUser(User user) {
+    @PutMapping
+    public Response<User> updateUser(@RequestBody User user) {
         try {
             User updatedUser = userService.updateUser(user);
             return Response.success(updatedUser, "User updated successfully");
@@ -45,9 +45,8 @@ public class UserController {
         }
     }
 
-    @Delete
-    @Mapping("/{id}")
-    public Response<Void> deleteUser(@Path("id") String id) {
+    @DeleteMapping("/{id}")
+    public Response<Void> deleteUser(@PathVariable("id") String id) {
         try {
             userService.deleteUser(UUID.fromString(id));
             return Response.success(null, "User deleted successfully");
@@ -56,9 +55,8 @@ public class UserController {
         }
     }
 
-    @Get
-    @Mapping("/{id}")
-    public Response<User> getUserById(@Path("id") String id) {
+    @GetMapping("/{id}")
+    public Response<User> getUserById(@PathVariable("id") String id) {
         try {
             Optional<User> user = userService.getUserById(UUID.fromString(id));
             if (user.isPresent()) {
@@ -71,9 +69,8 @@ public class UserController {
         }
     }
 
-    @Get
-    @Mapping("/username/{username}")
-    public Response<User> getUserByUsername(@Path("username") String username) {
+    @GetMapping("/username/{username}")
+    public Response<User> getUserByUsername(@PathVariable("username") String username) {
         try {
             Optional<User> user = userService.getUserByUsername(username);
             if (user.isPresent()) {
@@ -86,8 +83,7 @@ public class UserController {
         }
     }
 
-    @Get
-    @Mapping
+    @GetMapping
     public Response<List<User>> getAllUsers() {
         try {
             List<User> users = userService.getAllUsers();
@@ -97,9 +93,8 @@ public class UserController {
         }
     }
 
-    @Put
-    @Mapping("/{id}/password")
-    public Response<Void> updatePassword(@Path("id") String id, String newPassword) {
+    @PutMapping("/{id}/password")
+    public Response<Void> updatePassword(@PathVariable("id") String id, @RequestParam("newPassword") String newPassword) {
         try {
             userService.changePassword(UUID.fromString(id), newPassword);
             return Response.success(null, "Password updated successfully");
@@ -108,9 +103,8 @@ public class UserController {
         }
     }
 
-    @Put
-    @Mapping("/{id}/status")
-    public Response<Void> updateUserStatus(@Path("id") String id, boolean active) {
+    @PutMapping("/{id}/status")
+    public Response<Void> updateUserStatus(@PathVariable("id") String id, @RequestParam("active") boolean active) {
         try {
             // 暂时通过updateUser方法来更新用户状态
             Optional<User> userOptional = userService.getUserById(UUID.fromString(id));

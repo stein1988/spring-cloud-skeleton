@@ -1,14 +1,15 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
     name: user-app
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://192.168.9.230:5432/solon_demo?useUnicode=true&characterEncoding=utf8&ssl=false
     username: solon
     password: solon@dev_2026
-    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
@@ -17,9 +18,6 @@ spring:
       keepalive-time: 60000
       max-lifetime: 1800000
       validation-timeout: 5000
-      validation-query: select 1
-      test-while-idle: true
-      test-on-borrow: false
 
 logging:
   level:
@@ -36,8 +34,5 @@ springdoc:
 
 # 配置数据源对应的 easy-query 信息
 easy-query:
-  db_master:
-    name-conversion: underlined
-    database: pgsql
-    print-sql: true
-    delete-throw: true
+  database: pgsql
+  name-conversion: underlined

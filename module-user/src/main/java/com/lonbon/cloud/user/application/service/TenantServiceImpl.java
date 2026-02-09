@@ -3,18 +3,18 @@ package com.lonbon.cloud.user.application.service;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
 import com.lonbon.cloud.user.domain.service.TenantService;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class TenantServiceImpl implements TenantService {
 
-    @Inject
+    @Autowired
     private TenantRepository tenantRepository;
 
     @Override

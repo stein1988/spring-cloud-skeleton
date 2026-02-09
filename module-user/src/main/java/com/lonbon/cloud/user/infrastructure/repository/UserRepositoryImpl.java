@@ -3,17 +3,16 @@ package com.lonbon.cloud.user.infrastructure.repository;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.repository.UserRepository;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-@Component
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    @Inject
+    @Autowired
     private EasyEntityQuery easyEntityQuery;
 
     @Override
@@ -50,6 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findByTenantId(UUID tenantId) {
-        return easyEntityQuery.queryable(User.class).where(o -> o.currentTenantId().eq(tenantId)).toList();
+//        return easyEntityQuery.queryable(User.class).where(o -> o.tenantId().eq(tenantId)).toList();
+        return new ArrayList<>();
     }
 }

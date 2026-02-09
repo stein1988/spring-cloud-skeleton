@@ -3,29 +3,29 @@ package com.lonbon.cloud.user.application.controller;
 import com.lonbon.cloud.common.utils.Response;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.service.TenantService;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Delete;
-import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Post;
-import org.noear.solon.annotation.Put;
-import org.noear.solon.annotation.Path;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Controller
-@Mapping("/api/tenants")
+@RestController
+@RequestMapping("/api/tenants")
 public class TenantController {
 
-    @Inject
+    @Autowired
     private TenantService tenantService;
 
-    @Post
-    @Mapping
-    public Response<Tenant> createTenant(Tenant tenant) {
+    @PostMapping
+    public Response<Tenant> createTenant(@RequestBody Tenant tenant) {
         try {
             Tenant createdTenant = tenantService.createTenant(tenant);
             return Response.success(createdTenant, "Tenant created successfully");
@@ -34,9 +34,8 @@ public class TenantController {
         }
     }
 
-    @Put
-    @Mapping
-    public Response<Tenant> updateTenant(Tenant tenant) {
+    @PutMapping
+    public Response<Tenant> updateTenant(@RequestBody Tenant tenant) {
         try {
             Tenant updatedTenant = tenantService.updateTenant(tenant);
             return Response.success(updatedTenant, "Tenant updated successfully");
@@ -45,9 +44,8 @@ public class TenantController {
         }
     }
 
-    @Delete
-    @Mapping("/{id}")
-    public Response<Void> deleteTenant(@Path("id") String id) {
+    @DeleteMapping("/{id}")
+    public Response<Void> deleteTenant(@PathVariable("id") String id) {
         try {
             tenantService.deleteTenant(UUID.fromString(id));
             return Response.success(null, "Tenant deleted successfully");
@@ -56,9 +54,8 @@ public class TenantController {
         }
     }
 
-    @Get
-    @Mapping("/{id}")
-    public Response<Tenant> getTenantById(@Path("id") String id) {
+    @GetMapping("/{id}")
+    public Response<Tenant> getTenantById(@PathVariable("id") String id) {
         try {
             Optional<Tenant> tenant = tenantService.getTenantById(UUID.fromString(id));
             if (tenant.isPresent()) {
@@ -71,9 +68,8 @@ public class TenantController {
         }
     }
 
-    @Get
-    @Mapping("/name/{name}")
-    public Response<Tenant> getTenantByName(@Path("name") String name) {
+    @GetMapping("/name/{name}")
+    public Response<Tenant> getTenantByName(@PathVariable("name") String name) {
         try {
             Optional<Tenant> tenant = tenantService.getTenantByName(name);
             if (tenant.isPresent()) {
@@ -86,8 +82,7 @@ public class TenantController {
         }
     }
 
-    @Get
-    @Mapping
+    @GetMapping
     public Response<List<Tenant>> getAllTenants() {
         try {
             List<Tenant> tenants = tenantService.getAllTenants();
@@ -97,8 +92,7 @@ public class TenantController {
         }
     }
 
-    @Get
-    @Mapping("/default")
+    @GetMapping("/default")
     public Response<Tenant> getDefaultTenant() {
         try {
             Optional<Tenant> tenant = tenantService.getDefaultTenant();
@@ -112,9 +106,8 @@ public class TenantController {
         }
     }
 
-    @Put
-    @Mapping("/default/{id}")
-    public Response<Void> setDefaultTenant(@Path("id") String id) {
+    @PutMapping("/default/{id}")
+    public Response<Void> setDefaultTenant(@PathVariable("id") String id) {
         try {
             tenantService.setDefaultTenant(UUID.fromString(id));
             return Response.success(null, "Default tenant set successfully");
