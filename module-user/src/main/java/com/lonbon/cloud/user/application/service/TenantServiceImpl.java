@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class TenantServiceImpl implements TenantService {
             tenant.setId(UUID.randomUUID());
         }
         tenant.setCreatedAt(LocalDateTime.now());
+        tenant.setCreatedBy(UUID.randomUUID());
         tenant.setUpdatedAt(LocalDateTime.now());
         tenant.setVersionId(0);
         tenant.setDeleted(false);

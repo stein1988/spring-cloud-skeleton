@@ -44,13 +44,13 @@
         <!-- 自定义模块依赖 -->
         <dependency>
             <groupId>com.lonbon.cloud</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>base</artifactId>
             <version>1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.lonbon.cloud</groupId>
-            <artifactId>base</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
 

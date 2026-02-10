@@ -3,6 +3,7 @@ package com.lonbon.cloud.user.infrastructure.repository;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Repository
 public class TenantRepositoryImpl implements TenantRepository {
 
@@ -18,11 +20,9 @@ public class TenantRepositoryImpl implements TenantRepository {
 
     @Override
     public Tenant save(Tenant tenant) {
-        if (tenant.getId() == null) {
-            easyEntityQuery.insertable(tenant);
-        } else {
-            easyEntityQuery.updatable(tenant);
-        }
+        log.info("Saving tenant {}", tenant);
+        long rows = easyEntityQuery.insertable(tenant).executeRows();
+        log.info("rows : {}", rows);
         return tenant;
     }
 

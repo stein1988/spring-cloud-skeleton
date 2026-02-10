@@ -4,6 +4,7 @@ import com.easy.query.core.annotation.Column;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data

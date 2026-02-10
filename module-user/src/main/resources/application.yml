@@ -7,9 +7,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.9.230:5432/solon_demo?useUnicode=true&characterEncoding=utf8&ssl=false
-    username: solon
-    password: solon@dev_2026
+    url: jdbc:postgresql://192.168.9.230:5432/lonbon_agent_dev?useUnicode=true&characterEncoding=utf8&ssl=false&timezone=Asia/Dubai
+    username: lonbon
+    password: Lonbon#DB2024_
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
@@ -22,6 +22,7 @@ spring:
 logging:
   level:
     root: INFO
+    com.easy.query.core: DEBUG
 
 springdoc:
   api-docs:
@@ -36,3 +37,4 @@ springdoc:
 easy-query:
   database: pgsql
   name-conversion: underlined
+  print-sql: true
