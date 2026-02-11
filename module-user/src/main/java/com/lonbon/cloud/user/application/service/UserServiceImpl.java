@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             user.setId(UUID.randomUUID());
         }
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+        user.setCreatedAt(OffsetDateTime.now());
+        user.setUpdatedAt(OffsetDateTime.now());
         user.setVersionId(0);
         user.setDeleted(false);
         return userRepository.save(user);
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        user.setUpdatedAt(LocalDateTime.now());
+        user.setUpdatedAt(OffsetDateTime.now());
         user.setVersionId(user.getVersionId() + 1);
         return userRepository.save(user);
     }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             // 这里应该添加密码加密逻辑
             user.setPasswordHash(newPassword);
-            user.setUpdatedAt(LocalDateTime.now());
+            user.setUpdatedAt(OffsetDateTime.now());
             userRepository.save(user);
         }
     }

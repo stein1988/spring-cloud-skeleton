@@ -39,6 +39,12 @@
             <groupId>com.easy-query</groupId>
             <artifactId>sql-springboot4-starter</artifactId>
         </dependency>
+
+        <!-- UUID v7 生成 -->
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>uuid-creator</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

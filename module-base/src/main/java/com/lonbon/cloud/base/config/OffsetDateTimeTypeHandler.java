@@ -1,4 +1,4 @@
-package com.lonbon.cloud.base.handler;
+package com.lonbon.cloud.base.config;
 
 import com.easy.query.core.basic.jdbc.executor.internal.merge.result.StreamResultSet;
 import com.easy.query.core.basic.jdbc.executor.internal.props.JdbcProperty;

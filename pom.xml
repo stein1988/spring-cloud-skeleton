@@ -33,6 +33,7 @@
         <easy-query.version>3.1.78</easy-query.version>
         <HikariCP.version>7.0.2</HikariCP.version>
         <postgresql.version>42.7.9</postgresql.version>
+        <uuid-creator.version>6.1.1</uuid-creator.version>
         <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
@@ -106,6 +107,13 @@
                 <groupId>com.easy-query</groupId>
                 <artifactId>sql-pgsql</artifactId>
                 <version>${easy-query.version}</version>
+            </dependency>
+
+            <!-- UUID v7 生成 -->
+            <dependency>
+                <groupId>com.github.f4b6a3</groupId>
+                <artifactId>uuid-creator</artifactId>
+                <version>${uuid-creator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
