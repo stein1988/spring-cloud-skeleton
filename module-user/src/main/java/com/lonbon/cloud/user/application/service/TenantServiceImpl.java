@@ -6,7 +6,6 @@ import com.lonbon.cloud.user.domain.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +19,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public Tenant createTenant(Tenant tenant) {
-        tenant.setCreatedAt(OffsetDateTime.now());
-        tenant.setCreatedBy(UUID.randomUUID());
-        tenant.setUpdatedAt(OffsetDateTime.now());
+        tenant.setCreateTime(OffsetDateTime.now());
+        tenant.setCreateBy(UUID.randomUUID());
+        tenant.setUpdateTime(OffsetDateTime.now());
         tenant.setVersionId(0);
         tenant.setDeleted(false);
         return tenantRepository.save(tenant);
@@ -30,7 +29,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public Tenant updateTenant(Tenant tenant) {
-        tenant.setUpdatedAt(OffsetDateTime.now());
+        tenant.setUpdateTime(OffsetDateTime.now());
         tenant.setVersionId(tenant.getVersionId() + 1);
         return tenantRepository.save(tenant);
     }
@@ -66,7 +65,7 @@ public class TenantServiceImpl implements TenantService {
         List<Tenant> tenants = tenantRepository.findAll();
         for (Tenant tenant : tenants) {
             tenant.setDefault(tenant.getId().equals(tenantId));
-            tenant.setUpdatedAt(OffsetDateTime.now());
+            tenant.setUpdateTime(OffsetDateTime.now());
             tenantRepository.save(tenant);
         }
     }

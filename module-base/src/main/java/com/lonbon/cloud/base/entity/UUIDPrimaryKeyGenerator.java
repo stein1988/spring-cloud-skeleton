@@ -1,4 +1,4 @@
-package com.lonbon.cloud.base.config;
+package com.lonbon.cloud.base.entity;
 
 import com.easy.query.core.basic.extension.generated.PrimaryKeyGenerator;
 import com.github.f4b6a3.uuid.UuidCreator;

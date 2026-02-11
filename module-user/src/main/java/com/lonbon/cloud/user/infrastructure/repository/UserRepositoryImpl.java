@@ -3,7 +3,6 @@ package com.lonbon.cloud.user.infrastructure.repository;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.repository.UserRepository;
-import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

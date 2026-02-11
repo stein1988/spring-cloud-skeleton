@@ -6,7 +6,6 @@ import com.lonbon.cloud.user.domain.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +22,8 @@ public class TeamServiceImpl implements TeamService {
         if (team.getId() == null) {
             team.setId(UUID.randomUUID());
         }
-        team.setCreatedAt(OffsetDateTime.now());
-        team.setUpdatedAt(OffsetDateTime.now());
+        team.setCreateTime(OffsetDateTime.now());
+        team.setUpdateTime(OffsetDateTime.now());
         team.setVersionId(0);
         team.setDeleted(false);
         return teamRepository.save(team);
@@ -32,7 +31,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team updateTeam(Team team) {
-        team.setUpdatedAt(OffsetDateTime.now());
+        team.setUpdateTime(OffsetDateTime.now());
         team.setVersionId(team.getVersionId() + 1);
         return teamRepository.save(team);
     }
@@ -73,7 +72,7 @@ public class TeamServiceImpl implements TeamService {
         List<Team> teams = teamRepository.findByTenantId(tenantId);
         for (Team team : teams) {
             team.setDefault(team.getId().equals(teamId));
-            team.setUpdatedAt(OffsetDateTime.now());
+            team.setUpdateTime(OffsetDateTime.now());
             teamRepository.save(team);
         }
     }
