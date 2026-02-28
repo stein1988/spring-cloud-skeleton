@@ -19,9 +19,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public Tenant createTenant(Tenant tenant) {
-        tenant.setCreateTime(OffsetDateTime.now());
-        tenant.setCreateBy(UUID.randomUUID());
-        tenant.setUpdateTime(OffsetDateTime.now());
+        tenant.setCreatedAt(OffsetDateTime.now());
+        tenant.setCreatedBy(UUID.randomUUID());
+        tenant.setUpdatedAt(OffsetDateTime.now());
         tenant.setVersionId(0);
         tenant.setDeleted(false);
         return tenantRepository.save(tenant);
@@ -29,7 +29,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public Tenant updateTenant(Tenant tenant) {
-        tenant.setUpdateTime(OffsetDateTime.now());
+        tenant.setUpdatedAt(OffsetDateTime.now());
         tenant.setVersionId(tenant.getVersionId() + 1);
         return tenantRepository.save(tenant);
     }
@@ -65,7 +65,7 @@ public class TenantServiceImpl implements TenantService {
         List<Tenant> tenants = tenantRepository.findAll();
         for (Tenant tenant : tenants) {
             tenant.setDefault(tenant.getId().equals(tenantId));
-            tenant.setUpdateTime(OffsetDateTime.now());
+            tenant.setUpdatedAt(OffsetDateTime.now());
             tenantRepository.save(tenant);
         }
     }

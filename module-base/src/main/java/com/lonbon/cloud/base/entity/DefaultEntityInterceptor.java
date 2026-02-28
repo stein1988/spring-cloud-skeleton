@@ -40,20 +40,20 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
 
         OffsetDateTime now = OffsetDateTime.now();
 
-        if (baseEntity.getCreateTime() == null) {
-            baseEntity.setCreateTime(now);
+        if (baseEntity.getCreatedAt() == null) {
+            baseEntity.setCreatedAt(now);
         }
-        if (baseEntity.getCreateBy() == null) {
+        if (baseEntity.getCreatedBy() == null) {
 //            String userId = StringUtils.defaultString(currentUser.getUserId());
             //如果使用sa-token这边采用StpUtil.getLoginIdAsString()会让导致程序需要验证
             //,所以这边需要先判断是否登录,未登录就给默认值,不然就获取
             //updateBy同理
 //            baseEntity.setCreateBy(userId);
         }
-        if (baseEntity.getUpdateTime() == null) {
-            baseEntity.setUpdateTime(now);
+        if (baseEntity.getUpdatedAt() == null) {
+            baseEntity.setUpdatedAt(now);
         }
-        if (baseEntity.getUpdateBy() == null) {
+        if (baseEntity.getUpdatedBy() == null) {
 //            String userId = StringUtils.defaultString(currentUser.getUserId());
 //            baseEntity.setUpdateBy(userId);
         }
@@ -65,7 +65,7 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
     @Override
     public void configureUpdate(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
-        baseEntity.setUpdateTime(OffsetDateTime.now());
+        baseEntity.setUpdatedAt(OffsetDateTime.now());
 //        String userId = StringUtils.defaultString(currentUser.getUserId());
 //        baseEntity.setUpdateBy(userId);
     }

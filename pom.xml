@@ -34,6 +34,7 @@
         <HikariCP.version>7.0.2</HikariCP.version>
         <postgresql.version>42.7.9</postgresql.version>
         <uuid-creator.version>6.1.1</uuid-creator.version>
+        <sa-token.version>1.44.0</sa-token.version>
         <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
@@ -114,6 +115,13 @@
                 <groupId>com.github.f4b6a3</groupId>
                 <artifactId>uuid-creator</artifactId>
                 <version>${uuid-creator.version}</version>
+            </dependency>
+
+            <!-- Sa-Token 权限认证 -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${sa-token.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

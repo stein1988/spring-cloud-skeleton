@@ -3,10 +3,11 @@ package com.lonbon.cloud.base.entity;
 import com.easy.query.core.annotation.Column;
 import com.easy.query.core.annotation.LogicDelete;
 import com.easy.query.core.annotation.UpdateIgnore;
+import com.easy.query.core.annotation.Version;
 import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
+import com.easy.query.core.basic.extension.version.VersionIntStrategy;
+
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * create、update相关字段自动设置 {@link DefaultEntityInterceptor}
  * delete相关字段自动设置、查询过滤器 {@link DefaultLogicDeleteStrategy}
  * 时间戳使用带时区的UTC时间戳，代替默认的LocalDateTime {@link OffsetDateTimeTypeHandler}
+ * 乐观锁版本号使用int类型，默认值为0，每更新一次+1，参考<a href="https://www.easy-query.com/easy-query-doc/adv/version.html">
  */
 
 @Data
@@ -45,46 +47,47 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      * 删除时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime deleteTime;
+    private OffsetDateTime deletedAt;
 
     /**
      * 删除人ID
      */
     @UpdateIgnore
-    private UUID deleteBy;
+    private UUID deletedBy;
 
     /**
      * 创建时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime createTime;
+    private OffsetDateTime createdAt;
     
     /**
      * 创建人ID
      */
     @UpdateIgnore
-    private UUID createBy;
+    private UUID createdBy;
     
     /**
      * 更新时间，UTC时间戳
      */
-    private OffsetDateTime updateTime;
+    private OffsetDateTime updatedAt;
     
     /**
      * 更新人ID
      */
-    private UUID updateBy;
+    private UUID updatedBy;
 
     /**
      * 版本号，用于乐观锁，默认值为0，每更新一次+1
      */
-    private int versionId = 0;
+    @Version(strategy = VersionIntStrategy.class)
+    private int version;
 
     @Override
     public BaseEntity clone() {
         try {
-            // TODO: 复制此处的可变状态，这样此克隆就不能更改初始克隆的内部项
-            return (BaseEntity) super.clone();
+            BaseEntity clone = (BaseEntity) super.clone();
+            return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
