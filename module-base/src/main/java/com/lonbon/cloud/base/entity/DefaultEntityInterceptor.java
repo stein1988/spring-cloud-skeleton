@@ -7,15 +7,13 @@ import com.easy.query.core.expression.parser.core.base.ColumnOnlySelector;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.sql.builder.EntityInsertExpressionBuilder;
 import com.easy.query.core.expression.sql.builder.EntityUpdateExpressionBuilder;
-import lombok.AllArgsConstructor;
-import org.jspecify.annotations.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Component
-@AllArgsConstructor(onConstructor_ = @Autowired)
 public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
 
     @Override
@@ -27,7 +25,7 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * 哪些对象需要用到这个拦截器(继承BaseEntity的对象)
      */
     @Override
-    public boolean apply(@NonNull Class<?> entityClass) {
+    public boolean apply(@NotNull Class<?> entityClass) {
         return BaseEntity.class.isAssignableFrom(entityClass);
     }
 
@@ -49,6 +47,8 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
             //,所以这边需要先判断是否登录,未登录就给默认值,不然就获取
             //updateBy同理
 //            baseEntity.setCreateBy(userId);
+            // TODO：获取当前用户id
+            baseEntity.setCreatedBy(UUID.randomUUID());
         }
         if (baseEntity.getUpdatedAt() == null) {
             baseEntity.setUpdatedAt(now);
@@ -56,6 +56,8 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
         if (baseEntity.getUpdatedBy() == null) {
 //            String userId = StringUtils.defaultString(currentUser.getUserId());
 //            baseEntity.setUpdateBy(userId);
+            // TODO：获取当前用户id
+            baseEntity.setUpdatedBy(UUID.randomUUID());
         }
     }
 
@@ -68,10 +70,12 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
         baseEntity.setUpdatedAt(OffsetDateTime.now());
 //        String userId = StringUtils.defaultString(currentUser.getUserId());
 //        baseEntity.setUpdateBy(userId);
+        // TODO：获取当前用户id
+        baseEntity.setUpdatedBy(UUID.randomUUID());
     }
 
     @Override
-    public void configure(@NonNull Class<?> entityClass, @NonNull EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, @NonNull ColumnOnlySelector<Object> columnSelector, @NonNull Object entity) {
+    public void configure(@NotNull Class<?> entityClass, @NotNull EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, @NotNull ColumnOnlySelector<Object> columnSelector, @NotNull Object entity) {
 
     }
 

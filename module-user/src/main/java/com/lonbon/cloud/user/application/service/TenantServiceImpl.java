@@ -1,12 +1,14 @@
 package com.lonbon.cloud.user.application.service;
 
+import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
+import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
 import com.lonbon.cloud.user.domain.service.TenantService;
+import io.github.linpeilie.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,26 +19,27 @@ public class TenantServiceImpl implements TenantService {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private Converter converter;
+
     @Override
-    public Tenant createTenant(Tenant tenant) {
-        tenant.setCreatedAt(OffsetDateTime.now());
-        tenant.setCreatedBy(UUID.randomUUID());
-        tenant.setUpdatedAt(OffsetDateTime.now());
-        tenant.setVersionId(0);
-        tenant.setDeleted(false);
-        return tenantRepository.save(tenant);
+    public Tenant createTenant(TenantCreateDTO tenant) {
+        Tenant createTenant = converter.convert(tenant, Tenant.class);
+        return tenantRepository.save(createTenant);
     }
 
     @Override
-    public Tenant updateTenant(Tenant tenant) {
-        tenant.setUpdatedAt(OffsetDateTime.now());
-        tenant.setVersionId(tenant.getVersionId() + 1);
-        return tenantRepository.save(tenant);
+    public Tenant updateTenant(UUID id, TenantUpdateDTO tenant) {
+        Optional<Tenant> exists = tenantRepository.findById(id);
+        if (exists.isPresent()) {
+            Tenant update = converter.convert(tenant, exists.get());
+            return tenantRepository.save(update);
+        } else throw new RuntimeException("not exists");
     }
 
     @Override
     public void deleteTenant(UUID id) {
-        tenantRepository.delete(id);
+        tenantRepository.deleteById(id);
     }
 
     @Override
@@ -46,27 +49,28 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public Optional<Tenant> getTenantByName(String name) {
-        return tenantRepository.findByName(name);
+//        return tenantRepository.findByName(name);
+        return Optional.empty();
     }
 
     @Override
     public List<Tenant> getAllTenants() {
-        return tenantRepository.findAll();
+        return (List<Tenant>) tenantRepository.findAll();
     }
 
     @Override
     public Optional<Tenant> getDefaultTenant() {
-        return tenantRepository.findDefaultTenant();
+//        return tenantRepository.findDefaultTenant();
+        return Optional.empty();
     }
 
     @Override
     public void setDefaultTenant(UUID tenantId) {
-        // 先将所有租户的isDefault设置为false
-        List<Tenant> tenants = tenantRepository.findAll();
-        for (Tenant tenant : tenants) {
-            tenant.setDefault(tenant.getId().equals(tenantId));
-            tenant.setUpdatedAt(OffsetDateTime.now());
-            tenantRepository.save(tenant);
-        }
+//        // 先将所有租户的isDefault设置为false
+//        List<Tenant> tenants = tenantRepository.findAll();
+//        for (Tenant tenant : tenants) {
+//            tenant.setDefault(tenant.getId().equals(tenantId));
+//            tenantRepository.save(tenant);
+//        }
     }
 }

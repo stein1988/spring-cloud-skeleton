@@ -7,14 +7,14 @@ import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.parser.core.base.WherePredicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
 //    private final CurrentUser currentUser;
     @Override
@@ -24,7 +24,7 @@ public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
 
     @Override
     public Set<Class<?>> allowedPropertyTypes() {
-        return Set.of(Boolean.class);
+        return Set.of(boolean.class);
     }
 
     /**
@@ -40,7 +40,8 @@ public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
      */
     @Override
     protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String propertyName) {
-        return o->o.set(propertyName, true).set("deleteTime", OffsetDateTime.now());
+        // TODO: deletedBy改成sa-token获取的当前用户id
+        return o->o.set(propertyName, true).set("deletedBy", UUID.randomUUID()).set("deletedAt", OffsetDateTime.now());
     }
 
 

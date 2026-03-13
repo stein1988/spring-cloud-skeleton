@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -7,9 +7,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.9.230:5432/lonbon_agent_dev?useUnicode=true&characterEncoding=utf8&ssl=false&timezone=Asia/Dubai
-    username: lonbon
-    password: Lonbon#DB2024_
+    url: jdbc:postgresql://192.168.9.230:5432/solon_demo?useUnicode=true&characterEncoding=utf8&ssl=false&timezone=Asia/Dubai
+    username: solon
+    password: solon@dev_2026
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2

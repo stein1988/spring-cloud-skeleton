@@ -41,7 +41,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @LogicDelete(strategy = LogicDeleteStrategyEnum.CUSTOM, strategyName = "DEFAULT_LOGIC_DELETE_STRATEGY")
     @UpdateIgnore
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     /**
      * 删除时间，UTC时间戳

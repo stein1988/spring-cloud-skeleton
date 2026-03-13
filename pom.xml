@@ -34,7 +34,8 @@
         <HikariCP.version>7.0.2</HikariCP.version>
         <postgresql.version>42.7.9</postgresql.version>
         <uuid-creator.version>6.1.1</uuid-creator.version>
-        <sa-token.version>1.44.0</sa-token.version>
+        <sa-token.version>1.45.0</sa-token.version>
+        <mapstruct-plus.version>1.5.0</mapstruct-plus.version>
         <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
@@ -120,8 +121,15 @@
             <!-- Sa-Token 权限认证 -->
             <dependency>
                 <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <artifactId>sa-token-spring-boot4-starter</artifactId>
                 <version>${sa-token.version}</version>
+            </dependency>
+
+            <!-- 对象转换 -->
+            <dependency>
+                <groupId>io.github.linpeilie</groupId>
+                <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
+                <version>${mapstruct-plus.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
