@@ -53,7 +53,7 @@ public class TenantController {
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
     }
 
-////    @Operation(summary = "查询单个（根据名称）")
+//    @Operation(summary = "查询单个（根据名称）")
 //    @Get
 //    @Mapping("/name/{name}")
 //    public Response<Tenant> getTenantByName(@Path("name") String name) {
@@ -65,14 +65,14 @@ public class TenantController {
 //        }
 //    }
 //
-////    @Operation(summary = "查询所有")
+//    @Operation(summary = "查询所有")
 //    @Get
 //    @Mapping
 //    public Response<List<Tenant>> getAllTenants() {
 //        try {
-////            Tenant newTenant = new Tenant();
-////            newTenant.setName("测试租户");
-////            tenantService.createTenant(newTenant);
+//           Tenant newTenant = new Tenant();
+//            newTenant.setName("测试租户");
+//            tenantService.createTenant(newTenant);
 //            List<Tenant> tenants = tenantService.getAllTenants();
 //            for (Tenant tenant : tenants) {
 //                log.info(tenant.toString());
