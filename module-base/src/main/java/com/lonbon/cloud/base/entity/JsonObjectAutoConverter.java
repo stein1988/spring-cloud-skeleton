@@ -5,6 +5,7 @@ import com.easy.query.core.metadata.ColumnMetadata;
 import com.easy.query.core.util.EasyClassUtil;
 import com.easy.query.core.util.EasyMapUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,14 +57,18 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
      */
     @Override
     public @Nullable Object deserialize(@Nullable Object s, @NotNull ColumnMetadata columnMetadata) {
+//        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String jsonStr = getValueString(s);
         if (jsonStr == null || jsonStr.isEmpty()) {
             return null;
         }
         try {
             Type targetType = getFiledType(columnMetadata);
+            if (targetType instanceof Class<?>)
             // 处理泛型类型反序列化（Jackson核心）
-            return OBJECT_MAPPER.readValue(jsonStr, OBJECT_MAPPER.getTypeFactory().constructType(targetType));
+                return OBJECT_MAPPER.readValue(jsonStr, (Class<?>)targetType);
+            else
+                throw new RuntimeException("not support type:" + targetType);
         } catch (Exception e) {
             throw new RuntimeException("JSON反序列化失败：" + columnMetadata.getPropertyName(), e);
         }
