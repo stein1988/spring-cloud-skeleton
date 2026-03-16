@@ -4,17 +4,17 @@ import com.easy.query.core.basic.jdbc.executor.internal.merge.result.StreamResul
 import com.easy.query.core.basic.jdbc.executor.internal.props.JdbcProperty;
 import com.easy.query.core.basic.jdbc.parameter.SQLParameter;
 import com.easy.query.core.basic.jdbc.types.EasyParameter;
+import com.easy.query.core.basic.jdbc.types.handler.JdbcTypeHandler;
 import com.easy.query.sql.starter.config.JdbcTypeHandlerReplaceConfigurer;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.postgresql.util.PGobject;
+import org.springframework.stereotype.Component;
 
 import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.Set;
 
-@Slf4j
-public class JsonObjectTypeHandler implements JdbcTypeHandlerConfigurer, JdbcTypeHandlerReplaceConfigurer {
+@Component
+public class JsonObjectTypeHandler implements JdbcTypeHandler, JdbcTypeHandlerReplaceConfigurer {
 
     @Override
     public boolean replace() {
@@ -24,11 +24,6 @@ public class JsonObjectTypeHandler implements JdbcTypeHandlerConfigurer, JdbcTyp
     @Override
     public Set<Class<?>> allowTypes() {
         return Set.of(String.class);
-    }
-
-    @Override
-    public @NotNull Class<?> getType() {
-        return String.class;
     }
 
     @Override
@@ -54,6 +49,4 @@ public class JsonObjectTypeHandler implements JdbcTypeHandlerConfigurer, JdbcTyp
 
         parameter.getPs().setString(parameter.getIndex(), (String)parameter.getValue());
     }
-
-
 }
