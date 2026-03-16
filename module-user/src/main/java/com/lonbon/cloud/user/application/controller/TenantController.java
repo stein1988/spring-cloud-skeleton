@@ -5,8 +5,8 @@ import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.service.TenantService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,37 +17,37 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
-@Api("租户")
 @RestController
 @RequestMapping("/api/tenants")
+@Tag(name = "租户", description = "租户操作")
 public class TenantController {
 
     @Autowired
     private TenantService tenantService;
 
-    @ApiOperation("创建")
     @PostMapping
+    @Operation(summary = "创建", description = "创建description")
     public Response<UUID> create(@RequestBody @Validated @NotNull TenantCreateDTO tenant) {
         Tenant createdTenant = tenantService.createTenant(tenant);
         return Response.success(createdTenant.getId(), "Tenant created successfully");
     }
 
-    @ApiOperation("删除")
     @PostMapping("/{id}/delete")
+    @Operation(summary = "删除", description = "删除description")
     public Response<UUID> delete(@PathVariable("id") UUID id) {
         tenantService.deleteTenant(id);
         return Response.success(id, "Tenant deleted successfully");
     }
 
-    @ApiOperation("更新")
     @PostMapping("/{id}/update")
+    @Operation(summary = "更新", description = "更新description")
     public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated TenantUpdateDTO tenant) {
         tenantService.updateTenant(id, tenant);
         return Response.success(id, "Tenant updated successfully");
     }
 
-    @ApiOperation("获取")
     @GetMapping("/{id}")
+    @Operation(summary = "获取", description = "获取description")
     public Response<Tenant> getTenantById(@PathVariable("id") UUID id) {
         Optional<Tenant> tenant = tenantService.getTenantById(id);
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));

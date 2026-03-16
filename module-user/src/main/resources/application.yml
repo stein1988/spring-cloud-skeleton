@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
@@ -24,15 +24,6 @@ logging:
     root: INFO
     com.easy.query.core: DEBUG
 
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-    config-url: /v3/api-docs/swagger-config
-  show-actuator: true
-
 # 配置数据源对应的 easy-query 信息
 easy-query:
   database: pgsql
@@ -55,3 +46,35 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志 
   is-log: true
+
+# SpringDoc 核心配置
+springdoc:
+  # 1. API文档生成开关（生产环境建议关闭）
+  api-docs:
+    enabled: true
+    path: /v3/api-docs  # OpenAPI规范文件路径（默认）
+  # 2. Swagger UI 配置（可视化界面）
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html  # UI访问路径（简化版，可直接访问）
+    operationsSorter: method  # 接口按HTTP方法排序（GET/POST/PUT/DELETE）
+    tagsSorter: alpha         # 标签按字母排序
+  # 3. 接口扫描规则（精准扫描，避免冗余）
+  packages-to-scan: com.lonbon.cloud.user.application.controller  # 替换为你的控制器包路径
+  paths-to-exclude: /error/**, /actuator/**      # 排除无需文档的路径
+
+# OpenAPI 全局元信息（文档的基础说明）
+openapi:
+  info:
+    title: "示例系统API文档"          # 文档标题
+    description: "Spring Boot 4.0 + SpringDoc 生成API文档示例" # 文档描述
+    version: "v1.0.0"              # 接口版本
+    contact: # 维护人信息（可选）
+      name: "开发团队"
+      email: "dev@example.com"
+  servers: # 接口访问环境（可选）
+    - url: "http://localhost:8080"
+      description: "本地开发环境"
+  tags: # 接口分类标签（与控制器@Tag对应）
+    - name: "用户接口"
+      description: "用户相关的增删改查接口"
