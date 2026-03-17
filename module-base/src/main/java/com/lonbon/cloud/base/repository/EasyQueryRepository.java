@@ -1,13 +1,17 @@
 package com.lonbon.cloud.base.repository;
 
 import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.easy.query.core.proxy.fetcher.AbstractFetcher;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class EasyQueryRepository<
@@ -78,6 +82,15 @@ public abstract class EasyQueryRepository<
     @Override
     public Iterable<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
         return easyEntityQuery.queryable(entityType).where(condition, whereExpression).toList();
+    }
+
+    @Override
+    public PageResult<T> findPagination(Object whereObject, @NotNull Pageable pageable) {
+        EasyPageResult<T> result = easyEntityQuery.queryable(entityType)
+                .whereObject(whereObject)
+                .orderByObject(pageable.hasSort(), new EasyQuerySort(pageable.getSortables()))
+                .toPageResult(pageable.getPage(), pageable.getSize());
+        return new PageResult<T>(pageable, result.getTotal(), result.getData());
     }
 
     @Override

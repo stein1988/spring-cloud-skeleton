@@ -1,8 +1,13 @@
 package com.lonbon.cloud.base.repository;
 
+import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
+import org.springdoc.core.converters.models.Sort;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -115,6 +120,7 @@ public interface Repository<TProxy, T, ID> {
      */
     // TODO: Page、Pageable待实现
 //    Page<T> findAll(Pageable pageable);
+    PageResult<T> findPagination(Object whereObject, Pageable pageable);
 
     /**
      * 返回可用实体的数量。

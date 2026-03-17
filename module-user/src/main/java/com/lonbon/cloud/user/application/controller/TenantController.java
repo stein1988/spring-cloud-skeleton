@@ -1,7 +1,11 @@
 package com.lonbon.cloud.user.application.controller;
 
+import com.easy.query.core.api.pagination.EasyPageResult;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.common.utils.Response;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
+import com.lonbon.cloud.user.domain.dto.TenantQueryDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.service.TenantService;
@@ -51,6 +55,17 @@ public class TenantController {
     public Response<Tenant> getTenantById(@PathVariable("id") UUID id) {
         Optional<Tenant> tenant = tenantService.getTenantById(id);
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
+    }
+
+    @GetMapping()
+    @Operation(summary = "查询", description = "查询description")
+    public Response<PageResult<Tenant>> getTenants(
+            TenantQueryDTO query,
+            Pageable pageable
+    ) {
+        log.info("query: {}, pageable: {}", query, pageable);
+        PageResult<Tenant> tenants = tenantService.getTenants(query, pageable);
+        return Response.success(tenants);
     }
 
 //    @Operation(summary = "查询单个（根据名称）")

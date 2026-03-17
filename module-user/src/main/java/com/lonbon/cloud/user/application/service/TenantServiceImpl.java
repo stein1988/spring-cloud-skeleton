@@ -1,5 +1,8 @@
 package com.lonbon.cloud.user.application.service;
 
+import com.easy.query.core.api.pagination.EasyPageResult;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
@@ -56,6 +59,11 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public List<Tenant> getAllTenants() {
         return (List<Tenant>) tenantRepository.findAll();
+    }
+
+    @Override
+    public PageResult<Tenant> getTenants(Object whereObject, Pageable pageable) {
+        return tenantRepository.findPagination(whereObject, pageable);
     }
 
     @Override

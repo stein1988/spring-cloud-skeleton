@@ -1,5 +1,8 @@
 package com.lonbon.cloud.user.domain.service;
 
+import com.easy.query.core.api.pagination.EasyPageResult;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
@@ -15,6 +18,7 @@ public interface TenantService {
     Optional<Tenant> getTenantById(UUID id);
     Optional<Tenant> getTenantByName(String name);
     List<Tenant> getAllTenants();
+    PageResult<Tenant> getTenants(Object whereObject, Pageable pageable);
     Optional<Tenant> getDefaultTenant();
     void setDefaultTenant(UUID tenantId);
 }
