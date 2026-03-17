@@ -1,6 +1,8 @@
 package com.lonbon.cloud.user.domain.dto;
 
 
+import com.easy.query.core.annotation.EasyWhereCondition;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springdoc.core.annotations.ParameterObject;
 
@@ -16,9 +18,16 @@ import org.springdoc.core.annotations.ParameterObject;
 @Data
 public class TenantQueryDTO {
 
-
+    @EasyWhereCondition(type = EasyWhereCondition.Condition.EQUAL)
+    @Schema(description = "名称，精确查询")
     private String name;
+
+    @Schema(description = "名称，模糊查询")
+    @EasyWhereCondition(propName = "name", type = EasyWhereCondition.Condition.LIKE)
+    private String nameLike;
+
     private String description;
+
     private String domain;
 
 
