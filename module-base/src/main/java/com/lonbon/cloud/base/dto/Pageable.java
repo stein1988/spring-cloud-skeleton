@@ -16,7 +16,7 @@ import java.util.List;
 @Schema(description = "自定义分页参数")
 public class Pageable {
 
-    @Schema(description = "页码（从0开始）", example = "0", defaultValue = "0")
+    @Schema(description = "页码（从1开始）", example = "1", defaultValue = "1")
     private Integer page;
 
     @Schema(description = "每页条数", example = "10", defaultValue = "10")
@@ -34,8 +34,8 @@ public class Pageable {
     private List<Sortable> sortables;
 
     public @NotNull Integer getPage() {
-        if (page == null || page < 0)
-            page = 0;
+        if (page == null || page <= 0)
+            page = 1;
 
         return page;
     }
