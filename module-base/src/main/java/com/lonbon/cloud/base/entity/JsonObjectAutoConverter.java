@@ -4,8 +4,6 @@ import com.easy.query.core.basic.extension.conversion.ValueAutoConverter;
 import com.easy.query.core.metadata.ColumnMetadata;
 import com.easy.query.core.util.EasyClassUtil;
 import com.easy.query.core.util.EasyMapUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +30,7 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
      * 判断当前字段类型是否需要应用该转换器（保留原有逻辑）
      */
     @Override
-    public boolean apply(@NotNull Class<?> entityClass, @NotNull Class<Object> propertyType) {
+    public boolean apply(@NotNull Class<?> entityClass, @NotNull Class<Object> propertyType, String property) {
         return JsonObject.class.isAssignableFrom(propertyType);
     }
 

@@ -20,11 +20,6 @@ public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
         return "DEFAULT_LOGIC_DELETE_STRATEGY";//后续用户指定逻辑删除名称就是用这个名称即可
     }
 
-    @Override
-    public Set<Class<?>> allowedPropertyTypes() {
-        return Set.of(boolean.class);
-    }
-
     /**
      * 逻辑删除的情况下，select操作需要添加的查询过滤器
      */

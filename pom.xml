@@ -30,7 +30,7 @@
         <java.version>25</java.version>
         <spring-boot.version>4.0.0</spring-boot.version>
         <lombok.version>1.18.42</lombok.version>
-        <easy-query.version>3.1.78</easy-query.version>
+        <easy-query.version>3.2.1</easy-query.version>
         <HikariCP.version>7.0.2</HikariCP.version>
         <postgresql.version>42.7.9</postgresql.version>
         <uuid-creator.version>6.1.1</uuid-creator.version>

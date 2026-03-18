@@ -11,7 +11,6 @@ import com.lonbon.cloud.base.dto.Pageable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public abstract class EasyQueryRepository<
