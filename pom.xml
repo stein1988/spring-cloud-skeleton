@@ -35,8 +35,12 @@
         <postgresql.version>42.7.9</postgresql.version>
         <uuid-creator.version>6.1.1</uuid-creator.version>
         <sa-token.version>1.45.0</sa-token.version>
+        <hutool-crypto.version>5.8.44</hutool-crypto.version>
+        <bouncycastle-provider.version>1.83</bouncycastle-provider.version>
         <mapstruct-plus.version>1.5.0</mapstruct-plus.version>
         <springdoc.version>3.0.2</springdoc.version>
+        <spring-cloud.version>2025.1.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2025.1.0.0</spring-cloud-alibaba.version>
     </properties>
 
     <dependencyManagement>
@@ -63,6 +67,23 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jdbc</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba 版本，适配Spring Boot4，dependencies是版本管理包，不是实际引入 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Spring Cloud 版本，dependencies是版本管理包，不是实际引入 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <!-- SpringDoc OpenAPI -->
@@ -125,6 +146,19 @@
                 <version>${sa-token.version}</version>
             </dependency>
 
+            <!-- 国密核心依赖，GMSSL-Java 需要编译，暂时先使用 hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-crypto</artifactId>
+                <version>${hutool-crypto.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bouncycastle-provider.version}</version>
+            </dependency>
+
             <!-- 对象转换 -->
             <dependency>
                 <groupId>io.github.linpeilie</groupId>
@@ -162,5 +196,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <!-- GMSSL 官方仓库 -->
+        <repository>
+            <id>gmssl-maven</id>
+            <name>GmSSL Maven Repository</name>
+            <url>https://maven.gmssl.org/repository/gmssl/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!-- 阿里云仓库（兜底） -->
+        <repository>
+            <id>aliyunmaven</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
 
 </project>

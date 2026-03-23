@@ -4,6 +4,41 @@ server:
 spring:
   application:
     name: user-app
+
+  # Spring Boot4 加载Nacos配置核心配置，必填
+  config:
+    import:
+      # 可选配置：optional表示远程配置不存在不报错；支持多环境、分组
+      - optional:nacos:${spring.application.name}.yaml?group=DEFAULT_GROUP&refreshEnabled=true
+      # 多环境配置示例（dev环境）
+      - optional:nacos:${spring.application.name}-dev.yaml?group=DEV_GROUP&refreshEnabled=true
+  cloud:
+    nacos:
+      # Nacos服务端地址，集群用逗号分隔
+      server-addr: 127.0.0.1:8849
+      # 命名空间，填Nacos控制台的命名空间ID（UUID），不是名称，必填区分环境
+      namespace: dev-namespace-uuid
+      # 服务注册发现配置
+      discovery:
+        # 服务分组，默认DEFAULT_GROUP，可按业务拆分
+        group: DEFAULT_GROUP
+        # 服务注册开关，默认true
+        enabled: true
+        # 健康检查开关，默认true
+        heart-beat-enabled: true
+        # 实例名称
+        instance: ${spring.application.name}
+      # 配置中心配置
+      config:
+        # 配置文件格式，推荐yaml
+        file-extension: yaml
+        # 配置分组，与import中对应
+        group: DEFAULT_GROUP
+        # 配置刷新开关，配合refreshEnabled使用
+        refresh-enabled: true
+        # 敏感配置自动脱敏（3.1.1新特性，密码、token自动打码）
+        sensitive-mask-enabled: true
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
