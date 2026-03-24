@@ -30,15 +30,15 @@
         </dependency>
 
         <!-- Nacos 服务注册发现 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--        </dependency>-->
         <!-- Nacos 配置中心 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+<!--        </dependency>-->
 
         <!-- SpringDoc OpenAPI -->
         <dependency>
@@ -97,6 +97,12 @@
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot4-starter</artifactId>
+        </dependency>
+
+        <!-- Sa-Token 整合 API 参数签名校验 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-sign</artifactId>
         </dependency>
 
         <!-- Swagger API文档 -->

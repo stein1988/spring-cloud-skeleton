@@ -146,6 +146,13 @@
                 <version>${sa-token.version}</version>
             </dependency>
 
+            <!-- Sa-Token 整合 API 参数签名校验 -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-sign</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+
             <!-- 国密核心依赖，GMSSL-Java 需要编译，暂时先使用 hutool -->
             <dependency>
                 <groupId>cn.hutool</groupId>

@@ -4,11 +4,13 @@ import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
+import org.jetbrains.annotations.NotNull;
 import org.springdoc.core.converters.models.Sort;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * 仓库接口，定义了对实体的基本操作方法
@@ -121,6 +123,37 @@ public interface Repository<TProxy, T, ID> {
     // TODO: Page、Pageable待实现
 //    Page<T> findAll(Pageable pageable);
     PageResult<T> findPagination(Object whereObject, Pageable pageable);
+
+
+    /**
+     * 根据条件查询单个实体，如果不存在则抛出指定异常（条件可控）
+     *
+     * @param condition 是否应用查询条件
+     * @param whereExpression 查询条件表达式
+     * @param throwFunc 当查询结果为空时抛出的异常供应商
+     * @return 符合条件的单个实体
+     * @throws RuntimeException 当查询结果为空时，通过 throwFunc 抛出的异常
+     */
+    T singleNotNull(boolean condition, SQLActionExpression1<TProxy> whereExpression, @NotNull Supplier<RuntimeException> throwFunc);
+
+    /**
+     * 根据条件查询单个实体，如果不存在则抛出指定异常
+     *
+     * @param whereExpression 查询条件表达式
+     * @param throwFunc 当查询结果为空时抛出的异常供应商
+     * @return 符合条件的单个实体
+     * @throws RuntimeException 当查询结果为空时，通过 throwFunc 抛出的异常
+     */
+    T singleNotNull(SQLActionExpression1<TProxy> whereExpression, Supplier<RuntimeException> throwFunc);
+
+    /**
+     * 根据条件查询单个实体，如果不存在则抛出默认异常
+     *
+     * @param whereExpression 查询条件表达式
+     * @return 符合条件的单个实体
+     * @throws RuntimeException 当查询结果为空时抛出的默认异常
+     */
+    T singleNotNull(SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 返回可用实体的数量。

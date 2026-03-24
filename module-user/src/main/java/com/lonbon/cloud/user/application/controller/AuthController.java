@@ -1,40 +1,46 @@
 package com.lonbon.cloud.user.application.controller;
 
+import cn.dev33.satoken.sign.annotation.SaCheckSign;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.user.domain.dto.LoginRequest;
+import com.lonbon.cloud.user.domain.dto.LoginResponse;
+import com.lonbon.cloud.user.domain.entity.User;
+import com.lonbon.cloud.user.domain.service.AuthService;
+import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.KeyPair;
 import java.security.Security;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v2/auth")
+@RequestMapping("/api/auth")
 @Tag(name = "鉴权", description = "鉴权操作")
 public class AuthController {
 
-    static {
-        // 注册 BouncyCastle 国密提供者（必须）
-        Security.addProvider(new BouncyCastleProvider());
-    }
+    @Resource
+    private AuthService authService;
 
-    @Operation(operationId = "login_v2", summary = "登录2", description = "登录描述2")
-    @GetMapping(path = "/login")
-    public String login() {
-        log.info("login v2");
-        return "login v2";
+    @PostMapping("/login")
+    @Operation(summary = "登录", description = "用户名密码登陆")
+    public Response<LoginResponse> login(@RequestBody @Validated @NotNull LoginRequest request) {
+        return Response.success(authService.login(request));
     }
 
     @Operation(summary = "获取公钥", description = "获取公钥描述")
-    @GetMapping(path = "/public-key")
+    @GetMapping("/public-key")
     public String publicKey() {
         KeyPair pair = SecureUtil.generateKeyPair("SM2");
 

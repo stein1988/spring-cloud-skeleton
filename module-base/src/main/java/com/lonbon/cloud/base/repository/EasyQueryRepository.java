@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class EasyQueryRepository<
         TProxy extends AbstractProxyEntity<TProxy, T>,
@@ -90,6 +91,21 @@ public abstract class EasyQueryRepository<
                 .orderByObject(pageable.hasSort(), new EasyQuerySort(pageable.getSortables()))
                 .toPageResult(pageable.getPage(), pageable.getSize());
         return new PageResult<T>(pageable, result.getTotal(), result.getData());
+    }
+
+    @Override
+    public T singleNotNull(boolean condition, SQLActionExpression1<TProxy> whereExpression, @NotNull Supplier<RuntimeException> throwFunc) {
+        return easyEntityQuery.queryable(entityType).where(condition, whereExpression).singleNotNull(throwFunc);
+    }
+
+    @Override
+    public T singleNotNull(SQLActionExpression1<TProxy> whereExpression, Supplier<RuntimeException> throwFunc) {
+        return singleNotNull(true, whereExpression, throwFunc);
+    }
+
+    @Override
+    public T singleNotNull(SQLActionExpression1<TProxy> whereExpression) {
+        return easyEntityQuery.queryable(entityType).where(whereExpression).singleNotNull();
     }
 
     @Override
