@@ -6,6 +6,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.lonbon.cloud.common.utils.Response;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;
 import com.lonbon.cloud.user.domain.dto.LoginResponse;
+import com.lonbon.cloud.user.domain.dto.RefreshTokenRequest;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.AuthService;
 import com.lonbon.cloud.user.domain.service.UserService;
@@ -37,6 +38,12 @@ public class AuthController {
     @Operation(summary = "登录", description = "用户名密码登陆")
     public Response<LoginResponse> login(@RequestBody @Validated @NotNull LoginRequest request) {
         return Response.success(authService.login(request));
+    }
+
+    @PostMapping("/refresh-token")
+    @Operation(summary = "刷新token")
+    public Response<LoginResponse> refreshToken(@RequestBody @Validated @NotNull RefreshTokenRequest request) {
+        return Response.success(authService.refreshToken(request));
     }
 
     @Operation(summary = "获取公钥", description = "获取公钥描述")

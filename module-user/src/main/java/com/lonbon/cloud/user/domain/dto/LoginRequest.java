@@ -10,7 +10,7 @@ public class LoginRequest {
     private String username;
 
     @Schema(description = "密码密文")
-    private String password_cipher;
+    private String passwordCipher;
 
     @Schema(description = "签名")
     private String signature;

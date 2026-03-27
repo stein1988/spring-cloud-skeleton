@@ -17,20 +17,14 @@ public class LoginResponse {
     private UUID userId;
 
     @Schema(description = "访问令牌")
-    private String accessToken;
+    private String token;
 
     @Schema(description = "访问令牌过期时间(秒)")
-    private int accessExpireIn;
-
-    @Schema(description = "访问令牌过期时间(UTC)")
-    private OffsetDateTime accessExpireAt;
+    private long tokenExpireIn;
 
     @Schema(description = "刷新令牌")
     private String refreshToken;
 
     @Schema(description = "刷新令牌过期时间(秒)")
-    private int refreshExpireIn;
-
-    @Schema(description = "刷新令牌过期时间(UTC)")
-    private OffsetDateTime refreshExpireAt;
+    private long refreshExpireIn;
 }
