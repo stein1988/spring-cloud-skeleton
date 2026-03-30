@@ -1,29 +1,23 @@
 package com.lonbon.cloud.user.application.controller;
 
-import cn.dev33.satoken.sign.annotation.SaCheckSign;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.lonbon.cloud.common.utils.Response;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;
 import com.lonbon.cloud.user.domain.dto.LoginResponse;
 import com.lonbon.cloud.user.domain.dto.RefreshTokenRequest;
-import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.AuthService;
-import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.KeyPair;
-import java.security.Security;
 
 @Slf4j
 @RestController

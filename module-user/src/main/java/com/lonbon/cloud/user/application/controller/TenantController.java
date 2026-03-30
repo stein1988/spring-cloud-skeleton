@@ -10,6 +10,7 @@ import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,12 @@ public class TenantController {
 
     @GetMapping("/{id}")
     @Operation(summary = "获取", description = "获取description")
-    public Response<Tenant> getTenantById(@PathVariable("id") UUID id) {
+    public Response<Tenant> getTenantById(
+            @PathVariable("id")
+            @Parameter(description = "用户唯一标识，采用UUID格式，32位16进制字符串",
+                    required = true,
+                    example = "123e4567-e89b-12d3-a456-426614174000")
+            UUID id) {
         Optional<Tenant> tenant = tenantService.getTenantById(id);
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
     }
@@ -67,56 +73,4 @@ public class TenantController {
         PageResult<Tenant> tenants = tenantService.getTenants(query, pageable);
         return Response.success(tenants);
     }
-
-//    @Operation(summary = "查询单个（根据名称）")
-//    @Get
-//    @Mapping("/name/{name}")
-//    public Response<Tenant> getTenantByName(@Path("name") String name) {
-//        try {
-//            Optional<Tenant> tenant = tenantService.getTenantByName(name);
-//            return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
-//        } catch (Exception e) {
-//            return Response.error("Failed to get tenant: " + e.getMessage());
-//        }
-//    }
-//
-//    @Operation(summary = "查询所有")
-//    @Get
-//    @Mapping
-//    public Response<List<Tenant>> getAllTenants() {
-//        try {
-//           Tenant newTenant = new Tenant();
-//            newTenant.setName("测试租户");
-//            tenantService.createTenant(newTenant);
-//            List<Tenant> tenants = tenantService.getAllTenants();
-//            for (Tenant tenant : tenants) {
-//                log.info(tenant.toString());
-//            }
-//            return Response.success(tenants);
-//        } catch (Exception e) {
-//            return Response.error("Failed to get tenants: " + e.getMessage());
-//        }
-//    }
-//
-//    @Get
-//    @Mapping("/default")
-//    public Response<Tenant> getDefaultTenant() {
-//        try {
-//            Optional<Tenant> tenant = tenantService.getDefaultTenant();
-//            return tenant.map(Response::success).orElseGet(() -> Response.error("Default tenant not found"));
-//        } catch (Exception e) {
-//            return Response.error("Failed to get default tenant: " + e.getMessage());
-//        }
-//    }
-//
-//    @Put
-//    @Mapping("/default/{id}")
-//    public Response<Void> setDefaultTenant(@Path("id") String id) {
-//        try {
-//            tenantService.setDefaultTenant(UUID.fromString(id));
-//            return Response.success(null, "Default tenant set successfully");
-//        } catch (Exception e) {
-//            return Response.error("Failed to set default tenant: " + e.getMessage());
-//        }
-//    }
 }
