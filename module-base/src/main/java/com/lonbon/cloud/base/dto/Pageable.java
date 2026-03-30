@@ -26,7 +26,7 @@ public class Pageable {
     // 例如 sort=createTime,desc 会被拆分为 ["createTime", "desc"]。
     // 所以改用点号做分隔符
     @Schema(description = "排序规则，格式：字段名.方向（asc/desc），可以接受多个参数，注意分隔符是点，不是逗号",
-            example = "createdAt.desc")
+            example = "createTime.desc")
     private List<String> sort;
 
     @Schema(description = "解析后的排序数据，不显示在接口文档中", hidden = true)

@@ -38,26 +38,26 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
 
         OffsetDateTime now = OffsetDateTime.now();
 
-        if (baseEntity.getCreatedAt() == null) {
-            baseEntity.setCreatedAt(now);
+        if (baseEntity.getCreateTime() == null) {
+            baseEntity.setCreateTime(now);
         }
-        if (baseEntity.getCreatedBy() == null) {
+        if (baseEntity.getCreateBy() == null) {
 //            String userId = StringUtils.defaultString(currentUser.getUserId());
             //如果使用sa-token这边采用StpUtil.getLoginIdAsString()会让导致程序需要验证
             //,所以这边需要先判断是否登录,未登录就给默认值,不然就获取
             //updateBy同理
 //            baseEntity.setCreateBy(userId);
             // TODO：获取当前用户id
-            baseEntity.setCreatedBy(UUID.randomUUID());
+            baseEntity.setCreateBy(UUID.randomUUID());
         }
-        if (baseEntity.getUpdatedAt() == null) {
-            baseEntity.setUpdatedAt(now);
+        if (baseEntity.getUpdateTime() == null) {
+            baseEntity.setUpdateTime(now);
         }
-        if (baseEntity.getUpdatedBy() == null) {
+        if (baseEntity.getUpdateBy() == null) {
 //            String userId = StringUtils.defaultString(currentUser.getUserId());
 //            baseEntity.setUpdateBy(userId);
             // TODO：获取当前用户id
-            baseEntity.setUpdatedBy(UUID.randomUUID());
+            baseEntity.setUpdateBy(UUID.randomUUID());
         }
     }
 
@@ -67,11 +67,11 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
     @Override
     public void configureUpdate(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
-        baseEntity.setUpdatedAt(OffsetDateTime.now());
+        baseEntity.setUpdateTime(OffsetDateTime.now());
 //        String userId = StringUtils.defaultString(currentUser.getUserId());
 //        baseEntity.setUpdateBy(userId);
         // TODO：获取当前用户id
-        baseEntity.setUpdatedBy(UUID.randomUUID());
+        baseEntity.setUpdateBy(UUID.randomUUID());
     }
 
     @Override
@@ -118,7 +118,7 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
 //            baseEntity.setUpdateBy(userId);
 //        }
 //        if (baseEntity.getDeleted() == null) {
-//            baseEntity.setDeleted(false);
+//            baseEntity.setDelete(false);
 //        }
 //
 //        if (baseEntity.getId() == null) {

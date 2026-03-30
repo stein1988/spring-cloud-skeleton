@@ -12,13 +12,26 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_tenant")
-@EntityProxy
+@EntityProxy(ignoreProperties = "config")
 public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant , TenantProxy> {
+
+    /**
+     * 名称
+     */
     private String name;
+
+    /**
+     * 描述
+     */
     private String description;
+
+    /**
+     * 域名
+     */
+    private String domain;
     private boolean isDefault;
     private boolean isActive;
-    private String domain;
+
     private TenantConfig config;
     private boolean isSystem;
 }

@@ -41,41 +41,41 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @LogicDelete(strategy = LogicDeleteStrategyEnum.CUSTOM, strategyName = "DEFAULT_LOGIC_DELETE_STRATEGY")
     @UpdateIgnore
-    private boolean isDeleted;
+    private boolean isDelete;
 
     /**
      * 删除时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime deletedAt;
+    private OffsetDateTime deleteTime;
 
     /**
      * 删除人ID
      */
     @UpdateIgnore
-    private UUID deletedBy;
+    private UUID deleteBy;
 
     /**
      * 创建时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createTime;
     
     /**
      * 创建人ID
      */
     @UpdateIgnore
-    private UUID createdBy;
+    private UUID createBy;
     
     /**
      * 更新时间，UTC时间戳
      */
-    private OffsetDateTime updatedAt;
+    private OffsetDateTime updateTime;
     
     /**
      * 更新人ID
      */
-    private UUID updatedBy;
+    private UUID updateBy;
 
     /**
      * 版本号，用于乐观锁，默认值为0，每更新一次+1
@@ -86,8 +86,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     @Override
     public BaseEntity clone() {
         try {
-            BaseEntity clone = (BaseEntity) super.clone();
-            return clone;
+            return (BaseEntity) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
