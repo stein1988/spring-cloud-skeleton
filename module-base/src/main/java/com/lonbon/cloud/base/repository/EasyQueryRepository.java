@@ -64,10 +64,9 @@ public abstract class EasyQueryRepository<
     }
 
     @Override
-    public Iterable<T> findAllById(Collection<ID> ids) {
+    public Iterable<T> findAllByIds(Collection<ID> ids) {
         return easyEntityQuery.queryable(entityType).whereByIds(ids).toList();
     }
-
 
     @Override
     public Iterable<T> findAll() {
@@ -94,13 +93,8 @@ public abstract class EasyQueryRepository<
     }
 
     @Override
-    public T singleNotNull(boolean condition, SQLActionExpression1<TProxy> whereExpression, @NotNull Supplier<RuntimeException> throwFunc) {
-        return easyEntityQuery.queryable(entityType).where(condition, whereExpression).singleNotNull(throwFunc);
-    }
-
-    @Override
-    public T singleNotNull(SQLActionExpression1<TProxy> whereExpression, Supplier<RuntimeException> throwFunc) {
-        return singleNotNull(true, whereExpression, throwFunc);
+    public Optional<T> singleOptional(SQLActionExpression1<TProxy> whereExpression) {
+        return easyEntityQuery.queryable(entityType).where(whereExpression).singleOptional();
     }
 
     @Override

@@ -19,6 +19,4 @@ public interface TenantService {
     Optional<Tenant> getTenantByName(String name);
     List<Tenant> getAllTenants();
     PageResult<Tenant> getTenants(Object whereObject, Pageable pageable);
-    Optional<Tenant> getDefaultTenant();
-    void setDefaultTenant(UUID tenantId);
 }

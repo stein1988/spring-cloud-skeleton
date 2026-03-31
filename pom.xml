@@ -202,6 +202,11 @@
                             <artifactId>lombok</artifactId>
                         </path>
                         <path>
+                            <groupId>com.easy-query</groupId>
+                            <artifactId>sql-processor</artifactId>
+                            <version>${easy-query.version}</version>
+                        </path>
+                        <path>
                             <groupId>io.github.linpeilie</groupId>
                             <artifactId>mapstruct-plus-processor</artifactId>
                             <version>${mapstruct-plus.version}</version>
@@ -211,12 +216,12 @@
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>0.2.0</version>
                         </path>
-                        <path>
-                            <groupId>com.easy-query</groupId>
-                            <artifactId>sql-processor</artifactId>
-                            <version>${easy-query.version}</version>
-                        </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Amapstruct.plus.unmappedSourcePolicy=IGNORE</arg>
+                        <arg>-Amapstruct.plus.unmappedTargetPolicy=IGNORE</arg>
+                        <arg>-Amapstruct.verbose=true</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
