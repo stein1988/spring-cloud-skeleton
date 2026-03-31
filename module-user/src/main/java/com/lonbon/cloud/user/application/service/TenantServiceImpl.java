@@ -6,11 +6,15 @@ import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
+import com.lonbon.cloud.user.domain.entity.TenantClosure;
+import com.lonbon.cloud.user.domain.repository.TenantClosureRepository;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
 import com.lonbon.cloud.user.domain.service.TenantService;
 import io.github.linpeilie.Converter;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +23,21 @@ import java.util.UUID;
 @Service
 public class TenantServiceImpl implements TenantService {
 
-    @Autowired
+    @Resource
     private TenantRepository tenantRepository;
 
-    @Autowired
+    @Resource
+    private TenantClosureRepository tenantClosureRepository;
+
+    @Resource
     private Converter converter;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Tenant createTenant(TenantCreateDTO tenant) {
-        Tenant createTenant = converter.convert(tenant, Tenant.class);
-        return tenantRepository.save(createTenant);
+        Tenant createTenant = tenantRepository.save(converter.convert(tenant, Tenant.class));
+        tenantClosureRepository.save(createTenant.createSelfClosure());
+        return createTenant;
     }
 
     @Override

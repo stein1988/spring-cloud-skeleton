@@ -1,12 +1,12 @@
 package com.lonbon.cloud.user.application.controller;
 
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.entity.Team;
 import com.lonbon.cloud.user.domain.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Tag(name = "团队", description = "团队操作")
 public class TeamController {
 
-    @Autowired
+    @Resource
     private TeamService teamService;
 
     @PostMapping

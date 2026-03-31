@@ -1,4 +1,4 @@
-package com.lonbon.cloud.common.utils;
+package com.lonbon.cloud.base.response;
 
 import lombok.Data;
 

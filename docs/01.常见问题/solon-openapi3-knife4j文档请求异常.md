@@ -93,7 +93,7 @@ solon.resource:
          - "HTTP"
          - "HTTPS"
          globalResponseInData: true
-         globalResult: "com.lonbon.cloud.common.utils.Response"
+         globalResult: "com.lonbon.cloud.base.response.Response"
          apis:
          - basePackage: "com.lonbon.cloud.user"
    ```

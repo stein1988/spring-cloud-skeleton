@@ -84,13 +84,6 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- 公共模块依赖 -->
-        <dependency>
-            <groupId>com.lonbon.cloud</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- Sa-Token 权限认证 -->
         <dependency>
             <groupId>cn.dev33</groupId>

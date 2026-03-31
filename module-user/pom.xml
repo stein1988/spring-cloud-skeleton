@@ -59,12 +59,6 @@
             <version>1.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.lonbon.cloud</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- 数据库连接相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -121,6 +115,13 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>3.0.0</version>
+            <exclusions>
+                <!-- 排除 Swagger 自带的 MapStruct -->
+                <exclusion>
+                    <groupId>org.mapstruct</groupId>
+                    <artifactId>mapstruct</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

@@ -2,13 +2,10 @@ package com.lonbon.cloud.user.domain.dto;
 
 
 import com.lonbon.cloud.user.domain.entity.Tenant;
-import com.lonbon.cloud.user.domain.value_object.TenantConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.Map;
 
 
 /**
@@ -23,12 +20,13 @@ import java.util.Map;
 @Data
 public class TenantCreateDTO {
 
+    private String type;
+
     @NotEmpty
     @NotNull
     private String name;
     private String description;
     private String domain;
-    private TenantConfig config;
 
 
 }

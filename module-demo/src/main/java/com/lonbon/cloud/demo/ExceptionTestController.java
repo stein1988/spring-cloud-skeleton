@@ -1,13 +1,11 @@
 package com.lonbon.cloud.demo;
 
-import com.lonbon.cloud.base.exception.BaseBusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
-import com.lonbon.cloud.common.exception.BusinessException;
-import com.lonbon.cloud.common.exception.ParameterException;
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.exception.BusinessException;
+import com.lonbon.cloud.base.exception.ParameterException;
+import com.lonbon.cloud.base.response.Response;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

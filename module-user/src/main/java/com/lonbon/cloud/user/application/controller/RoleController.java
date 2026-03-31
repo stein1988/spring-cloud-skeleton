@@ -1,14 +1,14 @@
 package com.lonbon.cloud.user.application.controller;
 
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.dto.RoleCreateDTO;
 import com.lonbon.cloud.user.domain.dto.RoleUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Role;
 import com.lonbon.cloud.user.domain.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Tag(name = "角色", description = "角色操作")
 public class RoleController {
 
-    @Autowired
+    @Resource
     private RoleService roleService;
 
     @PostMapping

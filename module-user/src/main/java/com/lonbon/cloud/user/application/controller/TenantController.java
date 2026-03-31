@@ -1,9 +1,8 @@
 package com.lonbon.cloud.user.application.controller;
 
-import com.easy.query.core.api.pagination.EasyPageResult;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantQueryDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
@@ -12,8 +11,8 @@ import com.lonbon.cloud.user.domain.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +26,7 @@ import java.util.UUID;
 @Tag(name = "租户", description = "租户操作")
 public class TenantController {
 
-    @Autowired
+    @Resource
     private TenantService tenantService;
 
     @PostMapping

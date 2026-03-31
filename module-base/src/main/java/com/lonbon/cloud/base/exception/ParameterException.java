@@ -1,7 +1,4 @@
-package com.lonbon.cloud.common.exception;
-
-import com.lonbon.cloud.base.exception.BaseBusinessException;
-import com.lonbon.cloud.base.exception.ErrorCode;
+package com.lonbon.cloud.base.exception;
 
 /**
  * 参数异常

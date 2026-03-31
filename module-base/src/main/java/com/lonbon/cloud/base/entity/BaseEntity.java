@@ -33,7 +33,17 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      * 主键ID，使用UUIDv7算法
      */
     @Column(primaryKey = true, primaryKeyGenerator = UUIDPrimaryKeyGenerator.class)
-    private UUID id;
+    protected UUID id;
+
+    /**
+     * 租户ID，可使用EntityProxy(ignoreProperties = "tenantId")来排除此字段
+     */
+    protected UUID tenantId;
+
+    /**
+     * 预设数据标志：是否是系统预设数据，默认值为false
+     */
+    protected boolean isPreset;
 
     /**
      * 逻辑删除标志：是否删除，默认值为false
@@ -41,47 +51,47 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @LogicDelete(strategy = LogicDeleteStrategyEnum.CUSTOM, strategyName = "DEFAULT_LOGIC_DELETE_STRATEGY")
     @UpdateIgnore
-    private boolean isDelete;
+    protected boolean isDelete;
 
     /**
      * 删除时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime deleteTime;
+    protected OffsetDateTime deleteTime;
 
     /**
      * 删除人ID
      */
     @UpdateIgnore
-    private UUID deleteBy;
+    protected UUID deleteBy;
 
     /**
      * 创建时间，UTC时间戳
      */
     @UpdateIgnore
-    private OffsetDateTime createTime;
+    protected OffsetDateTime createTime;
     
     /**
      * 创建人ID
      */
     @UpdateIgnore
-    private UUID createBy;
+    protected UUID createBy;
     
     /**
      * 更新时间，UTC时间戳
      */
-    private OffsetDateTime updateTime;
+    protected OffsetDateTime updateTime;
     
     /**
      * 更新人ID
      */
-    private UUID updateBy;
+    protected UUID updateBy;
 
     /**
      * 版本号，用于乐观锁，默认值为0，每更新一次+1
      */
     @Version(strategy = VersionIntStrategy.class)
-    private int version;
+    protected int version;
 
     @Override
     public BaseEntity clone() {

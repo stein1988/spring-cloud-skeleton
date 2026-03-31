@@ -1,14 +1,14 @@
 package com.lonbon.cloud.user.application.controller;
 
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.dto.PermissionCreateDTO;
 import com.lonbon.cloud.user.domain.dto.PermissionUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Permission;
 import com.lonbon.cloud.user.domain.service.PermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Tag(name = "权限", description = "权限操作")
 public class PermissionController {
 
-    @Autowired
+    @Resource
     private PermissionService permissionService;
 
     @PostMapping

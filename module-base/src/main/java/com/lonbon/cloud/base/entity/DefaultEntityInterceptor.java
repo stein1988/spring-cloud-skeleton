@@ -13,12 +13,16 @@ import org.springframework.stereotype.Component;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ * 默认实体拦截器
+ * 用于处理BaseEntity的自动填充逻辑，如创建时间、更新时间、创建人、更新人等
+ */
 @Component
 public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
 
     @Override
     public String name() {
-        return "DEFAULT_INTERCEPTOR";    //后续禁用拦截器或者启用拦截器使用这个名称代表当前拦截器
+        return "DEFAULT_INTERCEPTOR"; // 后续禁用拦截器或者启用拦截器使用这个名称代表当前拦截器
     }
 
     /**
@@ -42,11 +46,6 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
             baseEntity.setCreateTime(now);
         }
         if (baseEntity.getCreateBy() == null) {
-//            String userId = StringUtils.defaultString(currentUser.getUserId());
-            //如果使用sa-token这边采用StpUtil.getLoginIdAsString()会让导致程序需要验证
-            //,所以这边需要先判断是否登录,未登录就给默认值,不然就获取
-            //updateBy同理
-//            baseEntity.setCreateBy(userId);
             // TODO：获取当前用户id
             baseEntity.setCreateBy(UUID.randomUUID());
         }
@@ -54,8 +53,6 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
             baseEntity.setUpdateTime(now);
         }
         if (baseEntity.getUpdateBy() == null) {
-//            String userId = StringUtils.defaultString(currentUser.getUserId());
-//            baseEntity.setUpdateBy(userId);
             // TODO：获取当前用户id
             baseEntity.setUpdateBy(UUID.randomUUID());
         }
@@ -67,153 +64,28 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
     @Override
     public void configureUpdate(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
+
         baseEntity.setUpdateTime(OffsetDateTime.now());
-//        String userId = StringUtils.defaultString(currentUser.getUserId());
-//        baseEntity.setUpdateBy(userId);
+
         // TODO：获取当前用户id
         baseEntity.setUpdateBy(UUID.randomUUID());
     }
 
+    /**
+     * 表达式更新时的处理
+     * 目前未实现具体逻辑
+     */
     @Override
     public void configure(@NotNull Class<?> entityClass, @NotNull EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, @NotNull ColumnOnlySelector<Object> columnSelector, @NotNull Object entity) {
 
     }
 
+    /**
+     * 列更新时的处理
+     * 目前未实现具体逻辑
+     */
     @Override
     public void configure(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, ColumnSetter<Object> columnSetter) {
 
     }
-
-
-
-    //如果你是springsecurity可以用这个SecurityContextHolder.getContext()
-    //如果你是satoken那么直接用StpUtil
-//    private final CurrentUser currentUser;//对springboot进行的封装可以通过jwt获取对应的当前操作人用户
-
-//    /**
-//     * 添加默认的数据
-//     *
-//     * @param entityClass
-//     * @param entityInsertExpressionBuilder
-//     * @param entity
-//     */
-//    @Override
-//    public void configureInsert(Class<?> entityClass, EntityInsertExpressionBuilder entityInsertExpressionBuilder, Object entity) {
-//        BaseEntity baseEntity = (BaseEntity) entity;
-//        if (baseEntity.getCreateTime() == null) {
-//            baseEntity.setCreateTime(LocalDateTime.now());
-//        }
-//        if (baseEntity.getCreateBy() == null) {
-//            String userId = StringUtils.defaultString(currentUser.getUserId());
-//            //如果使用sa-token这边采用StpUtil.getLoginIdAsString()会让导致程序需要验证
-//            //,所以这边需要先判断是否登录,未登录就给默认值,不然就获取
-//            //updateBy同理
-//            baseEntity.setCreateBy(userId);
-//        }
-//        if (baseEntity.getUpdateTime() == null) {
-//            baseEntity.setUpdateTime(LocalDateTime.now());
-//        }
-//        if (baseEntity.getUpdateBy() == null) {
-//            String userId = StringUtils.defaultString(currentUser.getUserId());
-//            baseEntity.setUpdateBy(userId);
-//        }
-//        if (baseEntity.getDeleted() == null) {
-//            baseEntity.setDelete(false);
-//        }
-//
-//        if (baseEntity.getId() == null) {
-//            baseEntity.setId(IdHelper.nextId());
-//        }
-//        //如果你部分对象需要使用雪花id,那么你可以定义一个雪花id的空接口
-//        //然后让对象继承这个空接口
-//        // if(雪花ID.class.isAssignableFrom(entity.getClass())){
-//        //     if (baseEntity.getId() == null) {
-//        //         baseEntity.setId(//赋值雪花id);
-//        //     }
-//        // }else{
-//        //     if (baseEntity.getId() == null) {
-//        //         baseEntity.setId(IdHelper.nextId());
-//        //     }
-//        // }
-//    }
-//
-//    /**
-//     * 添加更新对象参数
-//     *
-//     * @param entityClass
-//     * @param entityUpdateExpressionBuilder
-//     * @param entity
-//     */
-//    @Override
-//    public void configureUpdate(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
-//        BaseEntity baseEntity = (BaseEntity) entity;
-//        baseEntity.setUpdateTime(LocalDateTime.now());
-//        String userId = StringUtils.defaultString(currentUser.getUserId());
-//        baseEntity.setUpdateBy(userId);
-//    }
-//
-//    /**
-//     * 表达式更新set参数添加
-//     *
-//     * @param entityClass
-//     * @param entityUpdateExpressionBuilder
-//     * @param columnSetter
-//     */
-//    @Override
-//    public void configure(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, ColumnSetter<Object> columnSetter) {
-//        //创建两个属性比较器 如果你觉得你程序里面不会手动去修改这两个值那么也可以不加这个判断
-//        EntitySegmentComparer updateTime = new EntitySegmentComparer(entityClass, "updateTime");
-//        EntitySegmentComparer updateBy = new EntitySegmentComparer(entityClass, "updateBy");
-//        columnSetter.getSQLBuilderSegment().forEach(k -> {
-//            updateTime.visit(k);
-//            updateBy.visit(k);
-//            return updateTime.isInSegment() && updateBy.isInSegment();
-//        });
-//        //是否已经set了
-//        if (!updateBy.isInSegment()) {
-//            String userId = StringUtils.defaultString(CurrentUserHelper.getUserId());
-//            columnSetter.set( "updateBy", userId);
-//        }
-//        if (!updateTime.isInSegment()) {
-//            columnSetter.set("updateTime", LocalDateTime.now());
-//        }
-//    }
-//    /**
-//     * 对象属性更新指定列更新
-//     *
-//     * @param entityClass
-//     * @param entityUpdateExpressionBuilder
-//     * @param columnSelector
-//     * @param entity
-//     */
-//    @Override
-//    public void configure(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, ColumnOnlySelector<Object> columnSelector, Object entity) {
-//        //创建两个属性比较器
-//        EntitySegmentComparer updateTime = new EntitySegmentComparer(entityClass, "updateTime");
-//        EntitySegmentComparer updateBy = new EntitySegmentComparer(entityClass, "updateBy");
-//        columnSelector.getSQLSegmentBuilder().forEach(k -> {
-//            updateTime.visit(k);
-//            updateBy.visit(k);
-//            return updateTime.isInSegment() && updateBy.isInSegment();
-//        });
-//        //是否已经set了
-//        if (!updateTime.isInSegment()) {
-//            columnSelector.column("updateTime");
-//        }
-//        if (!updateBy.isInSegment()) {
-//            columnSelector.column( "updateBy");
-//        }
-//    }
-//
-//    @Override
-//    public String name() {
-//        return "DEFAULT_INTERCEPTOR";//后续禁用拦截器或者启用拦截器使用这个名称代表当前拦截器
-//    }
-//    /**
-//     * 那些对象需要用到这个拦截器(这边设置继承BaseEntity的对象)
-//     */
-//    @Override
-//    public boolean apply(Class<?> entityClass) {
-//        return BaseEntity.class.isAssignableFrom(entityClass);
-//    }
 }

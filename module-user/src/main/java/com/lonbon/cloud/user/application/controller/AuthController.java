@@ -2,7 +2,7 @@ package com.lonbon.cloud.user.application.controller;
 
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.lonbon.cloud.common.utils.Response;
+import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;
 import com.lonbon.cloud.user.domain.dto.LoginResponse;
 import com.lonbon.cloud.user.domain.dto.RefreshTokenRequest;
