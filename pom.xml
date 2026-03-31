@@ -218,9 +218,12 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>-Amapstruct.plus.unmappedSourcePolicy=IGNORE</arg>
-                        <arg>-Amapstruct.plus.unmappedTargetPolicy=IGNORE</arg>
-                        <arg>-Amapstruct.verbose=true</arg>
+<!--                        <arg>-Amapstruct.plus.unmappedSourcePolicy=IGNORE</arg>-->
+<!--                        <arg>-Amapstruct.plus.unmappedTargetPolicy=IGNORE</arg>-->
+<!--                        <arg>-Amapstruct.verbose=true</arg>-->
+                        <arg>
+                            -Amapstruct.plus.nullValuePropertyMappingStrategy=IGNORE
+                        </arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
