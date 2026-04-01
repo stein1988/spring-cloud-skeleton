@@ -11,6 +11,7 @@ import com.lonbon.cloud.base.dto.Pageable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -20,14 +21,13 @@ public abstract class EasyQueryRepository<
         T extends ProxyEntityAvailable<T, TProxy>,
         TChain extends AbstractFetcher<TProxy, T, TChain>> implements Repository<TProxy, T> {
 
-    protected EasyEntityQuery easyEntityQuery;
+    protected final EasyEntityQuery easyEntityQuery;
 
     protected final Class<T> entityType;
 
-    @NotNull
     protected final FetcherProvider<TProxy, T, TChain> fetcherProvider;
 
-    public EasyQueryRepository(EasyEntityQuery easyEntityQuery, Class<T> entityType, @NotNull FetcherProvider<TProxy, T, TChain> fetcherProvider) {
+    public EasyQueryRepository(EasyEntityQuery easyEntityQuery, Class<T> entityType, FetcherProvider<TProxy, T, TChain> fetcherProvider) {
         this.easyEntityQuery = easyEntityQuery;
         this.entityType = entityType;
         this.fetcherProvider = fetcherProvider;
@@ -36,6 +36,12 @@ public abstract class EasyQueryRepository<
     @Override
     public <S extends T> S insert(S entity) {
         easyEntityQuery.insertable(entity).executeRows();
+        return entity;
+    }
+
+    @Override
+    public <S extends T> S update(S entity) {
+        easyEntityQuery.updatable(entity).executeRows();
         return entity;
     }
 
@@ -60,26 +66,35 @@ public abstract class EasyQueryRepository<
 
     @Override
     public Optional<T> findById(UUID id) {
-        return easyEntityQuery.queryable(entityType).whereById(id).singleOptional();
+        return findById(id, false);
     }
 
     @Override
-    public Iterable<T> findAllByIds(Collection<UUID> ids) {
+    public Optional<T> findById(UUID id, boolean tracking) {
+        if (tracking) {
+            return easyEntityQuery.queryable(entityType).asTracking().whereById(id).singleOptional();
+        } else {
+            return easyEntityQuery.queryable(entityType).whereById(id).singleOptional();
+        }
+    }
+
+    @Override
+    public List<T> findAllByIds(Collection<UUID> ids) {
         return easyEntityQuery.queryable(entityType).whereByIds(ids).toList();
     }
 
     @Override
-    public Iterable<T> findAll() {
+    public List<T> findAll() {
         return easyEntityQuery.queryable(entityType).toList();
     }
 
     @Override
-    public Iterable<T> findAll(SQLActionExpression1<TProxy> whereExpression) {
+    public List<T> findAll(SQLActionExpression1<TProxy> whereExpression) {
         return findAll(true, whereExpression);
     }
 
     @Override
-    public Iterable<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
+    public List<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
         return easyEntityQuery.queryable(entityType).where(condition, whereExpression).toList();
     }
 
@@ -139,6 +154,28 @@ public abstract class EasyQueryRepository<
         for (UUID id : ids) {
             Optional<T> entity = findById(id);
             entity.ifPresent(this::delete);
+        }
+    }
+
+    @Override
+    public <R> R track(Supplier<R> supplier) {
+        var trackManager = easyEntityQuery.getRuntimeContext().getTrackManager();
+        try {
+            trackManager.begin();
+            return supplier.get();
+        } finally {
+            trackManager.release();
+        }
+    }
+
+    @Override
+    public void track(Runnable runnable) {
+        var trackManager = easyEntityQuery.getRuntimeContext().getTrackManager();
+        try {
+            trackManager.begin();
+            runnable.run();
+        } finally {
+            trackManager.release();
         }
     }
 }

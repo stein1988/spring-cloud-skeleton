@@ -8,8 +8,10 @@ import com.lonbon.cloud.base.dto.Pageable;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * 仓库接口，定义了对实体的基本操作方法。
@@ -38,6 +40,22 @@ public interface Repository<TProxy, T> {
      * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
      */
     <S extends T> S insert(S entity);
+
+    /**
+     * 更新给定的实体。
+     * <p>
+     * 该方法会直接执行UPDATE操作，用于更新已存在的实体。
+     * 适用于确定实体已存在于数据库中的场景。
+     * </p>
+     *
+     * @param entity 要更新的实体，不能为 {@literal null}
+     * @param <S>    实体类型的子类型
+     * @return 更新后的实体
+     * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
+     * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
+     *                                           或者当实体被认为存在但数据库中不存在时
+     */
+    <S extends T> S update(S entity);
 
     /**
      * 保存给定的实体。
@@ -79,6 +97,8 @@ public interface Repository<TProxy, T> {
      */
     Optional<T> findById(UUID id);
 
+    Optional<T> findById(UUID id, boolean tracking);
+
     /**
      * 返回是否存在具有给定 ID 的实体。
      *
@@ -93,7 +113,7 @@ public interface Repository<TProxy, T> {
      *
      * @return 所有实体的可迭代对象
      */
-    Iterable<T> findAll();
+    List<T> findAll();
 
     /**
      * 返回具有给定 ID 的所有类型 {@code T} 的实例。
@@ -106,7 +126,7 @@ public interface Repository<TProxy, T> {
      * @return 找到的实体的可迭代对象，大小可以等于或小于给定 {@literal ids} 的数量
      * @throws IllegalArgumentException 如果给定的 {@link Collection ids} 或其中一个项为 {@literal null}
      */
-    Iterable<T> findAllByIds(Collection<UUID> ids);
+    List<T> findAllByIds(Collection<UUID> ids);
 
     /**
      * 根据条件查询所有实体。
@@ -117,7 +137,7 @@ public interface Repository<TProxy, T> {
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
      * @return 符合条件的实体列表
      */
-    Iterable<T> findAll(SQLActionExpression1<TProxy> whereExpression);
+    List<T> findAll(SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 根据条件查询所有实体（条件可控）。
@@ -130,7 +150,7 @@ public interface Repository<TProxy, T> {
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
      * @return 符合条件的实体列表，当 condition 为 false 时返回所有实体
      */
-    Iterable<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression);
+    List<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 返回符合 {@link Pageable} 对象中提供的分页限制的实体分页结果。
@@ -227,4 +247,8 @@ public interface Repository<TProxy, T> {
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
     void deleteAllById(Iterable<? extends UUID> ids);
+
+    <R> R track(Supplier<R> supplier);
+
+    void track(Runnable runnable);
 }

@@ -1,0 +1,85 @@
+package com.lonbon.cloud.base.service;
+
+import com.easy.query.core.proxy.AbstractProxyEntity;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.lonbon.cloud.base.dto.PageResult;
+import com.lonbon.cloud.base.dto.Pageable;
+import com.lonbon.cloud.base.exception.BusinessException;
+import com.lonbon.cloud.base.exception.ErrorCode;
+import com.lonbon.cloud.base.repository.Repository;
+import io.github.linpeilie.Converter;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+
+@Transactional(rollbackFor = Exception.class)
+public abstract class SimpleEntityService<
+        TProxy extends AbstractProxyEntity<TProxy, T>,
+        T extends ProxyEntityAvailable<T, TProxy>,
+        TRepository extends Repository<TProxy, T>
+        > implements Service<T> {
+
+    protected final Converter converter;
+
+    protected final Class<T> entityType;
+
+    protected final TRepository repository;
+
+    public SimpleEntityService(Converter converter, Class<T> entityType, TRepository repository) {
+        this.converter = converter;
+        this.entityType = entityType;
+        this.repository = repository;
+    }
+
+    @Override
+    public T createEntity(Object createDto) {
+        T entity = converter.convert(createDto, entityType);
+        repository.insert(entity);
+        return entity;
+    }
+
+    @Override
+    public T updateEntity(UUID id, Object updateDto) {
+        return this.updateEntity(id, entity -> converter.convert(updateDto, entity));
+    }
+
+    @Override
+    public T updateEntity(UUID id, Function<T, T> updateFunc) {
+        return repository.track(() -> {
+            T existing = repository.findById(id, true)
+                    .orElseThrow(() -> new BusinessException(
+                            ErrorCode.RESOURCE_NOT_FOUND,
+                            "Entity not found, ID: " + id));
+
+            T updated = updateFunc.apply(existing);
+            return repository.update(updated);
+        });
+    }
+
+
+    @Override
+    public void deleteEntity(UUID id) {
+        repository.deleteById(id);
+    }
+    
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getEntityById(UUID id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public List<T> getAllEntities() {
+        return repository.findAll();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public PageResult<T> getPaginationEntities(Object whereObject, Pageable pageable) {
+        return repository.findPagination(whereObject, pageable);
+    }
+}
