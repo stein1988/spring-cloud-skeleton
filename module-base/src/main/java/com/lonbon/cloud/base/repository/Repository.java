@@ -9,6 +9,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 仓库接口，定义了对实体的基本操作方法。
@@ -19,11 +20,10 @@ import java.util.Optional;
  *
  * @param <TProxy> 实体代理类型，用于构建类型安全的查询条件
  * @param <T>      实体类型，表示该仓库管理的聚合根类型
- * @param <ID>     主键类型，用于唯一标识实体
  * @author lonbon
  * @since 1.0.0
  */
-public interface Repository<TProxy, T, ID> {
+public interface Repository<TProxy, T> {
 
     /**
      * 直接插入给定的实体。
@@ -77,7 +77,7 @@ public interface Repository<TProxy, T, ID> {
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
      */
-    Optional<T> findById(ID id);
+    Optional<T> findById(UUID id);
 
     /**
      * 返回是否存在具有给定 ID 的实体。
@@ -86,7 +86,7 @@ public interface Repository<TProxy, T, ID> {
      * @return 如果存在具有给定 ID 的实体则返回 {@literal true}，否则返回 {@literal false}
      * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
      */
-    boolean existsById(ID id);
+    boolean existsById(UUID id);
 
     /**
      * 返回所有该类型的实例。
@@ -106,7 +106,7 @@ public interface Repository<TProxy, T, ID> {
      * @return 找到的实体的可迭代对象，大小可以等于或小于给定 {@literal ids} 的数量
      * @throws IllegalArgumentException 如果给定的 {@link Collection ids} 或其中一个项为 {@literal null}
      */
-    Iterable<T> findAllByIds(Collection<ID> ids);
+    Iterable<T> findAllByIds(Collection<UUID> ids);
 
     /**
      * 根据条件查询所有实体。
@@ -197,7 +197,7 @@ public interface Repository<TProxy, T, ID> {
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
-    void deleteById(ID id);
+    void deleteById(UUID id);
 
     /**
      * 删除给定的所有实体。
@@ -226,5 +226,5 @@ public interface Repository<TProxy, T, ID> {
      * @throws IllegalArgumentException 如果给定的 {@literal ids} 或其中一个元素为 {@literal null}
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
-    void deleteAllById(Iterable<? extends ID> ids);
+    void deleteAllById(Iterable<? extends UUID> ids);
 }

@@ -15,8 +15,7 @@ public class TenantClosureRepositoryImpl
         extends EasyQueryRepository<
                 TenantClosureProxy,
                 TenantClosure,
-                TenantClosureProxy.TenantClosureProxyFetcher,
-                UUID>
+                TenantClosureProxy.TenantClosureProxyFetcher>
         implements TenantClosureRepository {
 
     @Autowired

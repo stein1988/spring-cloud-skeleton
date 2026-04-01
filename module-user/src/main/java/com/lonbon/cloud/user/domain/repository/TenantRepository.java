@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TenantRepository extends Repository<TenantProxy, Tenant, UUID> {
+public interface TenantRepository extends Repository<TenantProxy, Tenant> {
 
 }

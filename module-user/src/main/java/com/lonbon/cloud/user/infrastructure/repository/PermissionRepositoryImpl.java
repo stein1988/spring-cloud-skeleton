@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public class PermissionRepositoryImpl extends EasyQueryRepository<PermissionProxy, Permission, PermissionProxy.PermissionProxyFetcher, UUID> implements PermissionRepository {
+public class PermissionRepositoryImpl extends EasyQueryRepository<PermissionProxy, Permission, PermissionProxy.PermissionProxyFetcher> implements PermissionRepository {
     @Autowired
     public PermissionRepositoryImpl(EasyEntityQuery easyEntityQuery) {
         super(easyEntityQuery, Permission.class, proxy -> proxy.FETCHER);

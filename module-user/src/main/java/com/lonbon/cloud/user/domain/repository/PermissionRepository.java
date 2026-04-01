@@ -6,6 +6,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.PermissionProxy;
 
 import java.util.UUID;
 
-public interface PermissionRepository extends Repository<PermissionProxy, Permission, UUID> {
+public interface PermissionRepository extends Repository<PermissionProxy, Permission> {
 
 }

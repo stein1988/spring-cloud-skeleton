@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public class TeamRepositoryImpl extends EasyQueryRepository<TeamProxy, Team, TeamProxy.TeamProxyFetcher, UUID> implements TeamRepository {
+public class TeamRepositoryImpl extends EasyQueryRepository<TeamProxy, Team, TeamProxy.TeamProxyFetcher> implements TeamRepository {
     @Autowired
     public TeamRepositoryImpl(EasyEntityQuery easyEntityQuery) {
         super(easyEntityQuery, Team.class, proxy -> proxy.FETCHER);

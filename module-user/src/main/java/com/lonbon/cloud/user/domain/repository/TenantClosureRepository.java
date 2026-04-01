@@ -6,6 +6,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
 
 import java.util.UUID;
 
-public interface TenantClosureRepository extends Repository<TenantClosureProxy, TenantClosure, UUID> {
+public interface TenantClosureRepository extends Repository<TenantClosureProxy, TenantClosure> {
 
 }

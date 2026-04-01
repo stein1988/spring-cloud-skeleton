@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public abstract class EasyQueryRepository<
         TProxy extends AbstractProxyEntity<TProxy, T>,
         T extends ProxyEntityAvailable<T, TProxy>,
-        TChain extends AbstractFetcher<TProxy, T, TChain>,
-        ID> implements Repository<TProxy, T, ID> {
+        TChain extends AbstractFetcher<TProxy, T, TChain>> implements Repository<TProxy, T> {
 
     protected EasyEntityQuery easyEntityQuery;
 
@@ -54,17 +54,17 @@ public abstract class EasyQueryRepository<
     }
 
     @Override
-    public boolean existsById(ID id) {
+    public boolean existsById(UUID id) {
         return findById(id).isPresent();
     }
 
     @Override
-    public Optional<T> findById(ID id) {
+    public Optional<T> findById(UUID id) {
         return easyEntityQuery.queryable(entityType).whereById(id).singleOptional();
     }
 
     @Override
-    public Iterable<T> findAllByIds(Collection<ID> ids) {
+    public Iterable<T> findAllByIds(Collection<UUID> ids) {
         return easyEntityQuery.queryable(entityType).whereByIds(ids).toList();
     }
 
@@ -113,7 +113,7 @@ public abstract class EasyQueryRepository<
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(UUID id) {
         Optional<T> entity = findById(id);
         if (entity.isPresent()) {
             delete(entity.get());
@@ -135,8 +135,8 @@ public abstract class EasyQueryRepository<
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends ID> ids) {
-        for (ID id : ids) {
+    public void deleteAllById(Iterable<? extends UUID> ids) {
+        for (UUID id : ids) {
             Optional<T> entity = findById(id);
             entity.ifPresent(this::delete);
         }

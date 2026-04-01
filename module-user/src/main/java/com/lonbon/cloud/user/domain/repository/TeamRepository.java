@@ -6,6 +6,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.TeamProxy;
 
 import java.util.UUID;
 
-public interface TeamRepository extends Repository<TeamProxy, Team, UUID> {
+public interface TeamRepository extends Repository<TeamProxy, Team> {
 
 }

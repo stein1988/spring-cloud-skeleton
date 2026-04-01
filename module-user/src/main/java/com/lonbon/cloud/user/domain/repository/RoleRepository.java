@@ -6,6 +6,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.RoleProxy;
 
 import java.util.UUID;
 
-public interface RoleRepository extends Repository<RoleProxy, Role, UUID> {
+public interface RoleRepository extends Repository<RoleProxy, Role> {
 
 }

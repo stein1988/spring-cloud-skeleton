@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public class TenantRepositoryImpl extends EasyQueryRepository<TenantProxy, Tenant, TenantProxy.TenantProxyFetcher, UUID> implements TenantRepository {
+public class TenantRepositoryImpl extends EasyQueryRepository<TenantProxy, Tenant, TenantProxy.TenantProxyFetcher> implements TenantRepository {
     @Autowired
     public TenantRepositoryImpl(EasyEntityQuery easyEntityQuery) {
         super(easyEntityQuery, Tenant.class, proxy -> proxy.FETCHER);
