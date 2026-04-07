@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_user_team")
+@Table("sys_user_team")
 @EntityProxy
 public class UserTeam extends BaseEntity implements ProxyEntityAvailable<UserTeam, UserTeamProxy> {
     private UUID tenantId;

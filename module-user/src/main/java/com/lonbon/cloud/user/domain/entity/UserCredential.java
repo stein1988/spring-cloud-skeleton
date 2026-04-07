@@ -8,12 +8,12 @@ import com.lonbon.cloud.user.domain.entity.proxy.UserCredentialProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_user_credential")
+@Table("sys_user_credential")
 @EntityProxy
 public class UserCredential extends BaseEntity implements ProxyEntityAvailable<UserCredential, UserCredentialProxy> {
     private UUID userId;

@@ -1,6 +1,7 @@
 package com.lonbon.cloud.base.repository;
 
 import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.api.proxy.entity.select.EntityQueryable;
 import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
@@ -16,10 +17,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public abstract class EasyQueryRepository<
-        TProxy extends AbstractProxyEntity<TProxy, T>,
-        T extends ProxyEntityAvailable<T, TProxy>,
-        TChain extends AbstractFetcher<TProxy, T, TChain>> implements Repository<TProxy, T> {
+public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TProxy, T>,
+        T extends ProxyEntityAvailable<T, TProxy>, TChain extends AbstractFetcher<TProxy, T, TChain>>
+        implements Repository<TProxy, T> {
 
     protected final EasyEntityQuery easyEntityQuery;
 
@@ -27,7 +27,8 @@ public abstract class EasyQueryRepository<
 
     protected final FetcherProvider<TProxy, T, TChain> fetcherProvider;
 
-    public EasyQueryRepository(EasyEntityQuery easyEntityQuery, Class<T> entityType, FetcherProvider<TProxy, T, TChain> fetcherProvider) {
+    public EasyQueryRepository(
+            EasyEntityQuery easyEntityQuery, Class<T> entityType, FetcherProvider<TProxy, T, TChain> fetcherProvider) {
         this.easyEntityQuery = easyEntityQuery;
         this.entityType = entityType;
         this.fetcherProvider = fetcherProvider;
@@ -59,6 +60,10 @@ public abstract class EasyQueryRepository<
         return entities;
     }
 
+    private EntityQueryable<TProxy, T> queryable() {
+        return easyEntityQuery.queryable(entityType);
+    }
+
     @Override
     public boolean existsById(UUID id) {
         return findById(id).isPresent();
@@ -71,21 +76,21 @@ public abstract class EasyQueryRepository<
 
     @Override
     public Optional<T> findById(UUID id, boolean tracking) {
+        EntityQueryable<TProxy, T> queryable = queryable();
         if (tracking) {
-            return easyEntityQuery.queryable(entityType).asTracking().whereById(id).singleOptional();
-        } else {
-            return easyEntityQuery.queryable(entityType).whereById(id).singleOptional();
+            queryable = queryable.asTracking();
         }
+        return queryable.whereById(id).singleOptional();
     }
 
     @Override
     public List<T> findAllByIds(Collection<UUID> ids) {
-        return easyEntityQuery.queryable(entityType).whereByIds(ids).toList();
+        return queryable().whereByIds(ids).toList();
     }
 
     @Override
     public List<T> findAll() {
-        return easyEntityQuery.queryable(entityType).toList();
+        return queryable().toList();
     }
 
     @Override
@@ -95,31 +100,31 @@ public abstract class EasyQueryRepository<
 
     @Override
     public List<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
-        return easyEntityQuery.queryable(entityType).where(condition, whereExpression).toList();
+        return queryable().where(condition, whereExpression).toList();
     }
 
     @Override
     public PageResult<T> findPagination(Object whereObject, @NotNull Pageable pageable) {
-        EasyPageResult<T> result = easyEntityQuery.queryable(entityType)
-                .whereObject(whereObject)
-                .orderByObject(pageable.hasSort(), new EasyQuerySort(pageable.getSortables()))
-                .toPageResult(pageable.getPage(), pageable.getSize());
-        return new PageResult<T>(pageable, result.getTotal(), result.getData());
+        EasyPageResult<T> result = queryable().whereObject(whereObject).orderByObject(pageable.hasSort(),
+                                                                                      new EasyQuerySort(
+                                                                                              pageable.getSortables()))
+                                              .toPageResult(pageable.getPage(), pageable.getSize());
+        return new PageResult<>(pageable, result.getTotal(), result.getData());
     }
 
     @Override
     public Optional<T> singleOptional(SQLActionExpression1<TProxy> whereExpression) {
-        return easyEntityQuery.queryable(entityType).where(whereExpression).singleOptional();
+        return queryable().where(whereExpression).singleOptional();
     }
 
     @Override
     public T singleNotNull(SQLActionExpression1<TProxy> whereExpression) {
-        return easyEntityQuery.queryable(entityType).where(whereExpression).singleNotNull();
+        return queryable().where(whereExpression).singleNotNull();
     }
 
     @Override
     public long count() {
-        return easyEntityQuery.queryable(entityType).count();
+        return queryable().count();
     }
 
     @Override

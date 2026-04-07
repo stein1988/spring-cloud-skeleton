@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_team_closure")
+@Table("sys_team_closure")
 @EntityProxy
 public class TeamClosure extends BaseEntity implements ProxyEntityAvailable<TeamClosure, TeamClosureProxy> {
     private UUID tenantId;

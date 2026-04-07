@@ -8,6 +8,7 @@ import com.lonbon.cloud.base.exception.BusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
 import com.lonbon.cloud.base.repository.Repository;
 import io.github.linpeilie.Converter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public abstract class SimpleEntityService<
     }
 
     @Override
-    public T updateEntity(UUID id, Function<T, T> updateFunc) {
+    public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
         return repository.track(() -> {
             T existing = repository.findById(id, true)
                     .orElseThrow(() -> new BusinessException(

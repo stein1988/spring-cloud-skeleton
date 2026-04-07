@@ -21,7 +21,7 @@ import java.security.KeyPair;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @Tag(name = "鉴权", description = "鉴权操作")
 public class AuthController {
 

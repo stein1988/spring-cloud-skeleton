@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_permission")
+@Table("sys_permission")
 @EntityProxy
 public class Permission extends BaseEntity implements ProxyEntityAvailable<Permission, PermissionProxy> {
     private UUID tenantId;

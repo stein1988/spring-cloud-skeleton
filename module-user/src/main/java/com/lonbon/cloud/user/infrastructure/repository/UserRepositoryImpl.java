@@ -5,14 +5,12 @@ import com.lonbon.cloud.base.repository.EasyQueryRepository;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 import com.lonbon.cloud.user.domain.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public class UserRepositoryImpl extends EasyQueryRepository<UserProxy, User, UserProxy.UserProxyFetcher> implements UserRepository {
-    @Autowired
+public class UserRepositoryImpl extends EasyQueryRepository<UserProxy, User, UserProxy.UserProxyFetcher>
+        implements UserRepository {
+    
     public UserRepositoryImpl(EasyEntityQuery easyEntityQuery) {
         super(easyEntityQuery, User.class, proxy -> proxy.FETCHER);
     }

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_user_role")
+@Table("sys_user_role")
 @EntityProxy
 public class UserRole extends BaseEntity implements ProxyEntityAvailable<UserRole, UserRoleProxy> {
     private UUID tenantId;

@@ -8,12 +8,12 @@ import com.lonbon.cloud.user.domain.entity.proxy.TeamProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_team")
+@Table("sys_team")
 @EntityProxy
 public class Team extends BaseEntity implements ProxyEntityAvailable<Team, TeamProxy> {
     private UUID tenantId;

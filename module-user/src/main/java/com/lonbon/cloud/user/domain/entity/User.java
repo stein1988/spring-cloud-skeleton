@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("lb_user")
+@Table("sys_user")
 @EntityProxy
 public class User extends BaseEntity implements ProxyEntityAvailable<User, UserProxy> {
     private String username;

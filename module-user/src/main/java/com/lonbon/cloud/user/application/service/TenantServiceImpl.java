@@ -1,8 +1,9 @@
 package com.lonbon.cloud.user.application.service;
 
-import com.easy.query.core.api.pagination.EasyPageResult;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
+import com.lonbon.cloud.base.exception.BusinessException;
+import com.lonbon.cloud.base.exception.ErrorCode;
 import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
 import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
@@ -10,8 +11,6 @@ import com.lonbon.cloud.user.domain.entity.TenantClosure;
 import com.lonbon.cloud.user.domain.repository.TenantClosureRepository;
 import com.lonbon.cloud.user.domain.repository.TenantRepository;
 import com.lonbon.cloud.user.domain.service.TenantService;
-import com.lonbon.cloud.base.exception.BusinessException;
-import com.lonbon.cloud.base.exception.ErrorCode;
 import io.github.linpeilie.Converter;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -77,10 +76,8 @@ public class TenantServiceImpl implements TenantService {
         UUID ancestorId = tenant.getAncestorId();
         if (ancestorId != null) {
             // 校验祖先租户是否存在
-            Tenant ancestorTenant = tenantRepository.findById(ancestorId)
-                    .orElseThrow(() -> new BusinessException(
-                            ErrorCode.RESOURCE_NOT_FOUND,
-                            "上级租户不存在，ID: " + ancestorId));
+            Tenant ancestorTenant = tenantRepository.findById(ancestorId).orElseThrow(
+                    () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "上级租户不存在，ID: " + ancestorId));
 
             // 创建与祖先的直接父子关系（distance=1，表示直接子节点）
             tenantClosureRepository.insert(new TenantClosure(ancestorId, createdTenant.getId(), 1));
@@ -104,10 +101,8 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant updateTenant(UUID id, TenantUpdateDTO tenant) {
         // TODO：封装函数
-        Tenant existingTenant = tenantRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(
-                        ErrorCode.RESOURCE_NOT_FOUND,
-                        "租户不存在，ID: " + id));
+        Tenant existingTenant = tenantRepository.findById(id).orElseThrow(
+                () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "租户不存在，ID: " + id));
 
         Tenant update = converter.convert(tenant, existingTenant);
         return tenantRepository.save(update);
@@ -144,7 +139,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Tenant> getTenantByName(String name) {
-        return tenantRepository.singleOptional(o->o.name().eq(name));
+        return tenantRepository.singleOptional(o -> o.name().eq(name));
     }
 
     /**
@@ -155,14 +150,14 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public List<Tenant> getAllTenants() {
-        return (List<Tenant>) tenantRepository.findAll();
+        return tenantRepository.findAll();
     }
 
     /**
      * 分页查询租户
      *
      * @param whereObject 查询条件对象
-     * @param pageable     分页参数
+     * @param pageable    分页参数
      * @return 分页结果
      */
     @Override
