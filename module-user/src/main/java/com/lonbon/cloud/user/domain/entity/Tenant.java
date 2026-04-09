@@ -1,9 +1,6 @@
 package com.lonbon.cloud.user.domain.entity;
 
-import com.easy.query.core.annotation.EntityProxy;
-import com.easy.query.core.annotation.Navigate;
-import com.easy.query.core.annotation.OrderByProperty;
-import com.easy.query.core.annotation.Table;
+import com.easy.query.core.annotation.*;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
@@ -51,6 +48,7 @@ public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant, T
      * 是否激活
      * 对应lb_location_care.lb_organization.is_use
      */
+    @Column(dbDefault = "true")
     private boolean isActive;
 
     /**

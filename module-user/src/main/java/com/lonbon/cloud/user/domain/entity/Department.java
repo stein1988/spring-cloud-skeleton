@@ -1,5 +1,6 @@
 package com.lonbon.cloud.user.domain.entity;
 
+import com.easy.query.core.annotation.Column;
 import com.easy.query.core.annotation.EntityProxy;
 import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
@@ -46,6 +47,7 @@ public class Department extends BaseEntity implements ProxyEntityAvailable<Depar
     /**
      * 是否激活
      */
+    @Column(dbDefault = "true")
     private boolean isActive;
 
     /**

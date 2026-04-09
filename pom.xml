@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -8,7 +8,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.0.0</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <groupId>com.lonbon</groupId>
@@ -160,11 +160,11 @@
             </dependency>
 
             <!-- Sa-Token Temp Token 模块使用 jwt -->
-<!--            <dependency>-->
-<!--                <groupId>cn.dev33</groupId>-->
-<!--                <artifactId>sa-token-temp-jwt</artifactId>-->
-<!--                <version>${sa-token.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>cn.dev33</groupId>-->
+            <!--                <artifactId>sa-token-temp-jwt</artifactId>-->
+            <!--                <version>${sa-token.version}</version>-->
+            <!--            </dependency>-->
 
             <!-- 国密核心依赖，GMSSL-Java 需要编译，暂时先使用 hutool -->
             <dependency>
@@ -218,9 +218,9 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-<!--                        <arg>-Amapstruct.plus.unmappedSourcePolicy=IGNORE</arg>-->
-<!--                        <arg>-Amapstruct.plus.unmappedTargetPolicy=IGNORE</arg>-->
-<!--                        <arg>-Amapstruct.verbose=true</arg>-->
+                        <!--                        <arg>-Amapstruct.plus.unmappedSourcePolicy=IGNORE</arg>-->
+                        <!--                        <arg>-Amapstruct.plus.unmappedTargetPolicy=IGNORE</arg>-->
+                        <!--                        <arg>-Amapstruct.verbose=true</arg>-->
                         <arg>
                             -Amapstruct.plus.nullValuePropertyMappingStrategy=IGNORE
                         </arg>
