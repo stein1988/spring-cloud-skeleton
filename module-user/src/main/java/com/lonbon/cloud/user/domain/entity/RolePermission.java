@@ -10,13 +10,27 @@ import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
+/**
+ * 角色权限关联表
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_role_permission")
+@Table(value = "sys_role_permission", ignoreProperties = {"updateTime", "updateBy", "version"})
 @EntityProxy
 public class RolePermission extends BaseEntity implements ProxyEntityAvailable<RolePermission, RolePermissionProxy> {
-    private UUID tenantId;
+
+    /**
+     * 团队ID
+     */
     private UUID teamId;
+    
+    /**
+     * 角色ID
+     */
     private UUID roleId;
+    
+    /**
+     * 权限ID
+     */
     private UUID permissionId;
 }

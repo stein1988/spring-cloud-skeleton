@@ -10,14 +10,37 @@ import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
+/**
+ * 角色
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_role")
 @EntityProxy
 public class Role extends BaseEntity implements ProxyEntityAvailable<Role, RoleProxy> {
+
+    /**
+     * 租户ID
+     */
     private UUID tenantId;
+    
+    /**
+     * 团队ID
+     */
     private UUID teamId;
+    
+    /**
+     * 类型
+     */
     private String type;
+    
+    /**
+     * 名称
+     */
     private String name;
+    
+    /**
+     * 描述
+     */
     private String description;
 }

@@ -5,7 +5,6 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +12,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * 租户闭包表，表达租户之间的层级关系
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
+/**
+ * 用户角色关联表，一个用户可以关联多个角色
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_user_role")
