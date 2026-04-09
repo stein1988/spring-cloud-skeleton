@@ -15,10 +15,10 @@ import java.util.UUID;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_user_tenant")
+@Table(value = "sys_user_tenant", ignoreProperties = {"departmentId"})
 @EntityProxy
 public class UserTenant extends BaseEntity implements ProxyEntityAvailable<UserTenant, UserTenantProxy> {
-    
+
     /**
      * 用户ID
      */

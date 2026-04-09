@@ -6,7 +6,6 @@ import com.easy.query.core.annotation.UpdateIgnore;
 import com.easy.query.core.annotation.Version;
 import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
 import com.easy.query.core.basic.extension.version.VersionIntStrategy;
-
 import lombok.Data;
 
 import java.io.Serial;
@@ -41,6 +40,11 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     protected UUID tenantId;
 
     /**
+     * 部门ID，可使用EntityProxy(ignoreProperties = "departmentId")来排除此字段
+     */
+    protected UUID departmentId;
+
+    /**
      * 预设数据标志：是否是系统预设数据，默认值为false
      */
     protected boolean isPreset;
@@ -70,18 +74,18 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @UpdateIgnore
     protected OffsetDateTime createTime;
-    
+
     /**
      * 创建人ID
      */
     @UpdateIgnore
     protected UUID createBy;
-    
+
     /**
      * 更新时间，UTC时间戳
      */
     protected OffsetDateTime updateTime;
-    
+
     /**
      * 更新人ID
      */

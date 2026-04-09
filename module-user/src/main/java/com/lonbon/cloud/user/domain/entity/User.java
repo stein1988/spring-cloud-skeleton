@@ -16,10 +16,13 @@ import java.util.UUID;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user", ignoreProperties = {"tenantId"})
+@Table(value = "sys_user", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
 public class User extends BaseEntity implements ProxyEntityAvailable<User, UserProxy> {
 
+    /**
+     *
+     */
     /**
      * 用户名
      * 对应lb_location_care.lb_account.username

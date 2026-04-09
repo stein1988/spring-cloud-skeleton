@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_tenant_closure", ignoreProperties = {"tenantId", "updateTime", "updateBy", "version"})
+@Table(value = "sys_tenant_closure", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
 public class TenantClosure extends BaseEntity implements ProxyEntityAvailable<TenantClosure, TenantClosureProxy> {
 

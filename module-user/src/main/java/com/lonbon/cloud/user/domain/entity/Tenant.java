@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_tenant", ignoreProperties = {"tenantId"})
+@Table(value = "sys_tenant", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
 public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant, TenantProxy> {
 
