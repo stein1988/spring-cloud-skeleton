@@ -7,6 +7,7 @@ import com.easy.query.core.annotation.Version;
 import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
 import com.easy.query.core.basic.extension.version.VersionIntStrategy;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import java.util.UUID;
  */
 
 @Data
+@FieldNameConstants
 public abstract class BaseEntity implements Serializable, Cloneable {
 
     @Serial

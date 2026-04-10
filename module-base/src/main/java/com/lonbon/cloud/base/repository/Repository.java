@@ -1,8 +1,12 @@
 package com.lonbon.cloud.base.repository;
 
+import com.easy.query.api.proxy.entity.select.EntityQueryable;
 import com.easy.query.core.exception.EasyQuerySingleMoreElementException;
 import com.easy.query.core.exception.EasyQuerySingleNotNullException;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
+import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.proxy.ProxyEntity;
+import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -25,7 +29,7 @@ import java.util.function.Supplier;
  * @author lonbon
  * @since 1.0.0
  */
-public interface Repository<TProxy, T> {
+public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
 
     /**
      * 直接插入给定的实体。
@@ -51,7 +55,7 @@ public interface Repository<TProxy, T> {
      * @param entity 要更新的实体，不能为 {@literal null}
      * @param <S>    实体类型的子类型
      * @return 更新后的实体
-     * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@literal entity} 为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
@@ -68,7 +72,7 @@ public interface Repository<TProxy, T> {
      * @param entity 要保存的实体，不能为 {@literal null}
      * @param <S>    实体类型的子类型
      * @return 保存后的实体
-     * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@literal entity} 为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
@@ -83,10 +87,12 @@ public interface Repository<TProxy, T> {
      * @param entities 要保存的实体集合，不能为 {@literal null}，也不能包含 {@literal null}
      * @param <S>      实体类型的子类型
      * @return 保存后的实体集合，大小与传入参数相同
-     * @throws IllegalArgumentException 如果给定的 {@link Iterable entities} 或其中一个实体为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@link Iterable entities} 或其中一个实体为 {@literal null}
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+
+    EntityQueryable<TProxy, T> queryable();
 
     /**
      * 通过 ID 检索实体。
@@ -98,6 +104,10 @@ public interface Repository<TProxy, T> {
     Optional<T> findById(UUID id);
 
     Optional<T> findById(UUID id, boolean tracking);
+
+    Optional<T> findById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
+
+    Optional<T> findById(UUID id, List<String> navigate, boolean tracking);
 
     /**
      * 返回是否存在具有给定 ID 的实体。
@@ -170,7 +180,7 @@ public interface Repository<TProxy, T> {
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
      * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
-     * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
+     * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
      */
     Optional<T> singleOptional(SQLActionExpression1<TProxy> whereExpression);
@@ -200,7 +210,7 @@ public interface Repository<TProxy, T> {
      * 删除给定的实体。
      *
      * @param entity 要删除的实体，不能为 {@literal null}
-     * @throws IllegalArgumentException 如果给定的实体为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的实体为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
@@ -213,7 +223,7 @@ public interface Repository<TProxy, T> {
      * </p>
      *
      * @param id 实体的唯一标识符，不能为 {@literal null}
-     * @throws IllegalArgumentException 如果给定的 {@literal id} 为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@literal id} 为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
@@ -223,7 +233,7 @@ public interface Repository<TProxy, T> {
      * 删除给定的所有实体。
      *
      * @param entities 要删除的实体集合，不能为 {@literal null}，也不能包含 {@literal null} 元素
-     * @throws IllegalArgumentException 如果给定的 {@literal entities} 或其中一个实体为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@literal entities} 或其中一个实体为 {@literal null}
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
     void deleteAll(Iterable<? extends T> entities);
@@ -243,7 +253,7 @@ public interface Repository<TProxy, T> {
      * </p>
      *
      * @param ids 实体ID集合，不能为 {@literal null}，也不能包含 {@literal null} 元素
-     * @throws IllegalArgumentException 如果给定的 {@literal ids} 或其中一个元素为 {@literal null}
+     * @throws IllegalArgumentException          如果给定的 {@literal ids} 或其中一个元素为 {@literal null}
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
     void deleteAllById(Iterable<? extends UUID> ids);

@@ -8,6 +8,7 @@ import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
 import com.lonbon.cloud.user.domain.filter.TenantClosureFilter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * 租户
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_tenant", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy

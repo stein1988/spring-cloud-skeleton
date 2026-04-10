@@ -1,7 +1,9 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.expression.lambda.SQLActionExpression2;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.base.exception.BusinessException;
@@ -17,11 +19,9 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Transactional(rollbackFor = Exception.class)
-public abstract class SimpleEntityService<
-        TProxy extends AbstractProxyEntity<TProxy, T>,
-        T extends ProxyEntityAvailable<T, TProxy>,
-        TRepository extends Repository<TProxy, T>
-        > implements Service<T> {
+public abstract class SimpleEntityService<TProxy extends AbstractProxyEntity<TProxy, T>,
+        T extends ProxyEntityAvailable<T, TProxy>, TRepository extends Repository<TProxy, T>>
+        implements Service<TProxy, T> {
 
     protected final Converter converter;
 
@@ -50,10 +50,8 @@ public abstract class SimpleEntityService<
     @Override
     public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
         return repository.track(() -> {
-            T existing = repository.findById(id, true)
-                    .orElseThrow(() -> new BusinessException(
-                            ErrorCode.RESOURCE_NOT_FOUND,
-                            "Entity not found, ID: " + id));
+            T existing = repository.findById(id, true).orElseThrow(
+                    () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));
 
             T updated = updateFunc.apply(existing);
             return repository.update(updated);
@@ -65,11 +63,23 @@ public abstract class SimpleEntityService<
     public void deleteEntity(UUID id) {
         repository.deleteById(id);
     }
-    
+
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getEntityById(UUID id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getEntityById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
+        return repository.findById(id, navigate, tracking);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getEntityById(UUID id, List<String> navigate, boolean tracking) {
+        return repository.findById(id, navigate, tracking);
     }
 
     @Override

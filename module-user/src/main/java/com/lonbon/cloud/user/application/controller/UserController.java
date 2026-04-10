@@ -6,12 +6,13 @@ import com.lonbon.cloud.user.domain.dto.UserUpdateDTO;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +50,10 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "获取", description = "获取用户")
-    public Response<User> getUserById(@PathVariable("id") UUID id) {
-        Optional<User> user = userService.getEntityById(id);
+    public Response<User> getUserById(
+            @PathVariable("id") UUID id,
+            @Parameter(description = "需要包含的关联数据列表，如 profile, settings") @RequestParam(required = false) List<String> includes) {
+        Optional<User> user = userService.getEntityById(id, includes, false);
         return user.map(Response::success).orElseGet(() -> Response.error("User not found"));
     }
 

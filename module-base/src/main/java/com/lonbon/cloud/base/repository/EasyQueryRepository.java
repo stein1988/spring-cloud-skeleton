@@ -4,17 +4,16 @@ import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.api.proxy.entity.select.EntityQueryable;
 import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
+import com.easy.query.core.expression.lambda.SQLActionExpression2;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.easy.query.core.proxy.fetcher.AbstractFetcher;
+import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TProxy, T>,
@@ -32,6 +31,10 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
         this.easyEntityQuery = easyEntityQuery;
         this.entityType = entityType;
         this.fetcherProvider = fetcherProvider;
+    }
+
+    protected Map<String, SQLActionExpression2<IncludeContext, TProxy>> getNavigateMap() {
+        return null;
     }
 
     @Override
@@ -60,7 +63,8 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
         return entities;
     }
 
-    private EntityQueryable<TProxy, T> queryable() {
+    @Override
+    public EntityQueryable<TProxy, T> queryable() {
         return easyEntityQuery.queryable(entityType);
     }
 
@@ -76,11 +80,35 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
 
     @Override
     public Optional<T> findById(UUID id, boolean tracking) {
+        return findById(id, (SQLActionExpression2<IncludeContext, TProxy>) null, tracking);
+    }
+
+    @Override
+    public Optional<T> findById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
         EntityQueryable<TProxy, T> queryable = queryable();
+        if (navigate != null) {
+            queryable = queryable.include2(navigate);
+        }
         if (tracking) {
             queryable = queryable.asTracking();
         }
         return queryable.whereById(id).singleOptional();
+    }
+
+    public Optional<T> findById(UUID id, List<String> navigate, boolean tracking) {
+        Map<String, SQLActionExpression2<IncludeContext, TProxy>> navigateMap = getNavigateMap();
+        if (navigateMap == null) {
+            return findById(id, tracking);
+        }
+
+        return findById(id, (c, p) -> {
+            for (String key : navigate) {
+                SQLActionExpression2<IncludeContext, TProxy> exp = navigateMap.get(key);
+                if (exp != null) {
+                    exp.apply(c, p);
+                }
+            }
+        }, tracking);
     }
 
     @Override

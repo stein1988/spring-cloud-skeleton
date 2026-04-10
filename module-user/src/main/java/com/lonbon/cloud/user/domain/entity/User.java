@@ -2,20 +2,25 @@ package com.lonbon.cloud.user.domain.entity;
 
 import com.easy.query.core.annotation.Column;
 import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Navigate;
 import com.easy.query.core.annotation.Table;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * 用户
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_user", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
@@ -45,6 +50,15 @@ public class User extends BaseEntity implements ProxyEntityAvailable<User, UserP
      * 当前租户ID，一个用户可以关联多个租户，currentTenantId表示当前登录的租户ID
      */
     private UUID currentTenantId;
+
+    @Navigate(value = RelationTypeEnum.OneToOne, selfProperty = Fields.currentTenantId, targetProperty =
+            BaseEntity.Fields.id)
+    private Tenant currentTenant;
+
+    @Navigate(value = RelationTypeEnum.ManyToMany, mappingClass = UserRole.class, selfProperty = BaseEntity.Fields.id
+            , selfMappingProperty = UserRole.Fields.userId, targetMappingProperty = UserRole.Fields.roleId,
+            targetProperty = BaseEntity.Fields.id, subQueryToGroupJoin = true)
+    private List<Role> roles;
 
     /**
      * 当前团队ID，一个用户可以关联多个团队，currentTeamId表示当前登录的团队ID
