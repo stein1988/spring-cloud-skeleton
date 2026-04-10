@@ -96,6 +96,13 @@
             <groupId>io.github.linpeilie</groupId>
             <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
         </dependency>
+
+        <!-- ClassGraph 类扫描库 -->
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.176</version>
+        </dependency>
     </dependencies>
 
 </project>
