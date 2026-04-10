@@ -96,13 +96,21 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
     }
 
     public Optional<T> findById(UUID id, List<String> navigate, boolean tracking) {
+        // 处理空值情况
+        if (navigate == null || navigate.isEmpty()) {
+            return findById(id, tracking);
+        }
+        
         Map<String, SQLActionExpression2<IncludeContext, TProxy>> navigateMap = getNavigateMap();
         if (navigateMap == null) {
             return findById(id, tracking);
         }
 
+        // 使用 Set 去重，避免重复处理
+        Set<String> uniqueNavigate = new HashSet<>(navigate);
+        
         return findById(id, (c, p) -> {
-            for (String key : navigate) {
+            for (String key : uniqueNavigate) {
                 SQLActionExpression2<IncludeContext, TProxy> exp = navigateMap.get(key);
                 if (exp != null) {
                     exp.apply(c, p);
