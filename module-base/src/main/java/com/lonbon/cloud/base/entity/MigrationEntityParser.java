@@ -1,6 +1,5 @@
 package com.lonbon.cloud.base.entity;
 
-import com.easy.query.core.annotation.Column;
 import com.easy.query.core.metadata.ColumnMetadata;
 import com.easy.query.core.migration.ColumnDbTypeResult;
 import com.easy.query.core.migration.EntityMigrationMetadata;
@@ -20,6 +19,7 @@ public class MigrationEntityParser extends PgSQLMigrationEntityParser {
     static {
         columnTypeMap.put(boolean.class, new ColumnDbTypeResult("BOOL", "FALSE")); // boolean默认为 NOT NULL DEFAULT FALSE
         columnTypeMap.put(int.class, new ColumnDbTypeResult("INT4", "0"));
+        columnTypeMap.put(long.class, new ColumnDbTypeResult("INT8", "0"));
         columnTypeMap.put(String.class, new ColumnDbTypeResult("TEXT", "''"));   // String默认为NOT NULL DEFAULT "";
         columnTypeMap.put(UUID.class, new ColumnDbTypeResult("UUID", null));
         columnTypeMap.put(OffsetDateTime.class, new ColumnDbTypeResult("TIMESTAMPTZ", null));
@@ -37,18 +37,22 @@ public class MigrationEntityParser extends PgSQLMigrationEntityParser {
             EntityMigrationMetadata entityMigrationMetadata,
             ColumnMetadata columnMetadata) {
 
+        /* 为实现规范化约束，只支持map中定义的类型，其他类型抛出异常，如需要增加其他类型，需要在map中添加对应的类型和默认值，或者修改此处代码。 */
         Class<?> propertyType = columnMetadata.getPropertyType();
-        ColumnDbTypeResult result = columnTypeMap.get(propertyType);
-        if (result == null) {
-            throw new IllegalArgumentException("Unsupported type: " + propertyType.getName() + ". Only boolean, int, String, UUID, OffsetDateTime, LocalDate are allowed.");
+        if (!columnTypeMap.containsKey(propertyType)) {
+            String className = entityMigrationMetadata.getEntityMetadata().getEntityClass().getName();
+            String fieldName = columnMetadata.getName();
+            throw new IllegalArgumentException(
+                    "Unsupported type: " + propertyType.getName() + " in class " + className + ", field: " + fieldName + ". Only boolean, int, long, String, UUID, OffsetDateTime, LocalDate are allowed.");
         }
-        return result;
+        return super.getColumnDbType(entityMigrationMetadata, columnMetadata);
     }
 
     @Override
     public boolean isNullable(EntityMigrationMetadata entityMigrationMetadata, ColumnMetadata columnMetadata) {
 
         Class<?> propertyType = columnMetadata.getPropertyType();
+        /* 为实现规范化约束，String类型默认为NOT NULL DEFAULT ''，其他基本类型在super中已经判定为NOT NULL */
         if (String.class.equals(propertyType)) {
             return false;
         }
