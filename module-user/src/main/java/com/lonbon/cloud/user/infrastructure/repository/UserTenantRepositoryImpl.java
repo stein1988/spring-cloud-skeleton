@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserTenantRepositoryImpl
-        extends EasyQueryRepository<UserTenantProxy, UserTenant, UserTenantProxy.UserTenantProxyFetcher>
+        extends EasyQueryRepository<UserTenant, UserTenantProxy, UserTenantProxy.UserTenantProxyFetcher>
         implements UserTenantRepository {
     public UserTenantRepositoryImpl(EasyEntityQuery easyEntityQuery) {
         super(easyEntityQuery, UserTenant.class, proxy -> proxy.FETCHER);

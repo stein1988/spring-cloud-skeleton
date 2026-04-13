@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PermissionRepositoryImpl
-        extends EasyQueryRepository<PermissionProxy, Permission, PermissionProxy.PermissionProxyFetcher>
+        extends EasyQueryRepository<Permission, PermissionProxy, PermissionProxy.PermissionProxyFetcher>
         implements PermissionRepository {
     
     public PermissionRepositoryImpl(EasyEntityQuery easyEntityQuery) {

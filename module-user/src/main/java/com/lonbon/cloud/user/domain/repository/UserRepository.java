@@ -4,8 +4,6 @@ import com.lonbon.cloud.base.repository.Repository;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 
-import java.util.UUID;
-
-public interface UserRepository extends Repository<UserProxy, User> {
+public interface UserRepository extends Repository<User, UserProxy> {       
 
 }

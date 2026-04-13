@@ -8,7 +8,7 @@ import com.lonbon.cloud.user.domain.repository.RoleRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RoleRepositoryImpl extends EasyQueryRepository<RoleProxy, Role, RoleProxy.RoleProxyFetcher>
+public class RoleRepositoryImpl extends EasyQueryRepository<Role, RoleProxy, RoleProxy.RoleProxyFetcher>
         implements RoleRepository {
     
     public RoleRepositoryImpl(EasyEntityQuery easyEntityQuery) {

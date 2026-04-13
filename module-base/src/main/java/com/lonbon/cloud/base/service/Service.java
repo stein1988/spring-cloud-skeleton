@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-public interface Service<TProxy extends ProxyEntity<TProxy, T>, T> {
+public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
     T createEntity(Object createDto);
 
     T updateEntity(UUID id, Object updateDto);
@@ -32,7 +32,6 @@ public interface Service<TProxy extends ProxyEntity<TProxy, T>, T> {
     Optional<T> getEntity(
             SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate);
 
-    //    Optional<T> getEntityByName(String name);
     List<T> getAllEntities();
 
     PageResult<T> getPaginationEntities(Object whereObject, Pageable pageable);

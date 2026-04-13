@@ -4,6 +4,6 @@ import com.lonbon.cloud.base.service.Service;
 import com.lonbon.cloud.user.domain.entity.Role;
 import com.lonbon.cloud.user.domain.entity.proxy.RoleProxy;
 
-public interface RoleService extends Service<RoleProxy, Role> {
+public interface RoleService extends Service<Role, RoleProxy> {
 
 }

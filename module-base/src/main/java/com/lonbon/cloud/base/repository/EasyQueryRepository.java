@@ -16,9 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TProxy, T>,
-        T extends ProxyEntityAvailable<T, TProxy>, TChain extends AbstractFetcher<TProxy, T, TChain>>
-        implements Repository<TProxy, T> {
+public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TProxy>,
+        TProxy extends AbstractProxyEntity<TProxy, T>, TChain extends AbstractFetcher<TProxy, T, TChain>>
+        implements Repository<T, TProxy> {
+
 
     protected final EasyEntityQuery easyEntityQuery;
 

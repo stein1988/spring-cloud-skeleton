@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class UserRepositoryImpl extends EasyQueryRepository<UserProxy, User, UserProxy.UserProxyFetcher>
+public class UserRepositoryImpl extends EasyQueryRepository<User, UserProxy, UserProxy.UserProxyFetcher>
         implements UserRepository {
 
     private static final Map<String, SQLActionExpression2<IncludeContext, UserProxy>> navigateMap = new HashMap<>();

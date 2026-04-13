@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * @author lonbon
  * @since 1.0.0
  */
-public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
+public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
 
     /**
      * 直接插入给定的实体。

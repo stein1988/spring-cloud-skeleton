@@ -20,9 +20,9 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Transactional(rollbackFor = Exception.class)
-public abstract class SimpleEntityService<TProxy extends AbstractProxyEntity<TProxy, T>,
-        T extends ProxyEntityAvailable<T, TProxy>, TRepository extends Repository<TProxy, T>>
-        implements Service<TProxy, T> {
+public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TProxy>,
+        TProxy extends AbstractProxyEntity<TProxy, T>, TRepository extends Repository<T, TProxy>>
+        implements Service<T, TProxy> {
 
     protected final Converter converter;
 

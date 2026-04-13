@@ -8,7 +8,7 @@ import com.lonbon.cloud.user.domain.repository.TenantRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TenantRepositoryImpl extends EasyQueryRepository<TenantProxy, Tenant, TenantProxy.TenantProxyFetcher>
+public class TenantRepositoryImpl extends EasyQueryRepository<Tenant, TenantProxy, TenantProxy.TenantProxyFetcher>
         implements TenantRepository {
 
     public TenantRepositoryImpl(EasyEntityQuery easyEntityQuery) {
