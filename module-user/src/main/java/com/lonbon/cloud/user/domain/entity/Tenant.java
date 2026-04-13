@@ -4,6 +4,7 @@ import com.easy.query.core.annotation.*;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
 import com.lonbon.cloud.user.domain.filter.TenantClosureFilter;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 租户
@@ -20,7 +22,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_tenant", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
-public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant, TenantProxy> {
+public class Tenant extends BaseEntity
+        implements ProxyEntityAvailable<Tenant, TenantProxy>, ClosureAvailable<TenantClosure> {
 
     /**
      * 类型
@@ -53,35 +56,57 @@ public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant, T
     @Column(dbDefault = "true")
     private boolean isActive;
 
-    /**
-     * 地址
-     * 对应lb_location_care.lb_organization.org_address
-     */
-    // private String address;
+    private UUID parentId;
 
     /**
-     * 行政区划ID
-     * 对应lb_location_care.lb_organization.region_id
-     * TODO：确定和address字段的关系，确认是否要冗余region_desc
+     * 祖先列表
      */
-    // private String region_id;
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"descendantId"},
+            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
+    private List<TenantClosure> ancestors;
 
     /**
-     * 经度
-     * 对应lb_location_care.lb_organization.longitude
+     * 后代列表
      */
-    // private String longitude;
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"ancestorId"},
+            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
+    private List<TenantClosure> descendants;
 
-    /**
-     * 纬度
-     * 对应lb_location_care.lb_organization.latitude
-     */
-    // private String latitude;
+//    @Override
+//    public TenantClosure createClosure(UUID ancestorId, UUID descendantId, int distance) {
+//        return new TenantClosure(ancestorId, descendantId, distance);
+//    }
+}
 
-    /**
-     * 域名
-     * 对应rouyi_cloud_plus.sys_tenant.domain
-     */
+/**
+ * 地址
+ * 对应lb_location_care.lb_organization.org_address
+ */
+// private String address;
+
+/**
+ * 行政区划ID
+ * 对应lb_location_care.lb_organization.region_id
+ * TODO：确定和address字段的关系，确认是否要冗余region_desc
+ */
+// private String region_id;
+
+/**
+ * 经度
+ * 对应lb_location_care.lb_organization.longitude
+ */
+// private String longitude;
+
+/**
+ * 纬度
+ * 对应lb_location_care.lb_organization.latitude
+ */
+// private String latitude;
+
+/**
+ * 域名
+ * 对应rouyi_cloud_plus.sys_tenant.domain
+ */
 //    private String domain;
 
 
@@ -229,26 +254,5 @@ public class Tenant extends BaseEntity implements ProxyEntityAvailable<Tenant, T
 //            `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
 //            `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
 
-    /**
-     * 祖先列表
-     */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"descendantId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
-    private List<TenantClosure> ancestors;
-
-    /**
-     * 后代列表
-     */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"ancestorId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
-    private List<TenantClosure> descendants;
-
-    /**
-     * 创建一个自身关系的闭包，用于创建租户时插入
-     */
-    public TenantClosure createSelfClosure() {
-        return new TenantClosure(id, id, 0);
-    }
 
 
-}

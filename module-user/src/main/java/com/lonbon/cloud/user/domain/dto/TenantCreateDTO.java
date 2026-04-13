@@ -30,8 +30,7 @@ public class TenantCreateDTO {
 
     private String description;
 
-    @SuppressWarnings("EasyQueryFieldMissMatch")
-    private UUID ancestorId;
+    private UUID parentId;
 
 
 }

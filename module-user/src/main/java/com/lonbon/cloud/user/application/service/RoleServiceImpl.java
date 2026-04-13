@@ -9,7 +9,7 @@ import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoleServiceImpl extends SimpleEntityService<Role, RoleProxy, RoleRepository> implements RoleService {
+public class RoleServiceImpl extends SimpleEntityService<Role, RoleProxy> implements RoleService {
     public RoleServiceImpl(Converter converter, RoleRepository repository) {
         super(converter, repository, Role.class);
     }

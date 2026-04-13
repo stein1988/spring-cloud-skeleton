@@ -21,16 +21,16 @@ import java.util.function.Function;
 
 @Transactional(rollbackFor = Exception.class)
 public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TProxy>,
-        TProxy extends AbstractProxyEntity<TProxy, T>, TRepository extends Repository<T, TProxy>>
+        TProxy extends AbstractProxyEntity<TProxy, T>>
         implements Service<T, TProxy> {
 
     protected final Converter converter;
 
-    protected final TRepository repository;
+    protected final Repository<T, TProxy> repository;
 
     protected final Class<T> entityType;
-    
-    public SimpleEntityService(Converter converter, TRepository repository, Class<T> entityType) {
+
+    public SimpleEntityService(Converter converter, Repository<T, TProxy> repository, Class<T> entityType) {
         this.converter = converter;
         this.repository = repository;
         this.entityType = entityType;

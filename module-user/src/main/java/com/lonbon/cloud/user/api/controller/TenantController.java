@@ -32,21 +32,21 @@ public class TenantController {
     @PostMapping
     @Operation(summary = "创建", description = "创建description")
     public Response<UUID> create(@RequestBody @Validated @NotNull TenantCreateDTO tenant) {
-        Tenant createdTenant = tenantService.createTenant(tenant);
+        Tenant createdTenant = tenantService.createEntity(tenant);
         return Response.success(createdTenant.getId(), "Tenant created successfully");
     }
 
     @PostMapping("/{id}/delete")
     @Operation(summary = "删除", description = "删除description")
     public Response<UUID> delete(@PathVariable("id") UUID id) {
-        tenantService.deleteTenant(id);
+        tenantService.deleteEntity(id);
         return Response.success(id, "Tenant deleted successfully");
     }
 
     @PostMapping("/{id}/update")
     @Operation(summary = "更新", description = "更新description")
     public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated TenantUpdateDTO tenant) {
-        tenantService.updateTenant(id, tenant);
+        tenantService.updateEntity(id, tenant);
         return Response.success(id, "Tenant updated successfully");
     }
 
@@ -55,7 +55,7 @@ public class TenantController {
     public Response<Tenant> getTenantById(
             @PathVariable("id") @Parameter(description = "用户唯一标识，采用UUID格式，32位16进制字符串", required = true, example =
                     "123e4567-e89b-12d3-a456-426614174000") UUID id) {
-        Optional<Tenant> tenant = tenantService.getTenantById(id);
+        Optional<Tenant> tenant = tenantService.getEntityById(id);
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
     }
 
@@ -63,7 +63,7 @@ public class TenantController {
     @Operation(summary = "查询", description = "查询description")
     public Response<PageResult<Tenant>> getTenants(TenantQueryDTO query, Pageable pageable) {
         log.info("query: {}, pageable: {}", query, pageable);
-        PageResult<Tenant> tenants = tenantService.getTenants(query, pageable);
+        PageResult<Tenant> tenants = tenantService.getPaginationEntities(query, pageable);
         return Response.success(tenants);
     }
 }

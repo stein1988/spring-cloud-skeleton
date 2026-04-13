@@ -20,7 +20,6 @@ public class TenantUpdateDTO {
 
     private String name;
     private String description;
-    private String domain;
 
 
 }

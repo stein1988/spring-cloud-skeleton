@@ -9,7 +9,7 @@ import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserTenantServiceImpl extends SimpleEntityService<UserTenant, UserTenantProxy, UserTenantRepository>
+public class UserTenantServiceImpl extends SimpleEntityService<UserTenant, UserTenantProxy>
         implements UserTenantService {
     public UserTenantServiceImpl(Converter converter, UserTenantRepository repository) {
         super(converter, repository, UserTenant.class);

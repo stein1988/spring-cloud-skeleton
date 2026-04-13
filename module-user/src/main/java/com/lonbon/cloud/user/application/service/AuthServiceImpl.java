@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
         } else {
             if (user.getCurrentTenantId() == null) throw new RuntimeException("current tenant id not found");
 
-            Tenant tenant = tenantService.getTenantById(user.getCurrentTenantId())
+            Tenant tenant = tenantService.getEntityById(user.getCurrentTenantId())
                                          .orElseThrow(() -> new RuntimeException("tenant not found"));
 
             Optional<UserTenant> userTenant = userTenantService.getEntity(e -> {

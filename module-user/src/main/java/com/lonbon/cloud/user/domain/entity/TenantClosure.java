@@ -4,6 +4,7 @@ import com.easy.query.core.annotation.EntityProxy;
 import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.Closure;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_tenant_closure", ignoreProperties = {"tenantId", "departmentId"})
 @EntityProxy
-public class TenantClosure extends BaseEntity implements ProxyEntityAvailable<TenantClosure, TenantClosureProxy> {
+public class TenantClosure extends BaseEntity
+        implements ProxyEntityAvailable<TenantClosure, TenantClosureProxy>, Closure {
 
     /**
      * 祖先租户ID

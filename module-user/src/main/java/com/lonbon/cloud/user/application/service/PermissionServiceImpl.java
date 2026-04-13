@@ -9,7 +9,7 @@ import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PermissionServiceImpl extends SimpleEntityService<Permission, PermissionProxy, PermissionRepository>
+public class PermissionServiceImpl extends SimpleEntityService<Permission, PermissionProxy>
         implements PermissionService {
     public PermissionServiceImpl(Converter converter, PermissionRepository repository) {
         super(converter, repository, Permission.class);
