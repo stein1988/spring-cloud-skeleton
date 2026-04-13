@@ -28,7 +28,5 @@ public class TenantQueryDTO {
 
     private String description;
 
-    private String domain;
-
 
 }

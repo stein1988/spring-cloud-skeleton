@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.application.controller;
+package com.lonbon.cloud.user.api.controller;
 
 import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.base.service.SystemService;

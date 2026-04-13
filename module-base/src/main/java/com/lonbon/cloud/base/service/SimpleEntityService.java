@@ -1,5 +1,6 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
@@ -50,7 +51,7 @@ public abstract class SimpleEntityService<TProxy extends AbstractProxyEntity<TPr
     @Override
     public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
         return repository.track(() -> {
-            T existing = repository.findById(id, true).orElseThrow(
+            T existing = repository.getById(id, true).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));
 
             T updated = updateFunc.apply(existing);
@@ -67,30 +68,43 @@ public abstract class SimpleEntityService<TProxy extends AbstractProxyEntity<TPr
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getEntityById(UUID id) {
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getEntityById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
-        return repository.findById(id, navigate, tracking);
+        return repository.getById(id, navigate, tracking);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getEntityById(UUID id, List<String> navigate, boolean tracking) {
-        return repository.findById(id, navigate, tracking);
+        return repository.getById(id, navigate, tracking);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getEntity(SQLActionExpression1<TProxy> whereExpression) {
+        return repository.getSingle(whereExpression);
+    }
+
+    @Override
+    public Optional<T> getEntity(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+        return repository.getSingle(whereExpression, navigate);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<T> getAllEntities() {
-        return repository.findAll();
+        return repository.getAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public PageResult<T> getPaginationEntities(Object whereObject, Pageable pageable) {
-        return repository.findPagination(whereObject, pageable);
+        return repository.getPagination(whereObject, pageable);
     }
 }

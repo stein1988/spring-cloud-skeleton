@@ -101,13 +101,13 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
      */
-    Optional<T> findById(UUID id);
+    Optional<T> getById(UUID id);
 
-    Optional<T> findById(UUID id, boolean tracking);
+    Optional<T> getById(UUID id, boolean tracking);
 
-    Optional<T> findById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
+    Optional<T> getById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
 
-    Optional<T> findById(UUID id, List<String> navigate, boolean tracking);
+    Optional<T> getById(UUID id, List<String> navigate, boolean tracking);
 
     /**
      * 返回是否存在具有给定 ID 的实体。
@@ -123,7 +123,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      *
      * @return 所有实体的可迭代对象
      */
-    List<T> findAll();
+    List<T> getAll();
 
     /**
      * 返回具有给定 ID 的所有类型 {@code T} 的实例。
@@ -136,7 +136,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @return 找到的实体的可迭代对象，大小可以等于或小于给定 {@literal ids} 的数量
      * @throws IllegalArgumentException 如果给定的 {@link Collection ids} 或其中一个项为 {@literal null}
      */
-    List<T> findAllByIds(Collection<UUID> ids);
+    List<T> getAllByIds(Collection<UUID> ids);
 
     /**
      * 根据条件查询所有实体。
@@ -147,7 +147,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
      * @return 符合条件的实体列表
      */
-    List<T> findAll(SQLActionExpression1<TProxy> whereExpression);
+    List<T> getAll(SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 根据条件查询所有实体（条件可控）。
@@ -160,7 +160,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
      * @return 符合条件的实体列表，当 condition 为 false 时返回所有实体
      */
-    List<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression);
+    List<T> getAll(boolean condition, SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 返回符合 {@link Pageable} 对象中提供的分页限制的实体分页结果。
@@ -169,7 +169,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @param pageable    分页请求参数，包含页码、每页大小等信息，不能为空
      * @return 分页结果，包含当前页数据和分页元信息
      */
-    PageResult<T> findPagination(Object whereObject, Pageable pageable);
+    PageResult<T> getPagination(Object whereObject, Pageable pageable);
 
     /**
      * 返回单个结果作为 {@link Optional}。
@@ -183,7 +183,11 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
      */
-    Optional<T> singleOptional(SQLActionExpression1<TProxy> whereExpression);
+    Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression);
+
+    Optional<T> getSingle(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate);
 
     /**
      * 根据条件查询单个实体，如果不存在则抛出默认异常。
@@ -197,7 +201,7 @@ public interface Repository<TProxy extends ProxyEntity<TProxy, T>, T> {
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
      * @throws EasyQuerySingleNotNullException     如果查询不到数据
      */
-    T singleNotNull(SQLActionExpression1<TProxy> whereExpression);
+    T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 返回可用实体的数量。

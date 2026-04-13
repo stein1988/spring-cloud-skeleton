@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.application.controller;
+package com.lonbon.cloud.user.api.controller;
 
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;

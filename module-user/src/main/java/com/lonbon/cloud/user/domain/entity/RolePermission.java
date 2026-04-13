@@ -15,20 +15,14 @@ import java.util.UUID;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_role_permission", ignoreProperties = {"updateTime", "updateBy", "version"})
+@Table(value = "sys_role_permission", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class RolePermission extends BaseEntity implements ProxyEntityAvailable<RolePermission, RolePermissionProxy> {
-
-    /**
-     * 团队ID
-     */
-    private UUID teamId;
-    
     /**
      * 角色ID
      */
     private UUID roleId;
-    
+
     /**
      * 权限ID
      */

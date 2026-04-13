@@ -76,7 +76,7 @@ public class TenantServiceImpl implements TenantService {
         UUID ancestorId = tenant.getAncestorId();
         if (ancestorId != null) {
             // 校验祖先租户是否存在
-            Tenant ancestorTenant = tenantRepository.findById(ancestorId).orElseThrow(
+            Tenant ancestorTenant = tenantRepository.getById(ancestorId).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "上级租户不存在，ID: " + ancestorId));
 
             // 创建与祖先的直接父子关系（distance=1，表示直接子节点）
@@ -101,7 +101,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant updateTenant(UUID id, TenantUpdateDTO tenant) {
         // TODO：封装函数
-        Tenant existingTenant = tenantRepository.findById(id).orElseThrow(
+        Tenant existingTenant = tenantRepository.getById(id).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "租户不存在，ID: " + id));
 
         Tenant update = converter.convert(tenant, existingTenant);
@@ -127,7 +127,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Tenant> getTenantById(UUID id) {
-        return tenantRepository.findById(id);
+        return tenantRepository.getById(id);
     }
 
     /**
@@ -139,7 +139,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Tenant> getTenantByName(String name) {
-        return tenantRepository.singleOptional(o -> o.name().eq(name));
+        return tenantRepository.getSingle(o -> o.name().eq(name));
     }
 
     /**
@@ -150,7 +150,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public List<Tenant> getAllTenants() {
-        return tenantRepository.findAll();
+        return tenantRepository.getAll();
     }
 
     /**
@@ -163,6 +163,6 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional(readOnly = true)
     public PageResult<Tenant> getTenants(Object whereObject, Pageable pageable) {
-        return tenantRepository.findPagination(whereObject, pageable);
+        return tenantRepository.getPagination(whereObject, pageable);
     }
 }

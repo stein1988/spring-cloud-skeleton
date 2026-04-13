@@ -70,21 +70,21 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
 
     @Override
     public boolean existsById(UUID id) {
-        return findById(id).isPresent();
+        return getById(id).isPresent();
     }
 
     @Override
-    public Optional<T> findById(UUID id) {
-        return findById(id, false);
+    public Optional<T> getById(UUID id) {
+        return getById(id, false);
     }
 
     @Override
-    public Optional<T> findById(UUID id, boolean tracking) {
-        return findById(id, (SQLActionExpression2<IncludeContext, TProxy>) null, tracking);
+    public Optional<T> getById(UUID id, boolean tracking) {
+        return getById(id, (SQLActionExpression2<IncludeContext, TProxy>) null, tracking);
     }
 
     @Override
-    public Optional<T> findById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
+    public Optional<T> getById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
         EntityQueryable<TProxy, T> queryable = queryable();
         if (navigate != null) {
             queryable = queryable.include2(navigate);
@@ -95,21 +95,21 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
         return queryable.whereById(id).singleOptional();
     }
 
-    public Optional<T> findById(UUID id, List<String> navigate, boolean tracking) {
+    public Optional<T> getById(UUID id, List<String> navigate, boolean tracking) {
         // 处理空值情况
         if (navigate == null || navigate.isEmpty()) {
-            return findById(id, tracking);
+            return getById(id, tracking);
         }
-        
+
         Map<String, SQLActionExpression2<IncludeContext, TProxy>> navigateMap = getNavigateMap();
         if (navigateMap == null) {
-            return findById(id, tracking);
+            return getById(id, tracking);
         }
 
         // 使用 Set 去重，避免重复处理
         Set<String> uniqueNavigate = new HashSet<>(navigate);
-        
-        return findById(id, (c, p) -> {
+
+        return getById(id, (c, p) -> {
             for (String key : uniqueNavigate) {
                 SQLActionExpression2<IncludeContext, TProxy> exp = navigateMap.get(key);
                 if (exp != null) {
@@ -120,27 +120,48 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
     }
 
     @Override
-    public List<T> findAllByIds(Collection<UUID> ids) {
+    public Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression) {
+        return queryable().where(whereExpression).singleOptional();
+    }
+
+    @Override
+    public Optional<T> getSingle(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+        EntityQueryable<TProxy, T> queryable = queryable();
+        if (navigate != null) {
+            queryable = queryable.include2(navigate);
+        }
+        return queryable.where(whereExpression).singleOptional();
+    }
+
+    @Override
+    public T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression) {
+        return queryable().where(whereExpression).singleNotNull();
+    }
+
+    @Override
+    public List<T> getAllByIds(Collection<UUID> ids) {
         return queryable().whereByIds(ids).toList();
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> getAll() {
         return queryable().toList();
     }
 
     @Override
-    public List<T> findAll(SQLActionExpression1<TProxy> whereExpression) {
-        return findAll(true, whereExpression);
+    public List<T> getAll(SQLActionExpression1<TProxy> whereExpression) {
+        return getAll(true, whereExpression);
     }
 
     @Override
-    public List<T> findAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
+    public List<T> getAll(boolean condition, SQLActionExpression1<TProxy> whereExpression) {
         return queryable().where(condition, whereExpression).toList();
     }
 
     @Override
-    public PageResult<T> findPagination(Object whereObject, @NotNull Pageable pageable) {
+    public PageResult<T> getPagination(Object whereObject, @NotNull Pageable pageable) {
         EasyPageResult<T> result = queryable().whereObject(whereObject).orderByObject(pageable.hasSort(),
                                                                                       new EasyQuerySort(
                                                                                               pageable.getSortables()))
@@ -148,15 +169,6 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
         return new PageResult<>(pageable, result.getTotal(), result.getData());
     }
 
-    @Override
-    public Optional<T> singleOptional(SQLActionExpression1<TProxy> whereExpression) {
-        return queryable().where(whereExpression).singleOptional();
-    }
-
-    @Override
-    public T singleNotNull(SQLActionExpression1<TProxy> whereExpression) {
-        return queryable().where(whereExpression).singleNotNull();
-    }
 
     @Override
     public long count() {
@@ -170,7 +182,7 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
 
     @Override
     public void deleteById(UUID id) {
-        Optional<T> entity = findById(id);
+        Optional<T> entity = getById(id);
         if (entity.isPresent()) {
             delete(entity.get());
         } else {
@@ -193,7 +205,7 @@ public abstract class EasyQueryRepository<TProxy extends AbstractProxyEntity<TPr
     @Override
     public void deleteAllById(Iterable<? extends UUID> ids) {
         for (UUID id : ids) {
-            Optional<T> entity = findById(id);
+            Optional<T> entity = getById(id);
             entity.ifPresent(this::delete);
         }
     }

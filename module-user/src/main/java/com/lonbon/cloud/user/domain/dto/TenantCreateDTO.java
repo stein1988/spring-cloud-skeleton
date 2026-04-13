@@ -3,9 +3,9 @@ package com.lonbon.cloud.user.domain.dto;
 
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import io.github.linpeilie.annotations.AutoMapper;
-import lombok.Data;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.UUID;
 
@@ -29,8 +29,6 @@ public class TenantCreateDTO {
     private String name;
 
     private String description;
-
-    private String domain;
 
     @SuppressWarnings("EasyQueryFieldMissMatch")
     private UUID ancestorId;

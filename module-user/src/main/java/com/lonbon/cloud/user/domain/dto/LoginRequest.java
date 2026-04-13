@@ -1,12 +1,14 @@
 package com.lonbon.cloud.user.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class LoginRequest {
 
     @Schema(description = "用户名")
+    @NotNull
     private String username;
 
     @Schema(description = "密码密文")

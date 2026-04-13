@@ -9,35 +9,28 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
-import java.util.UUID;
-
 /**
  * 角色
  */
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_role")
+@Table(value = "sys_role", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class Role extends BaseEntity implements ProxyEntityAvailable<Role, RoleProxy> {
 
     /**
-     * 租户ID
-     */
-    private UUID tenantId;
-
-    /**
-     * 团队ID
-     */
-    private UUID teamId;
-
-    /**
-     * 类型
+     * 类型，暂时无用
      */
     private String type;
 
     /**
-     * 名称
+     * 代号
+     */
+    private String code;
+
+    /**
+     * 显示名称，例如："管理员"
      */
     private String name;
 

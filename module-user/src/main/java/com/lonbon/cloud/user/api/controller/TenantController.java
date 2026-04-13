@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.application.controller;
+package com.lonbon.cloud.user.api.controller;
 
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
@@ -12,10 +12,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -53,21 +53,15 @@ public class TenantController {
     @GetMapping("/{id}")
     @Operation(summary = "获取", description = "获取description")
     public Response<Tenant> getTenantById(
-            @PathVariable("id")
-            @Parameter(description = "用户唯一标识，采用UUID格式，32位16进制字符串",
-                    required = true,
-                    example = "123e4567-e89b-12d3-a456-426614174000")
-            UUID id) {
+            @PathVariable("id") @Parameter(description = "用户唯一标识，采用UUID格式，32位16进制字符串", required = true, example =
+                    "123e4567-e89b-12d3-a456-426614174000") UUID id) {
         Optional<Tenant> tenant = tenantService.getTenantById(id);
         return tenant.map(Response::success).orElseGet(() -> Response.error("Tenant not found"));
     }
 
     @GetMapping()
     @Operation(summary = "查询", description = "查询description")
-    public Response<PageResult<Tenant>> getTenants(
-            TenantQueryDTO query,
-            Pageable pageable
-    ) {
+    public Response<PageResult<Tenant>> getTenants(TenantQueryDTO query, Pageable pageable) {
         log.info("query: {}, pageable: {}", query, pageable);
         PageResult<Tenant> tenants = tenantService.getTenants(query, pageable);
         return Response.success(tenants);
