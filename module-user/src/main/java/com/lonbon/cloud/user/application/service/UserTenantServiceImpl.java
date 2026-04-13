@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
 public class UserTenantServiceImpl extends SimpleEntityService<UserTenant, UserTenantProxy, UserTenantRepository>
         implements UserTenantService {
     public UserTenantServiceImpl(Converter converter, UserTenantRepository repository) {
-        super(converter, UserTenant.class, repository);
+        super(converter, repository, UserTenant.class);
     }
 }

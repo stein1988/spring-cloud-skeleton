@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
 public class PermissionServiceImpl extends SimpleEntityService<Permission, PermissionProxy, PermissionRepository>
         implements PermissionService {
     public PermissionServiceImpl(Converter converter, PermissionRepository repository) {
-        super(converter, Permission.class, repository);
+        super(converter, repository, Permission.class);
     }
 }

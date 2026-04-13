@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends SimpleEntityService<User, UserProxy, UserRepository> implements UserService {
     public UserServiceImpl(Converter converter, UserRepository repository) {
-        super(converter, User.class, repository);
+        super(converter, repository, User.class);
     }
 }

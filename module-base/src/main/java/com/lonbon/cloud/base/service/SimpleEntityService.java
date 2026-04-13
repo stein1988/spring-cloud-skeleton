@@ -26,14 +26,14 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
 
     protected final Converter converter;
 
-    protected final Class<T> entityType;
-
     protected final TRepository repository;
 
-    public SimpleEntityService(Converter converter, Class<T> entityType, TRepository repository) {
+    protected final Class<T> entityType;
+    
+    public SimpleEntityService(Converter converter, TRepository repository, Class<T> entityType) {
         this.converter = converter;
-        this.entityType = entityType;
         this.repository = repository;
+        this.entityType = entityType;
     }
 
     @Override
