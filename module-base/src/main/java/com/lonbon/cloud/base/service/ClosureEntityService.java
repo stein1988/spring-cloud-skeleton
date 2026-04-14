@@ -22,19 +22,19 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
         UProxy extends AbstractProxyEntity<UProxy, U>>
         extends SimpleEntityService<T, TProxy> implements ClosureService<T, TProxy, U, UProxy> {
 
-//    private final static <TProperty> SQLAnyTypeColumn<UProxy, TProperty> CLOSURE_COLUMN = "ancestorId";
+    private final static String CLOSURE_ANCESTOR_ID = "ancestorId";
 
+    private final static String CLOSURE_DESCENDANT_ID = "descendantId";
+
+    private final static String CLOSURE_DISTANCE = "distance";
 
     protected final Repository<U, UProxy> closureRepository;
-
-//    protected final ClosureProcessor<T, TProxy, U> processor;
 
     public ClosureEntityService(
             Converter converter, Repository<T, TProxy> repository, Repository<U, UProxy> closureRepository,
             Class<T> entityType) {
         super(converter, repository, entityType);
         this.closureRepository = closureRepository;
-//        this.processor = processor;
     }
 
     protected abstract SQLActionExpression2<IncludeContext, TProxy> navigate();
@@ -97,8 +97,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     public List<T> getDirectChildren(UUID parentId) {
         // 先查询闭包表中 ancestorId = parentId 且 distance = 1 的记录
         List<U> childClosures = closureRepository.getAll(u -> {
-            u.anyColumn("ancestorId", UUID.class).eq(parentId);
-            u.anyColumn("distance", int.class).eq(1);
+            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(parentId);
+            u.anyColumn(CLOSURE_DISTANCE).eq(1);
         });
 
         // 提取子节点ID
@@ -122,8 +122,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     public List<T> getAllChildren(UUID parentId) {
         // 查询闭包表中所有 ancestorId = parentId 且 distance > 0 的记录
         List<U> childClosures = closureRepository.getAll(u -> {
-            u.anyColumn("ancestorId", UUID.class).eq(parentId);
-            u.anyColumn("distance", int.class).gt(0);
+            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(parentId);
+            u.anyColumn(CLOSURE_DISTANCE).gt(0);
         });
 
         // 提取子节点ID
@@ -147,8 +147,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     public Optional<T> getDirectParent(UUID childId) {
         // 查询闭包表中 descendantId = childId 且 distance = 1 的记录
         List<U> parentClosures = closureRepository.getAll(u -> {
-            u.anyColumn("descendantId", UUID.class).eq(childId);
-            u.anyColumn("distance", int.class).eq(1);
+            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(childId);
+            u.anyColumn(CLOSURE_DISTANCE).eq(1);
         });
 
         if (parentClosures.isEmpty()) {
@@ -172,8 +172,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     public List<T> getAllAncestors(UUID childId) {
         // 查询闭包表中 descendantId = childId 且 distance > 0 的记录
         List<U> ancestorClosures = closureRepository.getAll(u -> {
-            u.anyColumn("descendantId", UUID.class).eq(childId);
-            u.anyColumn("distance", int.class).gt(0);
+            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(childId);
+            u.anyColumn(CLOSURE_DISTANCE).gt(0);
         });
 
         // 提取祖先节点ID
@@ -236,7 +236,7 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
             }
         }
 
-        // 插入新的闭包关系
+        // 插入新闭包关系
         for (U closure : newClosures) {
             closureRepository.insert(closure);
         }
@@ -255,8 +255,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     public void deleteEntity(UUID nodeId) {
         // 先查询该节点的所有后代节点  ancestorId = nodeId and distance > 0
         List<U> descendantClosures = closureRepository.getAll(u -> {
-            u.anyColumn("ancestorId", UUID.class).eq(nodeId);
-            u.anyColumn("distance", int.class).gt(0);
+            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(nodeId);
+            u.anyColumn(CLOSURE_DISTANCE).gt(0);
         });
 
         // 提取所有后代节点ID
@@ -267,8 +267,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
 
         // 删除所有相关的闭包关系  ancestorId in (ids) or descendantId in (ids)
         List<U> allClosures = closureRepository.getAll(u -> u.or(() -> {
-            u.anyColumn("ancestorId", UUID.class).in(ids);
-            u.anyColumn("descendantId", UUID.class).in(ids);
+            u.anyColumn(CLOSURE_ANCESTOR_ID).in(ids);
+            u.anyColumn(CLOSURE_DESCENDANT_ID).in(ids);
         }));
 
         for (U closure : allClosures) {
@@ -291,8 +291,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     private boolean isDescendant(UUID nodeId, UUID ancestorId) {
         // ancestorId = ancestorId and descendantId = nodeId
         List<U> closures = closureRepository.getAll(u -> {
-            u.anyColumn("ancestorId", UUID.class).eq(ancestorId);
-            u.anyColumn("descendantId", UUID.class).eq(nodeId);
+            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(ancestorId);
+            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(nodeId);
         });
         return !closures.isEmpty();
     }
