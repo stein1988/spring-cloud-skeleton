@@ -9,5 +9,7 @@ public interface ClosureAvailable<T extends Closure> {
 
     UUID getParentId();
 
+    void setParentId(UUID parentId);
+
     List<T> getAncestors();
 }

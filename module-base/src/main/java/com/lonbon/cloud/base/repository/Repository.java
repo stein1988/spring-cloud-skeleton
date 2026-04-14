@@ -95,6 +95,15 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
     EntityQueryable<TProxy, T> queryable();
 
     /**
+     * 返回是否存在具有给定 ID 的实体。
+     *
+     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @return 如果存在具有给定 ID 的实体则返回 {@literal true}，否则返回 {@literal false}
+     * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
+     */
+    boolean existsById(UUID id);
+
+    /**
      * 通过 ID 检索实体。
      *
      * @param id 实体的唯一标识符，不能为 {@literal null}
@@ -110,20 +119,37 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
     Optional<T> getById(UUID id, List<String> navigate, boolean tracking);
 
     /**
-     * 返回是否存在具有给定 ID 的实体。
+     * 返回单个结果作为 {@link Optional}。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则抛出异常。
+     * </p>
      *
-     * @param id 实体的唯一标识符，不能为 {@literal null}
-     * @return 如果存在具有给定 ID 的实体则返回 {@literal true}，否则返回 {@literal false}
-     * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
+     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
      */
-    boolean existsById(UUID id);
+    Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression);
+
+    Optional<T> getSingle(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate);
 
     /**
-     * 返回所有该类型的实例。
+     * 根据条件查询单个实体，如果不存在则抛出默认异常。
+     * <p>
+     * 当查询结果为空时，抛出框架默认的运行时异常。
+     * 适用于对查询结果必须存在的场景，简化异常处理。
+     * </p>
      *
-     * @return 所有实体的可迭代对象
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @return 符合条件的单个实体
+     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
+     * @throws EasyQuerySingleNotNullException     如果查询不到数据
      */
-    List<T> getAll();
+    T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression);
+
 
     /**
      * 返回具有给定 ID 的所有类型 {@code T} 的实例。
@@ -137,6 +163,14 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * @throws IllegalArgumentException 如果给定的 {@link Collection ids} 或其中一个项为 {@literal null}
      */
     List<T> getAllByIds(Collection<UUID> ids);
+
+    /**
+     * 返回所有该类型的实例。
+     *
+     * @return 所有实体的可迭代对象
+     */
+    List<T> getAll();
+
 
     /**
      * 根据条件查询所有实体。
@@ -171,37 +205,6 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     PageResult<T> getPagination(Object whereObject, Pageable pageable);
 
-    /**
-     * 返回单个结果作为 {@link Optional}。
-     * <p>
-     * 如果没有结果，则返回 {@link Optional#empty()}。
-     * 如果有多个结果，则抛出异常。
-     * </p>
-     *
-     * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
-     * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
-     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
-     */
-    Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression);
-
-    Optional<T> getSingle(
-            SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate);
-
-    /**
-     * 根据条件查询单个实体，如果不存在则抛出默认异常。
-     * <p>
-     * 当查询结果为空时，抛出框架默认的运行时异常。
-     * 适用于对查询结果必须存在的场景，简化异常处理。
-     * </p>
-     *
-     * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @return 符合条件的单个实体
-     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
-     * @throws EasyQuerySingleNotNullException     如果查询不到数据
-     */
-    T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression);
 
     /**
      * 返回可用实体的数量。
