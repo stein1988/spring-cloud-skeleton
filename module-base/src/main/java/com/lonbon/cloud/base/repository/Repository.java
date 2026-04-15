@@ -92,6 +92,11 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
 
+    /**
+     * 获取实体查询对象，用于构建复杂的查询条件。
+     *
+     * @return 实体查询对象，可用于构建类型安全的查询
+     */
     EntityQueryable<TProxy, T> queryable();
 
     /**
@@ -112,10 +117,36 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     Optional<T> getById(UUID id);
 
+    /**
+     * 通过 ID 检索实体，可指定是否开启追踪。
+     *
+     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param tracking 是否开启实体追踪
+     * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
+     */
     Optional<T> getById(UUID id, boolean tracking);
 
+    /**
+     * 通过 ID 检索实体，可指定导航属性和是否开启追踪。
+     *
+     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param navigate 导航属性表达式，用于关联查询
+     * @param tracking 是否开启实体追踪
+     * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
+     */
     Optional<T> getById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
 
+    /**
+     * 通过 ID 检索实体，可指定导航属性名称列表和是否开启追踪。
+     *
+     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param navigate 导航属性名称列表，用于关联查询
+     * @param tracking 是否开启实体追踪
+     * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
+     */
     Optional<T> getById(UUID id, List<String> navigate, boolean tracking);
 
     /**
@@ -132,9 +163,37 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression);
 
+    /**
+     * 返回单个结果作为 {@link Optional}，可指定导航属性。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则抛出异常。
+     * </p>
+     *
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @param navigate 导航属性表达式，用于关联查询
+     * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
+     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
+     */
     Optional<T> getSingle(
             SQLActionExpression1<TProxy> whereExpression,
             SQLActionExpression2<IncludeContext, TProxy> navigate);
+
+    /**
+     * 返回单个结果作为 {@link Optional}，可指定导航属性名称列表。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则抛出异常。
+     * </p>
+     *
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @param navigate 导航属性名称列表，用于关联查询
+     * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
+     * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
+     */
+    Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression, List<String> navigate);
 
     /**
      * 根据条件查询单个实体，如果不存在则抛出默认异常。
@@ -150,6 +209,48 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression);
 
+    /**
+     * 返回第一个结果作为 {@link Optional}。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则返回第一个结果，不会抛出异常。
+     * </p>
+     *
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
+     */
+    Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression);
+
+    /**
+     * 返回第一个结果作为 {@link Optional}，可指定导航属性。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则返回第一个结果，不会抛出异常。
+     * </p>
+     *
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @param navigate 导航属性表达式，用于关联查询
+     * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
+     */
+    Optional<T> getFirst(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate);
+
+    /**
+     * 返回第一个结果作为 {@link Optional}，可指定导航属性名称列表。
+     * <p>
+     * 如果没有结果，则返回 {@link Optional#empty()}。
+     * 如果有多个结果，则返回第一个结果，不会抛出异常。
+     * </p>
+     *
+     * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @param navigate 导航属性名称列表，用于关联查询
+     * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
+     * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
+     */
+    Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, List<String> navigate);
 
     /**
      * 返回具有给定 ID 的所有类型 {@code T} 的实例。
@@ -265,7 +366,27 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     void deleteAllById(Iterable<? extends UUID> ids);
 
+    /**
+     * 在事务追踪上下文中执行供应商函数。
+     * <p>
+     * 该方法会开启一个追踪会话，执行供应商函数，然后释放追踪会话。
+     * 适用于需要在单个追踪上下文中执行多个操作的场景。
+     * </p>
+     *
+     * @param supplier 供应商函数，返回执行结果
+     * @param <R> 执行结果的类型
+     * @return 供应商函数的执行结果
+     */
     <R> R track(Supplier<R> supplier);
 
+    /**
+     * 在事务追踪上下文中执行可运行对象。
+     * <p>
+     * 该方法会开启一个追踪会话，执行可运行对象，然后释放追踪会话。
+     * 适用于需要在单个追踪上下文中执行多个操作的场景。
+     * </p>
+     *
+     * @param runnable 可运行对象，包含要执行的操作
+     */
     void track(Runnable runnable);
 }

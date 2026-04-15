@@ -98,6 +98,32 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getEntity(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
+        return repository.getSingle(whereExpression, navigate);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression) {
+        return repository.getFirst(whereExpression);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getFirstEntity(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+        return repository.getFirst(whereExpression, navigate);
+    }
+    
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
+        return repository.getFirst(whereExpression, navigate);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<T> getAllEntities() {
         return repository.getAll();
     }

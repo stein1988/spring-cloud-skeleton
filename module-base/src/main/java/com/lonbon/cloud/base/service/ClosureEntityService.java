@@ -58,10 +58,9 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     @Override
     public T createEntity(Object createDto) {
         T created = super.createEntity(createDto);
-
         UUID id = created.getId();
-        List<U> closures = new ArrayList<>();
 
+        List<U> closures = new ArrayList<>();
         closures.add(createClosure(id, id, 0));
 
         UUID parentId = created.getParentId();

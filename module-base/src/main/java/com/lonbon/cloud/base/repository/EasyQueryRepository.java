@@ -137,8 +137,74 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
+    public Optional<T> getSingle(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
+        // 处理空值情况
+        if (navigate == null || navigate.isEmpty()) {
+            return getSingle(whereExpression);
+        }
+
+        Map<String, SQLActionExpression2<IncludeContext, TProxy>> navigateMap = getNavigateMap();
+        if (navigateMap == null) {
+            return getSingle(whereExpression);
+        }
+
+        // 使用 Set 去重，避免重复处理
+        Set<String> uniqueNavigate = new HashSet<>(navigate);
+
+        return getSingle(whereExpression, (c, p) -> {
+            for (String key : uniqueNavigate) {
+                SQLActionExpression2<IncludeContext, TProxy> exp = navigateMap.get(key);
+                if (exp != null) {
+                    exp.apply(c, p);
+                }
+            }
+        });
+    }
+
+    @Override
     public T getSingleNotNull(SQLActionExpression1<TProxy> whereExpression) {
         return queryable().where(whereExpression).singleNotNull();
+    }
+
+    @Override
+    public Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression) {
+        return Optional.ofNullable(queryable().where(whereExpression).firstOrNull());
+    }
+
+    @Override
+    public Optional<T> getFirst(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+        EntityQueryable<TProxy, T> queryable = queryable();
+        if (navigate != null) {
+            queryable = queryable.include2(navigate);
+        }
+        return Optional.ofNullable(queryable.where(whereExpression).firstOrNull());
+    }
+
+    @Override
+    public Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
+        // 处理空值情况
+        if (navigate == null || navigate.isEmpty()) {
+            return getFirst(whereExpression);
+        }
+
+        Map<String, SQLActionExpression2<IncludeContext, TProxy>> navigateMap = getNavigateMap();
+        if (navigateMap == null) {
+            return getFirst(whereExpression);
+        }
+
+        // 使用 Set 去重，避免重复处理
+        Set<String> uniqueNavigate = new HashSet<>(navigate);
+
+        return getFirst(whereExpression, (c, p) -> {
+            for (String key : uniqueNavigate) {
+                SQLActionExpression2<IncludeContext, TProxy> exp = navigateMap.get(key);
+                if (exp != null) {
+                    exp.apply(c, p);
+                }
+            }
+        });
     }
 
     @Override
