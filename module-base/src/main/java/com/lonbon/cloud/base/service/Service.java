@@ -1,11 +1,15 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.exception.EasyQuerySingleMoreElementException;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.ProxyEntity;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
+import com.lonbon.cloud.base.exception.BusinessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,11 +49,10 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      *
      * @param id        实体的唯一标识符
      * @param updateDto 更新DTO对象，包含要更新的字段
-     * @return 更新后的实体
      * @throws IllegalArgumentException 如果 id 为 null 或 updateDto 为 null
      * @throws BusinessException        如果实体不存在
      */
-    T updateEntity(UUID id, Object updateDto);
+    void updateEntity(UUID id, Object updateDto);
 
     /**
      * 更新实体。
@@ -57,13 +60,18 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * 根据给定的ID和更新函数更新实体。
      * </p>
      *
-     * @param id        实体的唯一标识符
+     * @param id         实体的唯一标识符
      * @param updateFunc 更新函数，用于修改实体
-     * @return 更新后的实体
      * @throws IllegalArgumentException 如果 id 为 null 或 updateFunc 为 null
      * @throws BusinessException        如果实体不存在
      */
-    T updateEntity(UUID id, Function<T, T> updateFunc);
+    void updateEntity(UUID id, Function<T, T> updateFunc);
+
+
+    void updateEntity(UUID id, SQLActionExpression1<TProxy> columns);
+
+
+    <S extends T> void updateEntity(S entity, SQLFuncExpression1<TProxy, SQLSelectExpression> columns);
 
     /**
      * 删除实体。
@@ -94,7 +102,7 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * 根据给定的ID获取实体，可指定导航属性用于关联查询，以及是否开启实体追踪。
      * </p>
      *
-     * @param id 实体的唯一标识符
+     * @param id       实体的唯一标识符
      * @param navigate 导航属性表达式，用于关联查询
      * @param tracking 是否开启实体追踪
      * @return 包含实体的 Optional，如果未找到则为 Optional.empty()
@@ -108,7 +116,7 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * 根据给定的ID获取实体，可指定导航属性名称列表用于关联查询，以及是否开启实体追踪。
      * </p>
      *
-     * @param id 实体的唯一标识符
+     * @param id       实体的唯一标识符
      * @param navigate 导航属性名称列表，用于关联查询
      * @param tracking 是否开启实体追踪
      * @return 包含实体的 Optional，如果未找到则为 Optional.empty()
@@ -138,7 +146,7 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式
-     * @param navigate 导航属性表达式，用于关联查询
+     * @param navigate        导航属性表达式，用于关联查询
      * @return 包含实体的 Optional，如果未找到则为 Optional.empty()
      * @throws IllegalArgumentException            如果 whereExpression 为 null
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
@@ -154,7 +162,7 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式
-     * @param navigate 导航属性名称列表，用于关联查询
+     * @param navigate        导航属性名称列表，用于关联查询
      * @return 包含实体的 Optional，如果未找到则为 Optional.empty()
      * @throws IllegalArgumentException            如果 whereExpression 为 null
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
@@ -169,10 +177,11 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个实体的 Optional，如果未找到则为 Optional.empty()
      * @throws IllegalArgumentException 如果 whereExpression 为 null
      */
-    Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression);
+    Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression, SQLActionExpression1<TProxy> order);
 
     /**
      * 根据条件获取第一个实体，可指定导航属性。
@@ -182,12 +191,14 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式
-     * @param navigate 导航属性表达式，用于关联查询
+     * @param navigate        导航属性表达式，用于关联查询
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个实体的 Optional，如果未找到则为 Optional.empty()
      * @throws IllegalArgumentException 如果 whereExpression 为 null
      */
     Optional<T> getFirstEntity(
-            SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate);
+            SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate,
+            SQLActionExpression1<TProxy> order);
 
     /**
      * 根据条件获取第一个实体，可指定导航属性名称列表。
@@ -197,11 +208,13 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式
-     * @param navigate 导航属性名称列表，用于关联查询
+     * @param navigate        导航属性名称列表，用于关联查询
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个实体的 Optional，如果未找到则为 Optional.empty()
      * @throws IllegalArgumentException 如果 whereExpression 为 null
      */
-    Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression, List<String> navigate);
+    Optional<T> getFirstEntity(
+            SQLActionExpression1<TProxy> whereExpression, List<String> navigate, SQLActionExpression1<TProxy> order);
 
     /**
      * 获取所有实体。
@@ -220,7 +233,7 @@ public interface Service<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereObject 查询条件对象
-     * @param pageable 分页参数
+     * @param pageable    分页参数
      * @return 分页结果
      * @throws IllegalArgumentException 如果 pageable 为 null
      */

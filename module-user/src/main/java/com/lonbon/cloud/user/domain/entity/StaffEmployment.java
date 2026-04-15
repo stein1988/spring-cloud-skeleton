@@ -8,7 +8,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.StaffEmploymentProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -54,21 +53,21 @@ public class StaffEmployment extends BaseEntity implements ProxyEntityAvailable<
      * 对应旧表：lb_ims_staff.job_title_level
      * TODO：关联字典表 sys_job_title_level
      */
-    private int jobTitleLevel;
+    private Integer jobTitleLevel;
 
     /**
      * 人员类型编码
      * 对应旧表：lb_ims_staff.personnel_type
      * TODO：关联字典表 sys_personnel_type
      */
-    private int personnelType;
+    private Integer personnelType;
 
     /**
      * 合同类型编码
      * 对应旧表：lb_ims_staff.contract_type
      * TODO：关联字典表 sys_contract_type
      */
-    private int contractType;
+    private Integer contractType;
 
     /**
      * 合同编号
@@ -105,7 +104,7 @@ public class StaffEmployment extends BaseEntity implements ProxyEntityAvailable<
      * 对应旧表：lb_ims_staff.salary
      * TODO：国密SM4加密存储，仅HR角色可访问
      */
-    private BigDecimal salary;
+    private String salary;
 
     /**
      * 其他待遇

@@ -33,10 +33,10 @@ public class UserTenant extends BaseEntity implements ProxyEntityAvailable<UserT
     /**
      * 是否激活
      */
-    private boolean isActive;
+    private Boolean isActive;
 
     /**
      * 是否租户管理员
      */
-    private boolean isTenantAdmin;
+    private Boolean isTenantAdmin;
 }

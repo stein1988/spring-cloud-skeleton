@@ -65,13 +65,13 @@ public class User extends BaseEntity implements ProxyEntityAvailable<User, UserP
     /**
      * 是否超级管理员
      */
-    private boolean isSuperAdmin;
+    private Boolean isSuperAdmin;
 
     /**
      * 是否激活
      */
     @Column(dbDefault = "true")
-    private boolean isActive;
+    private Boolean isActive;
 
     /**
      * 最后登录时间

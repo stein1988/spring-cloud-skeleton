@@ -35,7 +35,7 @@ public class StaffProfile extends BaseEntity implements ProxyEntityAvailable<Sta
      * 对应旧表：无（原identity默认身份证）
      * TODO：关联字典表 sys_cert_type，添加证件枚举
      */
-    private int certType;
+    private Integer certType;
 
     /**
      * 证件号码
@@ -49,7 +49,7 @@ public class StaffProfile extends BaseEntity implements ProxyEntityAvailable<Sta
      * 对应旧表：lb_ims_staff.gender
      * TODO：关联字典表 sys_gender，添加枚举，默认值0
      */
-    private int gender;
+    private Integer gender;
 
     /**
      * 出生日期
@@ -63,14 +63,14 @@ public class StaffProfile extends BaseEntity implements ProxyEntityAvailable<Sta
      * 对应旧表：lb_ims_staff.nation
      * TODO：关联字典表 sys_ethnicity，添加常用民族枚举
      */
-    private int ethnicity;
+    private Integer ethnicity;
 
     /**
      * 政治面貌编码（GB/T 4762-1984）
      * 对应旧表：lb_ims_staff.political_status
      * TODO：关联字典表 sys_political_status，添加常用政治面貌枚举
      */
-    private int politicalStatus;
+    private Integer politicalStatus;
 
     /**
      * 籍贯
@@ -123,7 +123,7 @@ public class StaffProfile extends BaseEntity implements ProxyEntityAvailable<Sta
      * 对应旧表：lb_ims_staff.educational_level
      * TODO：关联字典表 sys_educational_level
      */
-    private int educationalLevel;
+    private Integer educationalLevel;
 
     /**
      * 专业

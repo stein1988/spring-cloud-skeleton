@@ -42,19 +42,19 @@ public class Department extends BaseEntity implements ProxyEntityAvailable<Depar
      * 是否默认部门
      * 对应lb_location_care.lb_ims_department.is_default
      */
-    private boolean isDefault;
+    private Boolean isDefault;
 
     /**
      * 是否激活
      */
     @Column(dbDefault = "true")
-    private boolean isActive;
+    private Boolean isActive;
 
     /**
      * 显示顺序
      * 对应lb_location_care.lb_ims_department.order_num
      */
-    private int sort_order;
+    private Integer sort_order;
 
     /**
      * 电话号码

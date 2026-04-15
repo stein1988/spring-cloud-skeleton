@@ -52,7 +52,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      * 预设数据标志：是否是系统预设数据，默认值为false
      */
     @Column(comment = "是否为预设数据")
-    protected boolean isPreset;
+    protected Boolean isPreset;
 
     /**
      * 逻辑删除标志：是否删除，默认值为false
@@ -61,7 +61,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     @Column(comment = "是否删除")
     @LogicDelete(strategy = LogicDeleteStrategyEnum.CUSTOM, strategyName = "DEFAULT_LOGIC_DELETE_STRATEGY")
     @UpdateIgnore
-    protected boolean isDelete;
+    protected Boolean isDelete;
 
     /**
      * 删除时间，UTC时间戳
@@ -108,7 +108,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @Column(comment = "乐观锁版本号")
     @Version(strategy = VersionIntStrategy.class)
-    protected int version;
+    protected Integer version;
 
     @Override
     public BaseEntity clone() {

@@ -1,8 +1,10 @@
 package com.lonbon.cloud.base.service;
 
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.exception.BusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
@@ -39,7 +41,9 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
 
     protected abstract SQLActionExpression2<IncludeContext, TProxy> navigate();
 
-    protected abstract U createClosure(UUID ancestorId, UUID descendantId, int distance);
+    protected abstract SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId();
+
+    protected abstract U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
 
     /**
      * 创建实体并构建闭包表关系
@@ -195,7 +199,7 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
      */
     public T moveNode(UUID nodeId, UUID newParentId) {
         // 验证节点存在
-        T node = repository.getById(nodeId, true).orElseThrow(
+        T node = repository.getById(nodeId).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Node not found, ID: " + nodeId));
 
         // 验证新父节点存在
@@ -242,7 +246,8 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
 
         // 更新节点的父ID
         node.setParentId(newParentId);
-        return repository.update(node);
+        repository.update(node, setColumnParentId());
+        return node;
     }
 
     /**

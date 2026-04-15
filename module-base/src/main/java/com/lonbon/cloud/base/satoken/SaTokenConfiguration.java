@@ -24,6 +24,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 @Configuration
 public class SaTokenConfiguration {
@@ -79,16 +80,11 @@ public class SaTokenConfiguration {
             @Override
             public String createToken(String loginType, Object loginId, Map<String, Object> extraData, String keyt) {
 
-                // 构建
-                JWT jwt = JWT.create()
-                        .setPayload(LOGIN_TYPE, loginType)
-                        .setPayload(LOGIN_ID, loginId)
-                        // 塞入一个随机字符串，防止同账号下每次生成的 token 都一样的
-                        .setPayload(RN_STR, SaFoxUtil.getRandomString(32))
-                        .addPayloads(extraData);
+                Object deviceType = extraData.remove(JWTKey.DEVICE_TYPE);
+                Object timeout = extraData.remove(JWTKey.TIMEOUT);
 
-                // 返回
-                return generateToken(jwt, keyt);
+                return createToken(loginType, loginId, deviceType instanceof String s ? s : "",
+                                   timeout instanceof Number n ? n.longValue() : 0L, extraData, keyt);
             }
 
             /**
@@ -103,26 +99,20 @@ public class SaTokenConfiguration {
              * @return jwt-token
              */
             @Override
-            public String createToken(String loginType, Object loginId, String deviceType,
-                                      long timeout, Map<String, Object> extraData, String keyt) {
+            public String createToken(
+                    String loginType, Object loginId, String deviceType, long timeout,
+                    Map<String, Object> extraData, String keyt) {
+
+                String sub = loginId instanceof UUID ? loginId.toString().replace("-", "") : loginId.toString();
 
                 // 计算 eff 有效期：
-                // 		如果 timeout 指定为 -1，那么 eff 也为 -1，代表永不过期
-                // 		如果 timeout 指定为一个具体的值，那么 eff 为 13 位时间戳，代表此 token 到期的时间
-                long effTime = timeout;
-                if(timeout != NEVER_EXPIRE) {
-                    effTime = timeout * 1000 + System.currentTimeMillis();
-                }
+                // 如果 timeout 小于等于0，那么 eff 为 -1，代表永不过期
+                // 如果 timeout 指定为一个具体的值，那么 eff 为 13 位时间戳，代表此 token 到期的时间
+                long effTime = timeout > 0 ? timeout * 1000 + System.currentTimeMillis() : NEVER_EXPIRE;
 
-                // 创建
-                JWT jwt = JWT.create()
-                        .setPayload(LOGIN_TYPE, loginType)
-                        .setPayload(LOGIN_ID, loginId)
-                        .setPayload(DEVICE_TYPE, deviceType)
-                        .setPayload(EFF, effTime)
-                        // 塞入一个随机字符串，防止同账号同一毫秒下每次生成的 token 都一样的
-                        .setPayload(RN_STR, SaFoxUtil.getRandomString(32))
-                        .addPayloads(extraData);
+                JWT jwt = JWT.create().setJWTId(JWTKey.generateJti()).setSubject(sub)
+                             .setPayload(JWTKey.EXPIRATION_TIME, effTime).setPayload(JWTKey.LOGIN_TYPE, loginType)
+                             .setPayload(JWTKey.DEVICE_TYPE, deviceType).addPayloads(extraData);
 
                 // 返回
                 return generateToken(jwt, keyt);
@@ -136,7 +126,7 @@ public class SaTokenConfiguration {
              * @return /
              */
             @Override
-            public JWTSigner createSigner (String keyt) {
+            public JWTSigner createSigner(String keyt) {
                 // 替换成SM4加密签名算法
                 byte[] keyBytes = HexUtil.decodeHex(keyt);
                 SecretKey sm4Key = new SecretKeySpec(keyBytes, "SM4");
@@ -156,12 +146,12 @@ public class SaTokenConfiguration {
             public JWT parseToken(String token, String loginType, String keyt, boolean isCheckTimeout) {
 
                 // 秘钥不可以为空
-                if(SaFoxUtil.isEmpty(keyt)) {
+                if (SaFoxUtil.isEmpty(keyt)) {
                     throw new SaJwtException("请配置 jwt 秘钥");
                 }
 
                 // 如果token为null
-                if(token == null) {
+                if (token == null) {
                     throw new SaJwtException("jwt 字符串不可为空");
                 }
 
@@ -176,20 +166,20 @@ public class SaTokenConfiguration {
 
                 // 校验 Token 签名
                 boolean verify = jwt.setSigner(createSigner(keyt)).verify();
-                if( ! verify) {
+                if (!verify) {
                     throw new SaJwtException("jwt 签名无效：" + token).setCode(SaJwtErrorCode.CODE_30202);
                 }
 
                 // 校验 loginType
-                if( ! Objects.equals(loginType, payloads.getStr(LOGIN_TYPE))) {
+                if (!Objects.equals(loginType, payloads.getStr(JWTKey.LOGIN_TYPE))) {
                     throw new SaJwtException("jwt loginType 无效：" + token).setCode(SaJwtErrorCode.CODE_30203);
                 }
 
                 // 校验 Token 有效期
-                if(isCheckTimeout) {
-                    Long effTime = payloads.getLong(EFF, 0L);
-                    if(effTime != NEVER_EXPIRE) {
-                        if(effTime < System.currentTimeMillis()) {
+                if (isCheckTimeout) {
+                    Long effTime = payloads.getLong(JWTKey.EXPIRATION_TIME, 0L);
+                    if (effTime != NEVER_EXPIRE) {
+                        if (effTime < System.currentTimeMillis()) {
                             throw new SaJwtException("jwt 已过期：" + token).setCode(SaJwtErrorCode.CODE_30204);
                         }
                     }
@@ -221,11 +211,9 @@ public class SaTokenConfiguration {
                 if (value instanceof RefreshToken token)
                     return SaJwtUtil.generateToken(token.getJwt(), stpLogicJwt.jwtSecretKey());
 
-                // 如果传入 JWT，则生成jwt token
-                else if (value instanceof JWT jwt)
-                    return SaJwtUtil.generateToken(jwt, stpLogicJwt.jwtSecretKey());
-                else
-                    return super.randomTempToken(value);
+                    // 如果传入 JWT，则生成jwt token
+                else if (value instanceof JWT jwt) return SaJwtUtil.generateToken(jwt, stpLogicJwt.jwtSecretKey());
+                else return super.randomTempToken(value);
             }
 
 //            /**

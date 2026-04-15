@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBaseBusinessException(BaseBusinessException e) {
         log.warn("BaseBusinessException occurred: {}", e.getMessage(), e);
-        return ResponseUtil.error(e.getErrorCode(), e.getErrorMessage());
+        return ResponseUtil.error(e.getErrorCode(), e.getErrorMessage(), e.getMessage());
     }
     
     /**
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleBaseTechException(BaseTechException e) {
         log.error("BaseTechException occurred: {}", e.getMessage(), e);
-        return ResponseUtil.error(e.getErrorCode(), e.getErrorMessage());
+        return ResponseUtil.error(e.getErrorCode(), e.getErrorMessage(), e.getMessage());
     }
     
     /**
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining(", "));
         log.warn("MethodArgumentNotValidException occurred: {}", errorMessage, e);
-        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage);
+        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage, e.getMessage());
     }
     
     /**
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining(", "));
         log.warn("BindException occurred: {}", errorMessage, e);
-        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage);
+        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage, e.getMessage());
     }
     
     /**
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         String errorMessage = String.format("参数 %s 类型错误，期望类型: %s", e.getName(), e.getRequiredType().getSimpleName());
         log.warn("MethodArgumentTypeMismatchException occurred: {}", errorMessage, e);
-        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage);
+        return ResponseUtil.error(ErrorCode.PARAMETER_ERROR.getCode(), errorMessage, e.getMessage());
     }
     
     /**
@@ -99,7 +99,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNoSuchElementException(NoSuchElementException e) {
         log.warn("NoSuchElementException occurred: {}", e.getMessage(), e);
-        return ResponseUtil.error(ErrorCode.RESOURCE_NOT_FOUND.getCode(), ErrorCode.RESOURCE_NOT_FOUND.getMessage());
+        return ResponseUtil.error(ErrorCode.RESOURCE_NOT_FOUND.getCode(), e.getMessage(), e.getMessage());
     }
     
     /**
@@ -111,6 +111,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception e) {
         log.error("System exception occurred: {}", e.getMessage(), e);
-        return ResponseUtil.error(ErrorCode.SYSTEM_ERROR.getCode(), ErrorCode.SYSTEM_ERROR.getMessage());
+        return ResponseUtil.error(ErrorCode.SYSTEM_ERROR.getCode(), ErrorCode.SYSTEM_ERROR.getMessage(), e.getMessage());
     }
 }

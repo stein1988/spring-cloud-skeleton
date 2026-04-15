@@ -7,5 +7,5 @@ public interface Closure {
 
     UUID getDescendantId();
 
-    int getDistance();
+    Integer getDistance();
 }

@@ -47,14 +47,14 @@ public class Tenant extends BaseEntity
     /**
      * 是否默认团队
      */
-    private boolean isDefault;
+    private Boolean isDefault;
 
     /**
      * 是否激活
      * 对应lb_location_care.lb_organization.is_use
      */
     @Column(dbDefault = "true")
-    private boolean isActive;
+    private Boolean isActive;
 
     private UUID parentId;
 

@@ -38,5 +38,5 @@ public class DepartmentClosure extends BaseEntity
      * 层级距离，取值>=0，0表示自身，ancestorId=descendantId，1表示直接后代
      */
 //    @Min(value = 0, message = "层级距离（distance）不能为负数")
-    private int distance;
+    private Integer distance;
 }

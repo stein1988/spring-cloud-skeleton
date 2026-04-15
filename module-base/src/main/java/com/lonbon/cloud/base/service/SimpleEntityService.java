@@ -2,8 +2,10 @@ package com.lonbon.cloud.base.service;
 
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
@@ -44,20 +46,40 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public T updateEntity(UUID id, Object updateDto) {
-        return this.updateEntity(id, entity -> converter.convert(updateDto, entity));
+    public void updateEntity(UUID id, Object updateDto) {
+        this.updateEntity(id, (Function<T, T>) entity -> converter.convert(updateDto, entity));
     }
 
     @Override
-    public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
-        return repository.track(() -> {
+    public void updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
+        repository.track(() -> {
             T existing = repository.getById(id, true).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));
 
             T updated = updateFunc.apply(existing);
-            return repository.update(updated);
+            repository.update(updated);
         });
     }
+
+    @Override
+    public void updateEntity(UUID id, SQLActionExpression1<TProxy> columns) {
+        repository.updateById(id, columns);
+    }
+
+    @Override
+    public <S extends T> void updateEntity(S entity, SQLFuncExpression1<TProxy, SQLSelectExpression> columns) {
+        repository.update(entity, columns);
+    }
+
+//    public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
+//        return repository.track(() -> {
+//            T existing = repository.getById(id, true).orElseThrow(
+//                    () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));
+//
+//            T updated = updateFunc.apply(existing);
+//            return repository.update(updated);
+//        });
+//    }
 
 
     @Override
@@ -104,22 +126,26 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    public Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression) {
-        return repository.getFirst(whereExpression);
+    public Optional<T> getFirstEntity(
+            SQLActionExpression1<TProxy> whereExpression,
+            SQLActionExpression1<TProxy> order) {
+        return repository.getFirst(whereExpression, order);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getFirstEntity(
-            SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate) {
-        return repository.getFirst(whereExpression, navigate);
+            SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate,
+            SQLActionExpression1<TProxy> order) {
+        return repository.getFirst(whereExpression, navigate, order);
     }
-    
+
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    public Optional<T> getFirstEntity(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
-        return repository.getFirst(whereExpression, navigate);
+    public Optional<T> getFirstEntity(
+            SQLActionExpression1<TProxy> whereExpression, List<String> navigate,
+            SQLActionExpression1<TProxy> order) {
+        return repository.getFirst(whereExpression, navigate, order);
     }
 
     @Override

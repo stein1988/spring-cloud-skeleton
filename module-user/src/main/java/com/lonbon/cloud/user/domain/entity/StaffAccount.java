@@ -59,19 +59,19 @@ public class StaffAccount extends BaseEntity implements ProxyEntityAvailable<Sta
      * 对应旧表：lb_ims_staff.complete_nursing_setup_type
      * TODO：关联字典表 sys_nursing_setup_type
      */
-    private int completeNursingSetupType;
+    private Integer completeNursingSetupType;
 
     /**
      * 遗嘱查看权限：0=无权限，1=有权限
      * 对应旧表：lb_ims_staff.will_view_permissions
      * TODO：后续可改为Boolean类型，添加权限控制注解
      */
-    private int willViewPermissions;
+    private Integer willViewPermissions;
 
     /**
      * 是否允许查看库存物资价格：0=不允许，1=允许
      * 对应旧表：lb_ims_staff.allow_view_material_price
      * TODO：后续可改为Boolean类型，添加权限控制注解
      */
-    private int allowViewMaterialPrice;
+    private Integer allowViewMaterialPrice;
 }

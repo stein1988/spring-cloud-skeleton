@@ -2,6 +2,7 @@ package com.lonbon.cloud.base.response;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -10,6 +11,7 @@ import java.io.Serializable;
  */
 @Data
 public class ErrorResponse implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private int code;
@@ -24,9 +26,10 @@ public class ErrorResponse implements Serializable {
 
     /**
      * 创建错误响应
-     * @param code 错误码
+     *
+     * @param code    错误码
      * @param message 错误消息
-     * @param data 附加数据
+     * @param data    附加数据
      * @return 错误响应
      */
     public static ErrorResponse of(int code, String message, Object data) {
@@ -35,7 +38,8 @@ public class ErrorResponse implements Serializable {
 
     /**
      * 创建错误响应
-     * @param code 错误码
+     *
+     * @param code    错误码
      * @param message 错误消息
      * @return 错误响应
      */
@@ -45,6 +49,7 @@ public class ErrorResponse implements Serializable {
 
     /**
      * 创建错误响应
+     *
      * @param message 错误消息
      * @return 错误响应
      */

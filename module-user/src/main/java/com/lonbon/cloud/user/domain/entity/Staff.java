@@ -63,7 +63,7 @@ public class Staff extends BaseEntity implements ProxyEntityAvailable<Staff, Sta
      * 对应旧表：lb_ims_staff.status
      * TODO：关联字典表 sys_staff_status，添加枚举
      */
-    private int status;
+    private Integer status;
 
     /**
      * 入职日期
@@ -82,7 +82,7 @@ public class Staff extends BaseEntity implements ProxyEntityAvailable<Staff, Sta
      * 对应旧表：lb_ims_staff.is_superior
      * TODO：后续可改为 Boolean 类型
      */
-    private int isSuperior;
+    private Integer isSuperior;
 
     // ==================== 一对一关联扩展表 ====================
     /**

@@ -5,8 +5,10 @@ import com.easy.query.api.proxy.entity.select.EntityQueryable;
 import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.fetcher.AbstractFetcher;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
@@ -69,21 +71,28 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public <S extends T> S insert(S entity) {
+    public <S extends T> void insert(S entity) {
         easyEntityQuery.insertable(entity).executeRows();
-        return entity;
     }
 
     @Override
-    public <S extends T> S update(S entity) {
+    public <S extends T> void update(S entity) {
         easyEntityQuery.updatable(entity).executeRows();
-        return entity;
     }
 
     @Override
-    public <S extends T> S save(S entity) {
+    public <S extends T> void update(S entity, SQLFuncExpression1<TProxy, SQLSelectExpression> columns) {
+        easyEntityQuery.updatable(entity).setColumns(columns).executeRows();
+    }
+
+    @Override
+    public void updateById(UUID id, SQLActionExpression1<TProxy> columns) {
+        easyEntityQuery.updatable(entityType).setColumns(columns).whereById(id).executeRows();
+    }
+
+    @Override
+    public <S extends T> void save(S entity) {
         easyEntityQuery.insertable(entity).onConflictThen(o -> fetcherProvider.apply(o).allFields()).executeRows();
-        return entity;
     }
 
     @Override
@@ -160,25 +169,27 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression) {
-        return Optional.ofNullable(queryable().where(whereExpression).firstOrNull());
+    public Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, SQLActionExpression1<TProxy> order) {
+        return Optional.ofNullable(queryable().where(whereExpression).orderBy(order).firstOrNull());
     }
 
     @Override
     public Optional<T> getFirst(
-            SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+            SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate,
+            SQLActionExpression1<TProxy> order) {
         EntityQueryable<TProxy, T> queryable = queryable();
         if (navigate != null) {
             queryable = queryable.include2(navigate);
         }
-        return Optional.ofNullable(queryable.where(whereExpression).firstOrNull());
+        return Optional.ofNullable(queryable.where(whereExpression).orderBy(order).firstOrNull());
     }
 
     @Override
-    public Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, List<String> navigate) {
+    public Optional<T> getFirst(
+            SQLActionExpression1<TProxy> whereExpression, List<String> navigate,
+            SQLActionExpression1<TProxy> order) {
         SQLActionExpression2<IncludeContext, TProxy> navigateExpression = processNavigateList(navigate);
-        return getFirst(whereExpression, navigateExpression);
+        return getFirst(whereExpression, navigateExpression, order);
     }
 
     @Override

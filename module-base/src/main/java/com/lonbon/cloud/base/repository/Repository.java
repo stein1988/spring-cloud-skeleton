@@ -5,7 +5,9 @@ import com.easy.query.core.exception.EasyQuerySingleMoreElementException;
 import com.easy.query.core.exception.EasyQuerySingleNotNullException;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.ProxyEntity;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
@@ -40,10 +42,9 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      *
      * @param entity 要插入的实体，不能为 {@literal null}
      * @param <S>    实体类型的子类型
-     * @return 插入后的实体，可能包含数据库生成的主键等信息
      * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
      */
-    <S extends T> S insert(S entity);
+    <S extends T> void insert(S entity);
 
     /**
      * 更新给定的实体。
@@ -54,12 +55,31 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      *
      * @param entity 要更新的实体，不能为 {@literal null}
      * @param <S>    实体类型的子类型
-     * @return 更新后的实体
      * @throws IllegalArgumentException          如果给定的 {@literal entity} 为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
-    <S extends T> S update(S entity);
+    <S extends T> void update(S entity);
+
+    /**
+     * 更新给定的实体，可指定要更新的列。
+     * <p>
+     * 该方法会直接执行UPDATE操作，用于更新已存在的实体，
+     * 可通过 columns 参数指定要更新的列，未指定的列不会被更新。
+     * 适用于只需要更新实体部分字段的场景。
+     * </p>
+     *
+     * @param entity  要更新的实体，不能为 {@literal null}
+     * @param columns 要更新的列表达式，用于指定需要更新的字段
+     * @param <S>     实体类型的子类型
+     * @throws IllegalArgumentException          如果给定的 {@literal entity} 为 {@literal null}
+     * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
+     *                                           或者当实体被认为存在但数据库中不存在时
+     */
+    <S extends T> void update(S entity, SQLFuncExpression1<TProxy, SQLSelectExpression> columns);
+
+
+    void updateById(UUID id, SQLActionExpression1<TProxy> columns);
 
     /**
      * 保存给定的实体。
@@ -71,12 +91,11 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      *
      * @param entity 要保存的实体，不能为 {@literal null}
      * @param <S>    实体类型的子类型
-     * @return 保存后的实体
      * @throws IllegalArgumentException          如果给定的 {@literal entity} 为 {@literal null}
      * @throws OptimisticLockingFailureException 当实体使用乐观锁并且版本属性与持久化存储中的值不同时，
      *                                           或者当实体被认为存在但数据库中不存在时
      */
-    <S extends T> S save(S entity);
+    <S extends T> void save(S entity);
 
     /**
      * 保存所有给定的实体。
@@ -120,7 +139,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
     /**
      * 通过 ID 检索实体，可指定是否开启追踪。
      *
-     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param id       实体的唯一标识符，不能为 {@literal null}
      * @param tracking 是否开启实体追踪
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
@@ -130,7 +149,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
     /**
      * 通过 ID 检索实体，可指定导航属性和是否开启追踪。
      *
-     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param id       实体的唯一标识符，不能为 {@literal null}
      * @param navigate 导航属性表达式，用于关联查询
      * @param tracking 是否开启实体追踪
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
@@ -141,7 +160,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
     /**
      * 通过 ID 检索实体，可指定导航属性名称列表和是否开启追踪。
      *
-     * @param id 实体的唯一标识符，不能为 {@literal null}
+     * @param id       实体的唯一标识符，不能为 {@literal null}
      * @param navigate 导航属性名称列表，用于关联查询
      * @param tracking 是否开启实体追踪
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
@@ -171,7 +190,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @param navigate 导航属性表达式，用于关联查询
+     * @param navigate        导航属性表达式，用于关联查询
      * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
      * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
@@ -188,7 +207,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @param navigate 导航属性名称列表，用于关联查询
+     * @param navigate        导航属性名称列表，用于关联查询
      * @return 包含查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
      * @throws IllegalArgumentException            如果 {@literal whereExpression} 为 {@literal null}
      * @throws EasyQuerySingleMoreElementException 如果查询结果大于一条数据
@@ -217,10 +236,11 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
      */
-    Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression);
+    Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, SQLActionExpression1<TProxy> order);
 
     /**
      * 返回第一个结果作为 {@link Optional}，可指定导航属性。
@@ -230,13 +250,14 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @param navigate 导航属性表达式，用于关联查询
+     * @param navigate        导航属性表达式，用于关联查询
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
      */
     Optional<T> getFirst(
             SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate);
+            SQLActionExpression2<IncludeContext, TProxy> navigate, SQLActionExpression1<TProxy> order);
 
     /**
      * 返回第一个结果作为 {@link Optional}，可指定导航属性名称列表。
@@ -246,11 +267,13 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param whereExpression 查询条件表达式，不能为 {@literal null}
-     * @param navigate 导航属性名称列表，用于关联查询
+     * @param navigate        导航属性名称列表，用于关联查询
+     * @param order           排序条件表达式，不能为 {@literal null}
      * @return 包含第一个查询结果的 {@link Optional}，如果没有结果则为 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal whereExpression} 为 {@literal null}
      */
-    Optional<T> getFirst(SQLActionExpression1<TProxy> whereExpression, List<String> navigate);
+    Optional<T> getFirst(
+            SQLActionExpression1<TProxy> whereExpression, List<String> navigate, SQLActionExpression1<TProxy> order);
 
     /**
      * 返回具有给定 ID 的所有类型 {@code T} 的实例。
@@ -374,7 +397,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * </p>
      *
      * @param supplier 供应商函数，返回执行结果
-     * @param <R> 执行结果的类型
+     * @param <R>      执行结果的类型
      * @return 供应商函数的执行结果
      */
     <R> R track(Supplier<R> supplier);

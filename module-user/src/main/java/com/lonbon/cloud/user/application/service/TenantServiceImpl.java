@@ -1,6 +1,8 @@
 package com.lonbon.cloud.user.application.service;
 
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
+import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.service.ClosureEntityService;
 import com.lonbon.cloud.user.domain.entity.Tenant;
@@ -38,7 +40,13 @@ public class TenantServiceImpl extends ClosureEntityService<Tenant, TenantProxy,
     }
 
     @Override
-    protected TenantClosure createClosure(UUID ancestorId, UUID descendantId, int distance) {
+    protected SQLFuncExpression1<TenantProxy, SQLSelectExpression> setColumnParentId() {
+        return TenantProxy::parentId;
+    }
+
+
+    @Override
+    protected TenantClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
         return new TenantClosure(ancestorId, descendantId, distance);
     }
 }
