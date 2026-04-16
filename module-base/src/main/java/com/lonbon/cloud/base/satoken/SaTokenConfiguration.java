@@ -26,13 +26,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * 重载SaToken的Configuration，完成以下功能：
+ * 1、将默认token改为jwt样式
+ * 2、使用国密SM4算法加密jwt，代替默认的HS256算法
+ */
+
 @Configuration
 public class SaTokenConfiguration {
 
     private final StpLogicJwtForSimple stpLogicJwt = new StpLogicJwtForSimple() {
 
         /**
-         * 获取jwt秘钥
+         * 获取jwt秘钥，确保是合法的SM4密钥
+         * 先使用super.jwtSecretKey()获取配置sa-token.jwt-secret-key，然后确认格式必须是32个16进制字符
          * @return /
          */
         @Override
@@ -68,6 +75,20 @@ public class SaTokenConfiguration {
     @PostConstruct
     public void setSaJwtTemplate() {
         SaJwtUtil.setSaJwtTemplate(new SaJwtTemplate() {
+
+            /**
+             * 返回 jwt 使用的签名算法，替换成SM4加密签名算法
+             *
+             * @param keyt 秘钥
+             * @return /
+             */
+            @Override
+            public JWTSigner createSigner(String keyt) {
+                byte[] keyBytes = HexUtil.decodeHex(keyt);
+                SecretKey sm4Key = new SecretKeySpec(keyBytes, "SM4");
+                return JWTSignerUtil.sm4cmac(sm4Key);
+            }
+
             /**
              * 创建 jwt （简单方式）
              *
@@ -80,8 +101,8 @@ public class SaTokenConfiguration {
             @Override
             public String createToken(String loginType, Object loginId, Map<String, Object> extraData, String keyt) {
 
-                Object deviceType = extraData.remove(JWTKey.DEVICE_TYPE);
-                Object timeout = extraData.remove(JWTKey.TIMEOUT);
+                Object deviceType = extraData.remove(JWTUtil.DEVICE_TYPE);
+                Object timeout = extraData.remove(JWTUtil.TIMEOUT);
 
                 return createToken(loginType, loginId, deviceType instanceof String s ? s : "",
                                    timeout instanceof Number n ? n.longValue() : 0L, extraData, keyt);
@@ -110,28 +131,14 @@ public class SaTokenConfiguration {
                 // 如果 timeout 指定为一个具体的值，那么 eff 为 13 位时间戳，代表此 token 到期的时间
                 long effTime = timeout > 0 ? timeout * 1000 + System.currentTimeMillis() : NEVER_EXPIRE;
 
-                JWT jwt = JWT.create().setJWTId(JWTKey.generateJti()).setSubject(sub)
-                             .setPayload(JWTKey.EXPIRATION_TIME, effTime).setPayload(JWTKey.LOGIN_TYPE, loginType)
-                             .setPayload(JWTKey.DEVICE_TYPE, deviceType).addPayloads(extraData);
+                JWT jwt = JWT.create().setJWTId(JWTUtil.generateJti()).setSubject(sub)
+                             .setPayload(JWTUtil.EXPIRATION_TIME, effTime).setPayload(JWTUtil.LOGIN_TYPE, loginType)
+                             .setPayload(JWTUtil.DEVICE_TYPE, deviceType).addPayloads(extraData);
 
                 // 返回
                 return generateToken(jwt, keyt);
             }
 
-
-            /**
-             * 返回 jwt 使用的签名算法
-             *
-             * @param keyt 秘钥
-             * @return /
-             */
-            @Override
-            public JWTSigner createSigner(String keyt) {
-                // 替换成SM4加密签名算法
-                byte[] keyBytes = HexUtil.decodeHex(keyt);
-                SecretKey sm4Key = new SecretKeySpec(keyBytes, "SM4");
-                return JWTSignerUtil.sm4cmac(sm4Key);
-            }
 
             /**
              * jwt 解析
@@ -171,13 +178,13 @@ public class SaTokenConfiguration {
                 }
 
                 // 校验 loginType
-                if (!Objects.equals(loginType, payloads.getStr(JWTKey.LOGIN_TYPE))) {
+                if (!Objects.equals(loginType, payloads.getStr(JWTUtil.LOGIN_TYPE))) {
                     throw new SaJwtException("jwt loginType 无效：" + token).setCode(SaJwtErrorCode.CODE_30203);
                 }
 
                 // 校验 Token 有效期
                 if (isCheckTimeout) {
-                    Long effTime = payloads.getLong(JWTKey.EXPIRATION_TIME, 0L);
+                    Long effTime = payloads.getLong(JWTUtil.EXPIRATION_TIME, 0L);
                     if (effTime != NEVER_EXPIRE) {
                         if (effTime < System.currentTimeMillis()) {
                             throw new SaJwtException("jwt 已过期：" + token).setCode(SaJwtErrorCode.CODE_30204);
@@ -188,8 +195,6 @@ public class SaTokenConfiguration {
                 // 返回
                 return jwt;
             }
-
-
         });
     }
 
@@ -208,7 +213,7 @@ public class SaTokenConfiguration {
             @Override
             public String randomTempToken(Object value) {
                 // 如果传入 RefreshToken，则由RefreshToken提供jwt数据，只提供自校验数据，缩短长度
-                if (value instanceof RefreshToken token)
+                if (value instanceof UserRefreshToken token)
                     return SaJwtUtil.generateToken(token.getJwt(), stpLogicJwt.jwtSecretKey());
 
                     // 如果传入 JWT，则生成jwt token

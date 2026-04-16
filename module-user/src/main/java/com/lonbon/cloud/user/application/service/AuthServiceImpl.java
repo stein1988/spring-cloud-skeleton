@@ -1,10 +1,9 @@
 package com.lonbon.cloud.user.application.service;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.dev33.satoken.temp.SaTempUtil;
-import com.lonbon.cloud.base.satoken.RefreshToken;
+import com.lonbon.cloud.base.satoken.UserAccessToken;
+import com.lonbon.cloud.base.satoken.UserRefreshToken;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;
 import com.lonbon.cloud.user.domain.dto.LoginResponse;
 import com.lonbon.cloud.user.domain.dto.RefreshTokenRequest;
@@ -78,17 +77,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse refreshToken(RefreshTokenRequest request) {
         String refreshTokenStr = request.getRefreshToken();
-        RefreshToken refreshToken = RefreshToken.parse(refreshTokenStr);
-        if (refreshToken == null) {
+        UserRefreshToken userRefreshToken = UserRefreshToken.parse(refreshTokenStr);
+        if (userRefreshToken == null) {
             throw new RuntimeException("refreshToken not valid");
         }
-        UUID userId = refreshToken.getUserId();
+        UUID userId = userRefreshToken.getUserId();
         if (userId == null) {
             throw new RuntimeException("refreshToken not valid");
         }
 
         // 注销旧的token
-        StpUtil.logoutByTokenValue(refreshToken.getAccessToken());
+        StpUtil.logoutByTokenValue(userRefreshToken.getAccessToken());
 
         // 删除旧的refresh token
         SaTempUtil.deleteToken(refreshTokenStr);
@@ -131,16 +130,14 @@ public class AuthServiceImpl implements AuthService {
         String userIdStr = userId.toString();
         log.info("login:userId:{}", userIdStr);
 
-        // 生成token，必须加入random随机参数rnd，否则同一用户每次
-        StpUtil.login(userIdStr, new SaLoginParameter().setExtra("sub", userIdStr).setExtra("rnd", UUID.randomUUID()));
-        SaTokenInfo info = StpUtil.getTokenInfo();
-        String token = info.getTokenValue();
-        long timeout = info.getTokenTimeout();
+        // 生成access token
+        UserAccessToken accessToken = UserAccessToken.generate(userId);
 
         // 生成刷新token
         long refreshTimeout = 10000;
-        RefreshToken refreshToken = new RefreshToken(userId, token, refreshTimeout);
+        UserRefreshToken userRefreshToken = UserRefreshToken.generate(userId, accessToken.getToken(), refreshTimeout);
 
-        return new LoginResponse(userId, token, timeout, refreshToken.generate(), refreshToken.getExpiresIn());
+        return new LoginResponse(userId, accessToken.getToken(), accessToken.getTimeout(),
+                                 userRefreshToken.getRefreshToken(), userRefreshToken.getTimeout());
     }
 }

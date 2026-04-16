@@ -3,8 +3,11 @@ package com.lonbon.cloud.base.satoken;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class JWTKey {
+public class JWTUtil {
     public static final String JWT_ID = "jti";
+    /**
+     * 主题/用户唯一标识，存用户ID
+     */
     public static final String SUBJECT = "sub";
     public static final String AUDIENCE = "aud";
     public static final String ISSUED_AT = "iat";
@@ -13,6 +16,10 @@ public class JWTKey {
     public static final String TIMEOUT = "eff";
     public static final String LOGIN_TYPE = "lgt";
     public static final String DEVICE_TYPE = "dvt";
+
+    public static final String CURRENT_TENANT_ID = "cti";
+    public static final String IS_SUPER_ADMIN = "sua";
+    public static final String IS_TENANT_ADMIN = "tna";
 
     public static String generateJti() {
         byte[] bytes = new byte[16];
@@ -117,7 +124,7 @@ public class JWTKey {
   "data": {
   "accessToken": "xxx",
   "refreshToken": "xxx",
-  "expiresIn": 3600
+  "timeout": 3600
   }
   }
   ```
