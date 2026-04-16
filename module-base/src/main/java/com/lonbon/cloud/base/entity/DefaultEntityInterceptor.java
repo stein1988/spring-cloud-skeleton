@@ -7,7 +7,6 @@ import com.easy.query.core.expression.parser.core.base.ColumnOnlySelector;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.sql.builder.EntityInsertExpressionBuilder;
 import com.easy.query.core.expression.sql.builder.EntityUpdateExpressionBuilder;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
@@ -18,7 +17,8 @@ import java.util.UUID;
  * 用于处理BaseEntity的自动填充逻辑，如创建时间、更新时间、创建人、更新人等
  */
 @Component
-public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
+public class DefaultEntityInterceptor
+        implements EntityInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
 
     @Override
     public String name() {
@@ -29,7 +29,7 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * 哪些对象需要用到这个拦截器(继承BaseEntity的对象)
      */
     @Override
-    public boolean apply(@NotNull Class<?> entityClass) {
+    public boolean apply(Class<?> entityClass) {
         return BaseEntity.class.isAssignableFrom(entityClass);
     }
 
@@ -37,7 +37,8 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * insert操作时的处理
      */
     @Override
-    public void configureInsert(Class<?> entityClass, EntityInsertExpressionBuilder entityInsertExpressionBuilder, Object entity) {
+    public void configureInsert(
+            Class<?> entityClass, EntityInsertExpressionBuilder entityInsertExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
 
         OffsetDateTime now = OffsetDateTime.now();
@@ -62,7 +63,8 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * update操作时的处理（不包括伪删除）
      */
     @Override
-    public void configureUpdate(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
+    public void configureUpdate(
+            Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
 
         baseEntity.setUpdateTime(OffsetDateTime.now());
@@ -76,7 +78,9 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * 目前未实现具体逻辑
      */
     @Override
-    public void configure(@NotNull Class<?> entityClass, @NotNull EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, @NotNull ColumnOnlySelector<Object> columnSelector, @NotNull Object entity) {
+    public void configure(
+            Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder,
+            ColumnOnlySelector<Object> columnSelector, Object entity) {
 
     }
 
@@ -85,7 +89,9 @@ public class DefaultEntityInterceptor implements EntityInterceptor, UpdateSetInt
      * 目前未实现具体逻辑
      */
     @Override
-    public void configure(Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, ColumnSetter<Object> columnSetter) {
+    public void configure(
+            Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder,
+            ColumnSetter<Object> columnSetter) {
 
     }
 }

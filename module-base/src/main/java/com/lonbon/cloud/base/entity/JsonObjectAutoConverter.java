@@ -5,8 +5,7 @@ import com.easy.query.core.metadata.ColumnMetadata;
 import com.easy.query.core.util.EasyClassUtil;
 import com.easy.query.core.util.EasyMapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -30,7 +29,7 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
      * 判断当前字段类型是否需要应用该转换器（保留原有逻辑）
      */
     @Override
-    public boolean apply(@NotNull Class<?> entityClass, @NotNull Class<Object> propertyType, String property) {
+    public boolean apply(Class<?> entityClass, Class<Object> propertyType, String property) {
         return JsonObject.class.isAssignableFrom(propertyType);
     }
 
@@ -38,7 +37,7 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
      * 序列化：将JsonObject对象转为JSON字符串（替换ONode.serialize）
      */
     @Override
-    public @Nullable Object serialize(@Nullable Object o, @NotNull ColumnMetadata columnMetadata) {
+    public @Nullable Object serialize(@Nullable Object o, ColumnMetadata columnMetadata) {
         if (o == null) {
             return null;
         }
@@ -54,7 +53,7 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
      * 反序列化：将JSON字符串转为指定类型的JsonObject对象（替换ONode.deserialize）
      */
     @Override
-    public @Nullable Object deserialize(@Nullable Object s, @NotNull ColumnMetadata columnMetadata) {
+    public @Nullable Object deserialize(@Nullable Object s, ColumnMetadata columnMetadata) {
 //        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String jsonStr = getValueString(s);
         if (jsonStr == null || jsonStr.isEmpty()) {
@@ -63,10 +62,9 @@ public class JsonObjectAutoConverter implements ValueAutoConverter<Object, Objec
         try {
             Type targetType = getFiledType(columnMetadata);
             if (targetType instanceof Class<?>)
-            // 处理泛型类型反序列化（Jackson核心）
-                return OBJECT_MAPPER.readValue(jsonStr, (Class<?>)targetType);
-            else
-                throw new RuntimeException("not support type:" + targetType);
+                // 处理泛型类型反序列化（Jackson核心）
+                return OBJECT_MAPPER.readValue(jsonStr, (Class<?>) targetType);
+            else throw new RuntimeException("not support type:" + targetType);
         } catch (Exception e) {
             throw new RuntimeException("JSON反序列化失败：" + columnMetadata.getPropertyName(), e);
         }

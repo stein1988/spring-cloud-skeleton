@@ -13,7 +13,7 @@ import com.easy.query.core.proxy.fetcher.AbstractFetcher;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -36,7 +36,7 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
         this.fetcherProvider = fetcherProvider;
     }
 
-    protected Map<String, SQLActionExpression2<IncludeContext, TProxy>> getNavigateMap() {
+    protected @Nullable Map<String, SQLActionExpression2<IncludeContext, TProxy>> getNavigateMap() {
         return null;
     }
 
@@ -46,9 +46,9 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
      * @param navigate 导航属性名称列表
      * @return 导航属性表达式，如果导航属性列表为空或导航映射为 null 则返回 null
      */
-    protected SQLActionExpression2<IncludeContext, TProxy> processNavigateList(List<String> navigate) {
+    protected @Nullable SQLActionExpression2<IncludeContext, TProxy> processNavigateList(List<String> navigate) {
         // 处理空值情况
-        if (navigate == null || navigate.isEmpty()) {
+        if (navigate.isEmpty()) {
             return null;
         }
 
@@ -124,7 +124,9 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public Optional<T> getById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking) {
+    public Optional<T> getById(
+            UUID id, @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate,
+            boolean tracking) {
         EntityQueryable<TProxy, T> queryable = queryable();
         if (navigate != null) {
             queryable = queryable.include2(navigate);
@@ -149,7 +151,7 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     @Override
     public Optional<T> getSingle(
             SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate) {
+            @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate) {
         EntityQueryable<TProxy, T> queryable = queryable();
         if (navigate != null) {
             queryable = queryable.include2(navigate);
@@ -175,8 +177,8 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
 
     @Override
     public Optional<T> getFirst(
-            SQLActionExpression1<TProxy> whereExpression, SQLActionExpression2<IncludeContext, TProxy> navigate,
-            SQLActionExpression1<TProxy> order) {
+            SQLActionExpression1<TProxy> whereExpression,
+            @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate, SQLActionExpression1<TProxy> order) {
         EntityQueryable<TProxy, T> queryable = queryable();
         if (navigate != null) {
             queryable = queryable.include2(navigate);
@@ -213,7 +215,7 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public PageResult<T> getPagination(Object whereObject, @NotNull Pageable pageable) {
+    public PageResult<T> getPagination(Object whereObject, Pageable pageable) {
         EasyPageResult<T> result = queryable().whereObject(whereObject).orderByObject(pageable.hasSort(),
                                                                                       new EasyQuerySort(
                                                                                               pageable.getSortables()))

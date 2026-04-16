@@ -13,7 +13,6 @@ import com.lonbon.cloud.base.exception.BusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
 import com.lonbon.cloud.base.repository.Repository;
 import io.github.linpeilie.Converter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -51,7 +50,7 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
-    public void updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
+    public void updateEntity(UUID id, Function<T, T> updateFunc) {
         repository.track(() -> {
             T existing = repository.getById(id, true).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));

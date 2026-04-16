@@ -4,7 +4,6 @@ import com.easy.query.core.metadata.ColumnMetadata;
 import com.easy.query.core.migration.ColumnDbTypeResult;
 import com.easy.query.core.migration.EntityMigrationMetadata;
 import com.easy.query.pgsql.migration.PgSQLMigrationEntityParser;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -35,7 +34,6 @@ public class MigrationEntityParser extends PgSQLMigrationEntityParser {
     }
 
     @Override
-    @NotNull
     public ColumnDbTypeResult getColumnDbType(
             EntityMigrationMetadata entityMigrationMetadata,
             ColumnMetadata columnMetadata) {
@@ -52,7 +50,6 @@ public class MigrationEntityParser extends PgSQLMigrationEntityParser {
         return super.getColumnDbType(entityMigrationMetadata, columnMetadata);
     }
 
-    
 
     @Override
     public boolean isNullable(EntityMigrationMetadata entityMigrationMetadata, ColumnMetadata columnMetadata) {

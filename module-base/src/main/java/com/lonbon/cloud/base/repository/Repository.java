@@ -11,6 +11,7 @@ import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.Collection;
@@ -155,7 +156,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * @return 具有给定 ID 的实体包装在 {@link Optional} 中，如果未找到则返回 {@link Optional#empty()}
      * @throws IllegalArgumentException 如果 {@literal id} 为 {@literal null}
      */
-    Optional<T> getById(UUID id, SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
+    Optional<T> getById(UUID id, @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate, boolean tracking);
 
     /**
      * 通过 ID 检索实体，可指定导航属性名称列表和是否开启追踪。
@@ -197,7 +198,7 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     Optional<T> getSingle(
             SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate);
+            @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate);
 
     /**
      * 返回单个结果作为 {@link Optional}，可指定导航属性名称列表。
@@ -257,7 +258,8 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      */
     Optional<T> getFirst(
             SQLActionExpression1<TProxy> whereExpression,
-            SQLActionExpression2<IncludeContext, TProxy> navigate, SQLActionExpression1<TProxy> order);
+            @Nullable SQLActionExpression2<IncludeContext, TProxy> navigate,
+            SQLActionExpression1<TProxy> order);
 
     /**
      * 返回第一个结果作为 {@link Optional}，可指定导航属性名称列表。
