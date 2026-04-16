@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,8 +20,9 @@ public class UserAccessToken {
      */
     private long timeout;
 
-    public static UserAccessToken generate(UUID userId) {
-        StpUtil.login(userId.toString(), new SaLoginParameter().setExtra(JWTUtil.SUBJECT, userId));
+    public static UserAccessToken generate(UUID userId, List<String> roles) {
+        StpUtil.login(userId.toString(),
+                      new SaLoginParameter().setExtra(JWTUtil.SUBJECT, userId).setExtra(JWTUtil.ROLES, roles));
         SaTokenInfo info = StpUtil.getTokenInfo();
         UserAccessToken accessToken = new UserAccessToken();
         accessToken.userId = userId;

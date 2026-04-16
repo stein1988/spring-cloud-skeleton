@@ -19,6 +19,9 @@ import lombok.experimental.FieldNameConstants;
 @EntityProxy
 public class Role extends BaseEntity implements ProxyEntityAvailable<Role, RoleProxy> {
 
+    public static final String SUPER_ADMIN = "super_admin";
+    public static final String TENANT_ADMIN = "tenant_admin";
+
     /**
      * 类型，暂时无用
      */

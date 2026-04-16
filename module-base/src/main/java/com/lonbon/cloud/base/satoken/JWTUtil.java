@@ -18,8 +18,7 @@ public class JWTUtil {
     public static final String DEVICE_TYPE = "dvt";
 
     public static final String CURRENT_TENANT_ID = "cti";
-    public static final String IS_SUPER_ADMIN = "sua";
-    public static final String IS_TENANT_ADMIN = "tna";
+    public static final String ROLES = "rol";
 
     public static String generateJti() {
         byte[] bytes = new byte[16];

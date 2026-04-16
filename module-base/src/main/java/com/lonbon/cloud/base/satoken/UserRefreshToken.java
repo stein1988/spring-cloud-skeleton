@@ -3,6 +3,7 @@ package com.lonbon.cloud.base.satoken;
 import cn.dev33.satoken.temp.SaTempUtil;
 import cn.hutool.jwt.JWT;
 import lombok.Data;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class UserRefreshToken {
     private long timeout;
 
     private long expirationTime;
-    
+
     public static UserRefreshToken generate(UUID userId, String accessToken, long timeout) {
         long expirationTime = timeout > 0 ? timeout * 1000 + System.currentTimeMillis() : NEVER_EXPIRE;
         UserRefreshToken refreshToken = new UserRefreshToken();
@@ -34,6 +35,7 @@ public class UserRefreshToken {
         return refreshToken;
     }
 
+    @Nullable
     public static UserRefreshToken parse(String refreshToken) {
         // TODO：增加jwt token的自校验
         Object value = SaTempUtil.parseToken(refreshToken);
