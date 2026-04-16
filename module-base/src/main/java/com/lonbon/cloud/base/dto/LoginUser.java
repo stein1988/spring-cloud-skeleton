@@ -1,7 +1,5 @@
 package com.lonbon.cloud.base.dto;
 
-import com.lonbon.cloud.user.domain.entity.User;
-import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@AutoMapper(target = User.class, reverseConvertGenerate = false)
 @Data
 @NoArgsConstructor
 public class LoginUser implements Serializable {

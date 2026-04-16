@@ -114,7 +114,9 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
-        LoginUser loginUser = converter.convert(user, LoginUser.class);
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserId(user.getId());
+        loginUser.setCurrentTenantId(user.getCurrentTenantId());
         loginUser.setRoleCodes(roles);
 
         return loginUser;

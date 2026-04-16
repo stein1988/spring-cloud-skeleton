@@ -1,6 +1,8 @@
 package com.lonbon.cloud.user.infrastructure.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import cn.dev33.satoken.stp.StpUtil;
+import com.lonbon.cloud.base.dto.LoginUser;
 import com.lonbon.cloud.user.domain.service.PermissionService;
 import com.lonbon.cloud.user.domain.service.RoleService;
 import jakarta.annotation.Resource;
@@ -24,6 +26,7 @@ public class SaTokenInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return List.of();
+        LoginUser loginUser = StpUtil.getTokenSession().get(LoginUser.KEY, new LoginUser());
+        return loginUser.getRoleCodes();
     }
 }
