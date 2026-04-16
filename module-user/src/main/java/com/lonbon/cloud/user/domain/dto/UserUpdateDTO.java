@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@AutoMapper(target = User.class)
+@AutoMapper(target = User.class, reverseConvertGenerate = false)
 @Data
 public class UserUpdateDTO {
     private String passwordHash;

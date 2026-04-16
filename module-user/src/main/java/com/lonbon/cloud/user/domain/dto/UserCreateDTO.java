@@ -16,7 +16,7 @@ import java.util.UUID;
  * @author ${appContext.getAuthor()}
  * @easy-query-dto schema: request
  */
-@AutoMapper(target = User.class)
+@AutoMapper(target = User.class, reverseConvertGenerate = false)
 @Data
 public class UserCreateDTO {
 

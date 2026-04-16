@@ -157,11 +157,6 @@ public class SaTokenConfiguration {
                     throw new SaJwtException("请配置 jwt 秘钥");
                 }
 
-                // 如果token为null
-                if (token == null) {
-                    throw new SaJwtException("jwt 字符串不可为空");
-                }
-
                 // 解析
                 JWT jwt;
                 try {

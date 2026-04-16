@@ -4,9 +4,7 @@ import com.lonbon.cloud.user.domain.entity.Role;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.UUID;
-
-@AutoMapper(target = Role.class)
+@AutoMapper(target = Role.class, reverseConvertGenerate = false)
 @Data
 public class RoleUpdateDTO {
     private String type;

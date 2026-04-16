@@ -18,7 +18,7 @@ import java.util.UUID;
  * @author ${appContext.getAuthor()}
  * @easy-query-dto schema: normal
  */
-@AutoMapper(target = Tenant.class)
+@AutoMapper(target = Tenant.class, reverseConvertGenerate = false)
 @Data
 public class TenantCreateDTO {
 

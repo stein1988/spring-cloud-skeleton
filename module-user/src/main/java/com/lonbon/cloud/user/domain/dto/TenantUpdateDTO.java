@@ -13,7 +13,7 @@ import lombok.Data;
  * @author ${appContext.getAuthor()}
  * @easy-query-dto schema: request
  */
-@AutoMapper(target = Tenant.class)
+@AutoMapper(target = Tenant.class, reverseConvertGenerate = false)
 @Data
 public class TenantUpdateDTO {
 

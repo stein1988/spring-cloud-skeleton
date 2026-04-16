@@ -2,6 +2,7 @@ package com.lonbon.cloud.user.application.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.temp.SaTempUtil;
+import com.lonbon.cloud.base.dto.LoginUser;
 import com.lonbon.cloud.base.satoken.UserAccessToken;
 import com.lonbon.cloud.base.satoken.UserRefreshToken;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;
@@ -13,6 +14,7 @@ import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.entity.UserTenant;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 import com.lonbon.cloud.user.domain.service.*;
+import io.github.linpeilie.Converter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,9 @@ public class AuthServiceImpl implements AuthService {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private Converter converter;
+
     @Override
     public LoginResponse login(LoginRequest request) {
         User user = userService.getEntity(o -> o.username().eq(request.getUsername()))
@@ -47,8 +52,9 @@ public class AuthServiceImpl implements AuthService {
         if (!user.getPasswordHash().equals(request.getPasswordCipher()))
             throw new RuntimeException("password not match");
 
-        List<String> roles = getUserRoles(user);
-        return createLoginResponse(user, roles);
+        LoginUser loginUser = getLoginUser(user);
+
+        return createLoginResponse(loginUser);
     }
 
     @Override
@@ -68,13 +74,12 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userService.getEntityById(userId).orElseThrow(() -> new RuntimeException("user not found"));
 
-        List<String> roles = getUserRoles(user);
+        LoginUser loginUser = getLoginUser(user);
 
-        // 生成token
-        return createLoginResponse(user, roles);
+        return createLoginResponse(loginUser);
     }
 
-    private List<String> getUserRoles(User user) {
+    private LoginUser getLoginUser(User user) {
         List<String> roles = new ArrayList<>();
         if (user.getIsSuperAdmin()) {
             // 超级管理员不需要判定和租户的关系，任何租户都能进入
@@ -109,16 +114,18 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
-        return roles;
+        LoginUser loginUser = converter.convert(user, LoginUser.class);
+        loginUser.setRoleCodes(roles);
+
+        return loginUser;
     }
 
-    private LoginResponse createLoginResponse(User user, List<String> roles) {
-        UUID userId = user.getId();
-        String userIdStr = userId.toString();
-        log.info("login:userId:{}", userIdStr);
+    private LoginResponse createLoginResponse(LoginUser loginUser) {
+        UUID userId = loginUser.getUserId();
 
         // 生成access token
-        UserAccessToken accessToken = UserAccessToken.generate(userId, roles);
+        UserAccessToken accessToken = UserAccessToken.generate(userId, loginUser.getRoleCodes());
+        StpUtil.getTokenSession().set(LoginUser.KEY, loginUser);
 
         // 生成刷新token
         long refreshTimeout = 10000;
