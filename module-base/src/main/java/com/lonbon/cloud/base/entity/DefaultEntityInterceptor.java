@@ -7,6 +7,8 @@ import com.easy.query.core.expression.parser.core.base.ColumnOnlySelector;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.sql.builder.EntityInsertExpressionBuilder;
 import com.easy.query.core.expression.sql.builder.EntityUpdateExpressionBuilder;
+import com.lonbon.cloud.base.satoken.SaTokenHelper;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
@@ -42,20 +44,21 @@ public class DefaultEntityInterceptor
         BaseEntity baseEntity = (BaseEntity) entity;
 
         OffsetDateTime now = OffsetDateTime.now();
+        UUID currentUserId = null;
 
         if (baseEntity.getCreateTime() == null) {
             baseEntity.setCreateTime(now);
         }
         if (baseEntity.getCreateBy() == null) {
-            // TODO：获取当前用户id
-            baseEntity.setCreateBy(UUID.randomUUID());
+            currentUserId = getCurrentUserId(currentUserId);
+            baseEntity.setCreateBy(currentUserId);
         }
         if (baseEntity.getUpdateTime() == null) {
             baseEntity.setUpdateTime(now);
         }
         if (baseEntity.getUpdateBy() == null) {
-            // TODO：获取当前用户id
-            baseEntity.setUpdateBy(UUID.randomUUID());
+            currentUserId = getCurrentUserId(currentUserId);
+            baseEntity.setUpdateBy(currentUserId);
         }
     }
 
@@ -68,9 +71,7 @@ public class DefaultEntityInterceptor
         BaseEntity baseEntity = (BaseEntity) entity;
 
         baseEntity.setUpdateTime(OffsetDateTime.now());
-
-        // TODO：获取当前用户id
-        baseEntity.setUpdateBy(UUID.randomUUID());
+        baseEntity.setUpdateBy(getCurrentUserId(null));
     }
 
     /**
@@ -93,5 +94,14 @@ public class DefaultEntityInterceptor
             Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder,
             ColumnSetter<Object> columnSetter) {
 
+    }
+
+
+    private UUID getCurrentUserId(@Nullable UUID currentUserId) {
+        if (currentUserId != null) {
+            return currentUserId;
+        }
+
+        return SaTokenHelper.getLoginId();
     }
 }

@@ -82,6 +82,9 @@ public class AuthServiceImpl implements AuthService {
     private LoginUser getLoginUser(User user) {
         List<String> roles = new ArrayList<>();
         if (user.getIsSuperAdmin()) {
+
+            roles.add(Role.SUPER_ADMIN);
+
             // 超级管理员不需要判定和租户的关系，任何租户都能进入
             // 如果没有当前租户ID，查找最早创建的租户，设置为当前租户，并登录
             if (user.getCurrentTenantId() == null) {

@@ -26,7 +26,7 @@ public class SaTokenInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        LoginUser loginUser = StpUtil.getTokenSession().get(LoginUser.KEY, new LoginUser());
+        LoginUser loginUser = StpUtil.getSessionByLoginId(loginId).get(LoginUser.KEY, new LoginUser());
         return loginUser.getRoleCodes();
     }
 }
