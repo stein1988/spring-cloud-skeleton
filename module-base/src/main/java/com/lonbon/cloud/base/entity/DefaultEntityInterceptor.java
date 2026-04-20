@@ -7,6 +7,7 @@ import com.easy.query.core.expression.parser.core.base.ColumnOnlySelector;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.sql.builder.EntityInsertExpressionBuilder;
 import com.easy.query.core.expression.sql.builder.EntityUpdateExpressionBuilder;
+import com.lonbon.cloud.base.satoken.LoginUser;
 import com.lonbon.cloud.base.satoken.SaTokenHelper;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,9 @@ public class DefaultEntityInterceptor
             currentUserId = getCurrentUserId(currentUserId);
             baseEntity.setUpdateBy(currentUserId);
         }
+        if (baseEntity.getTenantId() == null) {
+            baseEntity.setTenantId(getCurrentTenantId());
+        }
     }
 
     /**
@@ -103,5 +107,10 @@ public class DefaultEntityInterceptor
         }
 
         return SaTokenHelper.getLoginId();
+    }
+
+    private UUID getCurrentTenantId() {
+        LoginUser loginUser = SaTokenHelper.getLoginUser();
+        return loginUser.getCurrentTenantId();
     }
 }

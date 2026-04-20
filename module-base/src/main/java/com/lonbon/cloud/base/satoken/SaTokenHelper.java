@@ -16,4 +16,13 @@ public class SaTokenHelper {
             return NULL_UUID;
         }
     }
+
+    public static LoginUser getLoginUser() {
+        Object o = StpUtil.getTokenSession().get(LoginUser.KEY);
+        if (o instanceof LoginUser loginUser) {
+            return loginUser;
+        } else {
+            throw new RuntimeException("loginUser is null");
+        }
+    }
 }

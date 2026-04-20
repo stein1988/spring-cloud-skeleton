@@ -22,11 +22,6 @@ public class Permission extends BaseEntity implements ProxyEntityAvailable<Permi
     private String type;
 
     /**
-     * 系统内部代号，例如："sys:user:add"
-     */
-    private String code;
-
-    /**
      * 显示名称，例如："创建用户"
      */
     private String name;
@@ -35,6 +30,11 @@ public class Permission extends BaseEntity implements ProxyEntityAvailable<Permi
      * 描述
      */
     private String description;
+
+    /**
+     * 系统内部代号，例如："sys:user:add"
+     */
+    private String code;
 
     /**
      * 资源，暂时无用

@@ -2,7 +2,7 @@ package com.lonbon.cloud.user.application.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.temp.SaTempUtil;
-import com.lonbon.cloud.base.dto.LoginUser;
+import com.lonbon.cloud.base.satoken.LoginUser;
 import com.lonbon.cloud.base.satoken.UserAccessToken;
 import com.lonbon.cloud.base.satoken.UserRefreshToken;
 import com.lonbon.cloud.user.domain.dto.LoginRequest;

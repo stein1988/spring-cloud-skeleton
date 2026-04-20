@@ -2,7 +2,7 @@ package com.lonbon.cloud.user.infrastructure.config;
 
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
-import com.lonbon.cloud.base.dto.LoginUser;
+import com.lonbon.cloud.base.satoken.LoginUser;
 import com.lonbon.cloud.user.domain.service.PermissionService;
 import com.lonbon.cloud.user.domain.service.RoleService;
 import jakarta.annotation.Resource;

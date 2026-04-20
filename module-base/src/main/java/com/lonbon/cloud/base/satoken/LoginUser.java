@@ -1,4 +1,4 @@
-package com.lonbon.cloud.base.dto;
+package com.lonbon.cloud.base.satoken;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
