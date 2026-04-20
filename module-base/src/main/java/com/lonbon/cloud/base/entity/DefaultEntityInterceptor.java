@@ -1,19 +1,25 @@
 package com.lonbon.cloud.base.entity;
 
+import com.easy.query.core.annotation.Table;
 import com.easy.query.core.basic.extension.interceptor.EntityInterceptor;
+import com.easy.query.core.basic.extension.interceptor.PredicateFilterInterceptor;
 import com.easy.query.core.basic.extension.interceptor.UpdateEntityColumnInterceptor;
 import com.easy.query.core.basic.extension.interceptor.UpdateSetInterceptor;
 import com.easy.query.core.expression.parser.core.base.ColumnOnlySelector;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
+import com.easy.query.core.expression.parser.core.base.WherePredicate;
 import com.easy.query.core.expression.sql.builder.EntityInsertExpressionBuilder;
 import com.easy.query.core.expression.sql.builder.EntityUpdateExpressionBuilder;
-import com.lonbon.cloud.base.satoken.LoginUser;
+import com.easy.query.core.expression.sql.builder.LambdaEntityExpressionBuilder;
 import com.lonbon.cloud.base.satoken.SaTokenHelper;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认实体拦截器
@@ -21,7 +27,9 @@ import java.util.UUID;
  */
 @Component
 public class DefaultEntityInterceptor
-        implements EntityInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
+        implements EntityInterceptor, PredicateFilterInterceptor, UpdateSetInterceptor, UpdateEntityColumnInterceptor {
+
+    private final Map<Class<?>, Set<String>> ignorePropertiesCache = new ConcurrentHashMap<>();
 
     @Override
     public String name() {
@@ -79,7 +87,7 @@ public class DefaultEntityInterceptor
     }
 
     /**
-     * 表达式更新时的处理
+     * 表达式更新时的处理，实现UpdateEntityColumnInterceptor
      * 目前未实现具体逻辑
      */
     @Override
@@ -90,7 +98,7 @@ public class DefaultEntityInterceptor
     }
 
     /**
-     * 列更新时的处理
+     * 列更新时的处理，实现UpdateSetInterceptor
      * 目前未实现具体逻辑
      */
     @Override
@@ -98,6 +106,23 @@ public class DefaultEntityInterceptor
             Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder,
             ColumnSetter<Object> columnSetter) {
 
+    }
+
+    /**
+     * 构建where条件时的处理，实现PredicateFilterInterceptor
+     * 实现基于租户的过滤
+     */
+    @Override
+    public void configure(
+            Class<?> entityClass, LambdaEntityExpressionBuilder lambdaEntityExpressionBuilder,
+            WherePredicate<Object> wherePredicate) {
+        Set<String> ignoreProperties = getIgnoreProperties(entityClass);
+        if (!ignoreProperties.contains(BaseEntity.Fields.tenantId)) {
+            UUID currentTenantId = getCurrentTenantId();
+            if (currentTenantId != SaTokenHelper.NULL_UUID) {
+                wherePredicate.eq(BaseEntity.Fields.tenantId, currentTenantId);
+            }
+        }
     }
 
 
@@ -110,7 +135,17 @@ public class DefaultEntityInterceptor
     }
 
     private UUID getCurrentTenantId() {
-        LoginUser loginUser = SaTokenHelper.getLoginUser();
-        return loginUser.getCurrentTenantId();
+        return SaTokenHelper.getCurrentTenantId();
     }
+
+    private Set<String> getIgnoreProperties(Class<?> entityClass) {
+        return ignorePropertiesCache.computeIfAbsent(entityClass, clazz -> {
+            Table table = clazz.getAnnotation(Table.class);
+            if (table != null && table.ignoreProperties().length > 0) {
+                return Set.of(table.ignoreProperties());
+            }
+            return Set.of();
+        });
+    }
+
 }

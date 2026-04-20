@@ -1,6 +1,7 @@
 package com.lonbon.cloud.base.satoken;
 
 import cn.dev33.satoken.stp.StpUtil;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -17,12 +18,22 @@ public class SaTokenHelper {
         }
     }
 
-    public static LoginUser getLoginUser() {
+    public static @Nullable LoginUser getLoginUser() {
+        boolean isLogin = StpUtil.isLogin();
+        if (!isLogin) {
+            return null;
+        }
+
         Object o = StpUtil.getTokenSession().get(LoginUser.KEY);
         if (o instanceof LoginUser loginUser) {
             return loginUser;
         } else {
             throw new RuntimeException("loginUser is null");
         }
+    }
+
+    public static UUID getCurrentTenantId() {
+        LoginUser loginUser = getLoginUser();
+        return loginUser != null ? loginUser.getCurrentTenantId() : NULL_UUID;
     }
 }
