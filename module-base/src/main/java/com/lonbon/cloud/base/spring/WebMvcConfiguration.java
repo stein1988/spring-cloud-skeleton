@@ -1,6 +1,5 @@
 package com.lonbon.cloud.base.spring;
 
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +53,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * @param configurer 路径匹配配置器
      */
     @Override
-    public void configurePathMatch(@NonNull PathMatchConfigurer configurer) {
+    public void configurePathMatch(PathMatchConfigurer configurer) {
         // 1. 启动时扫描并构建「前缀 -> Controller类集合」的映射
         Map<String, Set<Class<?>>> prefixControllerMap = buildPrefixControllerMap();
 
@@ -68,7 +67,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      *
      * @return 前缀到控制器类集合的映射
      */
-    private @NonNull Map<String, Set<Class<?>>> buildPrefixControllerMap() {
+    private Map<String, Set<Class<?>>> buildPrefixControllerMap() {
         Map<String, Set<Class<?>>> result = new HashMap<>();
 
         // 1. 获取所有带 @RestController 或 @Controller 的 Bean
@@ -98,7 +97,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * @param controllerClass 控制器类
      * @return 路径前缀，如果无法提取则返回 null
      */
-    private @Nullable String extractPrefix(@NonNull Class<?> controllerClass) {
+    private @Nullable String extractPrefix(Class<?> controllerClass) {
         // 1. 从包名中提取模块名
         String packageName = controllerClass.getPackage().getName();
         // 正则解释：

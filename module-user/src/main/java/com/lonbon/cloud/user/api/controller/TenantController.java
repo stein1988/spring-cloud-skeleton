@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -66,4 +67,46 @@ public class TenantController {
         PageResult<Tenant> tenants = tenantService.getPaginationEntities(query, pageable);
         return Response.success(tenants);
     }
+
+    @GetMapping("/{id}/children")
+    @Operation(summary = "获取直接子租户", description = "获取指定租户的直接子租户")
+    public Response<List<Tenant>> getDirectChildren(@PathVariable("id") UUID id) {
+        return Response.success(tenantService.getDirectChildren(id));
+    }
+
+    @GetMapping("/{id}/descendants")
+    @Operation(summary = "获取所有后代租户", description = "获取指定租户的所有后代租户（包括多级）")
+    public Response<List<Tenant>> getDescendants(@PathVariable("id") UUID id) {
+        return Response.success(tenantService.getDescendants(id));
+    }
+
+    @GetMapping("/{id}/parent")
+    @Operation(summary = "获取直接父租户", description = "获取指定租户的直接父租户")
+    public Response<Tenant> getDirectParent(@PathVariable("id") UUID id) {
+        Optional<Tenant> parent = tenantService.getDirectParent(id);
+        return parent.map(Response::success).orElseGet(() -> Response.error("Parent tenant not found"));
+    }
+
+    @GetMapping("/{id}/ancestors")
+    @Operation(summary = "获取所有祖先租户", description = "获取指定租户的所有祖先租户")
+    public Response<List<Tenant>> getAllAncestors(@PathVariable("id") UUID id) {
+        return Response.success(tenantService.getAllAncestors(id));
+    }
+
+    @PostMapping("/{id}/move")
+    @Operation(summary = "移动租户", description = "将租户移动到新的父租户下")
+    public Response<UUID> moveNode(
+            @PathVariable("id") UUID id,
+            @RequestParam("newParentId") UUID newParentId) {
+        Tenant moved = tenantService.moveNode(id, newParentId);
+        return Response.success(moved.getId(), "Tenant moved successfully");
+    }
+
+    @GetMapping("/{id}/tree")
+    @Operation(summary = "获取租户树", description = "以指定租户为根节点获取租户树")
+    public Response<Tenant> getTree(@PathVariable("id") UUID id) {
+        Tenant tree = tenantService.getTree(id);
+        return Response.success(tree, "Tenant tree retrieved successfully");
+    }
+
 }

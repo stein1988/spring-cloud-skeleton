@@ -46,12 +46,12 @@ public class Role extends BaseEntity implements ProxyEntityAvailable<Role, RoleP
      */
     private String description;
 
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            UserRole.Fields.roleId)
+    private List<UserRole> userRoles;
+
     @Navigate(value = RelationTypeEnum.ManyToMany, mappingClass = UserRole.class, selfProperty = BaseEntity.Fields.id
             , selfMappingProperty = UserRole.Fields.roleId, targetMappingProperty = UserRole.Fields.userId,
             targetProperty = BaseEntity.Fields.id, subQueryToGroupJoin = true)
     private List<User> users;
-
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            UserRole.Fields.roleId)
-    private List<UserRole> userRoles;
 }

@@ -1,24 +1,29 @@
 package com.lonbon.cloud.user.domain.entity;
 
-import com.easy.query.core.annotation.Column;
-import com.easy.query.core.annotation.EntityProxy;
-import com.easy.query.core.annotation.Table;
+import com.easy.query.core.annotation.*;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentProxy;
+import com.lonbon.cloud.user.domain.filter.DepartmentClosureFilter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
  * 部门
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_department", ignoreProperties = {"departmentId"})
 @EntityProxy
-public class Department extends BaseEntity implements ProxyEntityAvailable<Department, DepartmentProxy> {
+public class Department extends BaseEntity
+        implements ProxyEntityAvailable<Department, DepartmentProxy>, ClosureAvailable<DepartmentClosure> {
 
     /**
      * 类型
@@ -74,6 +79,24 @@ public class Department extends BaseEntity implements ProxyEntityAvailable<Depar
      */
     private String OfficeLocation;
 
+    /**
+     * 父部门ID
+     */
+    private UUID parentId;
+
+    /**
+     * 祖先列表
+     */
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"descendantId"},
+            orderByProps = @OrderByProperty(property = "distance"), extraFilter = DepartmentClosureFilter.class)
+    private List<DepartmentClosure> ancestors;
+
+    /**
+     * 后代列表
+     */
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"ancestorId"},
+            orderByProps = @OrderByProperty(property = "distance"), extraFilter = DepartmentClosureFilter.class)
+    private List<DepartmentClosure> descendants;
 
 }
 

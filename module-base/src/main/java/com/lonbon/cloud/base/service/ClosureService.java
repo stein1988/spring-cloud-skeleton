@@ -29,12 +29,12 @@ public interface ClosureService<T, TProxy extends ProxyEntity<TProxy, T>, U, UPr
     List<T> getDirectChildren(UUID parentId);
 
     /**
-     * 查询所有子节点（包括多级）
+     * 查询所有后代节点（包括多级）
      *
      * @param parentId 父节点ID
-     * @return 所有子节点列表
+     * @return 所有后代节点列表
      */
-    List<T> getAllChildren(UUID parentId);
+    List<T> getDescendants(UUID parentId);
 
     /**
      * 查询直接父节点
@@ -62,10 +62,10 @@ public interface ClosureService<T, TProxy extends ProxyEntity<TProxy, T>, U, UPr
     T moveNode(UUID nodeId, UUID newParentId);
 
     /**
-     * 构建树状结构
+     * 获取树状结构
      *
      * @param rootId 根节点ID
      * @return 根节点（包含子节点）
      */
-    T buildTree(UUID rootId);
+    T getTree(UUID rootId);
 }

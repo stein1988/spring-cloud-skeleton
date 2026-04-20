@@ -116,13 +116,13 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     }
 
     /**
-     * 查询所有子节点（包括多级）
+     * 查询所有后代节点（包括多级）
      *
      * @param parentId 父节点ID
-     * @return 所有子节点列表
+     * @return 所有后代节点列表
      */
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    public List<T> getAllChildren(UUID parentId) {
+    public List<T> getDescendants(UUID parentId) {
         // 查询闭包表中所有 ancestorId = parentId 且 distance > 0 的记录
         List<U> childClosures = closureRepository.getAll(u -> {
             u.anyColumn(CLOSURE_ANCESTOR_ID).eq(parentId);
@@ -302,36 +302,36 @@ public abstract class ClosureEntityService<T extends ProxyEntityAvailable<T, TPr
     }
 
     /**
-     * 构建树状结构
+     * 获取树状结构
      *
      * @param rootId 根节点ID
      * @return 根节点（包含子节点）
      */
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    public T buildTree(UUID rootId) {
+    public T getTree(UUID rootId) {
         T root = repository.getById(rootId, navigate(), false).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Root node not found, ID: " + rootId));
 
-        // 递归构建子树
-        buildSubTree(root);
+        // 递归获取子树
+        getSubTree(root);
 
         return root;
     }
 
     /**
-     * 递归构建子树
+     * 递归获取子树
      *
      * @param parent 父节点
      */
-    private void buildSubTree(T parent) {
+    private void getSubTree(T parent) {
         if (parent == null) return;
 
         // 查询直接子节点
         List<T> children = getDirectChildren(parent.getId());
 
-        // 为每个子节点递归构建子树
+        // 为每个子节点递归获取子树
         for (T child : children) {
-            buildSubTree(child);
+            getSubTree(child);
         }
     }
 }
