@@ -20,23 +20,61 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+/**
+ * 简单实体服务基类
+ * <p>
+ * 提供了对实体的基本CRUD操作的默认实现。
+ * 使用MapStruct进行DTO与实体之间的转换，使用Repository进行数据访问。
+ * 所有公共方法均开启事务支持，确保数据一致性。
+ * </p>
+ *
+ * @param <T>      实体类型
+ * @param <TProxy> 实体代理类型
+ * @author lonbon
+ * @since 1.0.0
+ */
 @Transactional(rollbackFor = Exception.class)
 public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TProxy>,
         TProxy extends AbstractProxyEntity<TProxy, T>>
         implements Service<T, TProxy> {
 
+    /**
+     * MapStruct转换器，用于DTO与实体之间的转换
+     */
     protected final Converter converter;
 
+    /**
+     * 数据仓库，用于数据访问
+     */
     protected final Repository<T, TProxy> repository;
 
+    /**
+     * 实体类型Class
+     */
     protected final Class<T> entityType;
 
+    /**
+     * 构造简单实体服务
+     *
+     * @param converter  转换器
+     * @param repository 数据仓库
+     * @param entityType 实体类型
+     */
     public SimpleEntityService(Converter converter, Repository<T, TProxy> repository, Class<T> entityType) {
         this.converter = converter;
         this.repository = repository;
         this.entityType = entityType;
     }
 
+    /**
+     * 创建实体
+     * <p>
+     * 使用MapStruct将DTO转换为实体，然后插入数据库。
+     * </p>
+     *
+     * @param createDto 创建DTO
+     * @return 创建的实体
+     */
     @Override
     public T createEntity(Object createDto) {
         T entity = converter.convert(createDto, entityType);
@@ -44,11 +82,31 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
         return entity;
     }
 
+    /**
+     * 更新实体
+     * <p>
+     * 根据ID查找实体，将DTO转换为实体后更新。
+     * </p>
+     *
+     * @param id        实体ID
+     * @param updateDto 更新DTO
+     */
     @Override
     public void updateEntity(UUID id, Object updateDto) {
         this.updateEntity(id, (Function<T, T>) entity -> converter.convert(updateDto, entity));
     }
 
+    /**
+     * 更新实体
+     * <p>
+     * 根据ID查找实体，使用更新函数修改后更新。
+     * 在追踪上下文中执行，确保修改的实体与数据库记录一致。
+     * </p>
+     *
+     * @param id         实体ID
+     * @param updateFunc 更新函数
+     * @throws BusinessException 如果实体不存在
+     */
     @Override
     public void updateEntity(UUID id, Function<T, T> updateFunc) {
         repository.track(() -> {
@@ -60,25 +118,28 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
         });
     }
 
+    /**
+     * 根据ID更新实体指定列
+     *
+     * @param id      实体ID
+     * @param columns 要更新的列表达式
+     */
     @Override
     public void updateEntity(UUID id, SQLActionExpression1<TProxy> columns) {
         repository.updateById(id, columns);
     }
 
+    /**
+     * 更新实体指定列
+     *
+     * @param entity  要更新的实体
+     * @param columns 要更新的列表达式
+     * @param <S>     实体类型
+     */
     @Override
     public <S extends T> void updateEntity(S entity, SQLFuncExpression1<TProxy, SQLSelectExpression> columns) {
         repository.update(entity, columns);
     }
-
-//    public T updateEntity(UUID id, @NotNull Function<T, T> updateFunc) {
-//        return repository.track(() -> {
-//            T existing = repository.getById(id, true).orElseThrow(
-//                    () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Entity not found, ID: " + id));
-//
-//            T updated = updateFunc.apply(existing);
-//            return repository.update(updated);
-//        });
-//    }
 
 
     @Override

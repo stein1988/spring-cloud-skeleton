@@ -18,7 +18,18 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 部门
+ * 部门实体
+ * <p>
+ * 表示系统中的部门，支持树形层级结构。
+ * 继承自 {@link BaseEntity}，包含创建时间、更新时间、逻辑删除等公共字段。
+ * 通过闭包表（{@link DepartmentClosure}）维护层级关系。
+ * </p>
+ *
+ * @author lonbon
+ * @since 1.0.0
+ * @see BaseEntity
+ * @see DepartmentClosure
+ * @see ClosureAvailable
  */
 @Data
 @FieldNameConstants
@@ -30,14 +41,19 @@ public class Department extends BaseEntity
 
     /**
      * 类型
-     * 对应lb_location_care.lb_ims_department.department_type
-     * TODO：确定字典表的意义
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.department_type
+     * </p>
+     *
+     * @todo 确定字典表的意义
      */
     private String type;
 
     /**
      * 名称
-     * 对应lb_location_care.lb_ims_department.department_name
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.department_name
+     * </p>
      */
     private String name;
 
@@ -48,7 +64,9 @@ public class Department extends BaseEntity
 
     /**
      * 是否默认部门
-     * 对应lb_location_care.lb_ims_department.is_default
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.is_default
+     * </p>
      */
     private Boolean isDefault;
 
@@ -60,35 +78,48 @@ public class Department extends BaseEntity
 
     /**
      * 显示顺序
-     * 对应lb_location_care.lb_ims_department.order_num
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.order_num
+     * </p>
      */
     private Integer sort_order;
 
     /**
      * 电话号码
-     * 对应lb_location_care.lb_ims_department.phone_num
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.phone_num
+     * </p>
      */
     private String phone;
 
     /**
      * 部门领导staffId
-     * TODO：研究leaderStaffName能不能导航出来
+     *
+     * @todo 研究leaderStaffName能不能导航出来
      */
     private UUID leaderStaffId;
 
     /**
      * 办公位置
-     * 对应lb_location_care.lb_ims_department.office_location
+     * <p>
+     * 对应 lb_location_care.lb_ims_department.office_location
+     * </p>
      */
     private String OfficeLocation;
 
     /**
      * 父部门ID
+     * <p>
+     * 用于构建树形结构，null表示根节点
+     * </p>
      */
     private UUID parentId;
 
     /**
      * 祖先列表
+     * <p>
+     * 导航属性，通过闭包表关联查询当前部门的所有祖先节点
+     * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
             DepartmentClosure.Fields.descendantId)
@@ -96,6 +127,9 @@ public class Department extends BaseEntity
 
     /**
      * 后代列表
+     * <p>
+     * 导航属性，通过闭包表关联查询当前部门的所有后代节点
+     * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
             DepartmentClosure.Fields.ancestorId)
@@ -159,7 +193,7 @@ CREATE TABLE `lb_location_care.lb_ims_department` (
   `update_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `department_type` varchar(32) DEFAULT NULL COMMENT '部门类型:0其他部门 1综合管理部 2财务管理部 3安全保障部 4后勤管理部 5护理管理部 6医务管理部 7人事管理部
   8管家管理部',
-  TODO：`in_care_notice` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否接收长者入住通知(0:否  1:是)',
+  @todo `in_care_notice` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否接收长者入住通知(0:否  1:是)',
   `order_num` int(11) NOT NULL DEFAULT '1' COMMENT '序号',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',

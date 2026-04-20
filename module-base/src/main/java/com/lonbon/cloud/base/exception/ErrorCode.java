@@ -2,7 +2,13 @@ package com.lonbon.cloud.base.exception;
 
 /**
  * 错误码定义
- * 遵循 REST 风格，使用 HTTP 状态码作为基础
+ * <p>
+ * 遵循 REST 风格，使用 HTTP 状态码作为基础。
+ * 错误码格式：5位数字，前3位表示HTTP状态码分类，后2位表示具体错误。
+ * </p>
+ *
+ * @author lonbon
+ * @since 1.0.0
  */
 public enum ErrorCode {
     // 系统错误 (500xx)
@@ -41,26 +47,50 @@ public enum ErrorCode {
     // 其他错误
     UNKNOWN_ERROR(99999, "未知错误");
     
+    /**
+     * 错误码
+     */
     private final int code;
+    
+    /**
+     * 错误消息
+     */
     private final String message;
     
+    /**
+     * 构造错误码
+     *
+     * @param code    错误码
+     * @param message 错误消息
+     */
     ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
     
+    /**
+     * 获取错误码
+     *
+     * @return 错误码
+     */
     public int getCode() {
         return code;
     }
     
+    /**
+     * 获取错误消息
+     *
+     * @return 错误消息
+     */
     public String getMessage() {
         return message;
     }
     
     /**
      * 根据错误码获取错误枚举
+     *
      * @param code 错误码
-     * @return 错误枚举
+     * @return 错误枚举，如果未找到则返回 UNKNOWN_ERROR
      */
     public static ErrorCode getByCode(int code) {
         for (ErrorCode errorCode : values()) {

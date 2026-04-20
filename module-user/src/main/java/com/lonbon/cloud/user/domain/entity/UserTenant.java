@@ -12,7 +12,11 @@ import lombok.experimental.FieldNameConstants;
 import java.util.UUID;
 
 /**
- * 用户租户关联表，一个用户可以关联多个租户
+ * 用户租户关联表实体类
+ * <p>
+ * 用户租户关联表用于存储用户与租户之间的关联关系，一个用户可以关联多个租户。
+ * 每个关联记录包含用户ID、租户ID、是否激活和是否租户管理员等信息。
+ * </p>
  */
 @Data
 @FieldNameConstants

@@ -18,17 +18,46 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
+/**
+ * EasyQuery仓库实现基类
+ * <p>
+ * 提供了基于EasyQuery框架的仓库实现，支持类型安全的查询和导航属性处理。
+ * 所有查询操作都通过{@link EasyEntityQuery}执行。
+ * </p>
+ *
+ * @param <T>       实体类型
+ * @param <TProxy>  实体代理类型
+ * @param <TChain>  实体抓取器类型
+ * @author lonbon
+ * @since 1.0.0
+ */
 public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TProxy>,
         TProxy extends AbstractProxyEntity<TProxy, T>, TChain extends AbstractFetcher<TProxy, T, TChain>>
         implements Repository<T, TProxy> {
 
 
+    /**
+     * EasyQuery实体查询客户端
+     */
     protected final EasyEntityQuery easyEntityQuery;
 
+    /**
+     * 实体类型Class
+     */
     protected final Class<T> entityType;
 
+    /**
+     * 抓取器提供者
+     */
     protected final FetcherProvider<TProxy, T, TChain> fetcherProvider;
 
+    /**
+     * 构造EasyQuery仓库
+     *
+     * @param easyEntityQuery 实体查询客户端
+     * @param entityType      实体类型
+     * @param fetcherProvider 抓取器提供者
+     */
     public EasyQueryRepository(
             EasyEntityQuery easyEntityQuery, Class<T> entityType, FetcherProvider<TProxy, T, TChain> fetcherProvider) {
         this.easyEntityQuery = easyEntityQuery;
@@ -36,6 +65,14 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
         this.fetcherProvider = fetcherProvider;
     }
 
+    /**
+     * 获取导航属性映射
+     * <p>
+     * 子类可重写此方法，提供导航属性名称到表达式的映射。
+     * </p>
+     *
+     * @return 导航属性映射，未配置时返回null
+     */
     protected @Nullable Map<String, SQLActionExpression2<IncludeContext, TProxy>> getNavigateMap() {
         return null;
     }

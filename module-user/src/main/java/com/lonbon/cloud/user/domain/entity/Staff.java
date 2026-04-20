@@ -13,7 +13,11 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 
 /**
- * 员工，用于人事管理，有区别与用户user
+ * 员工实体类
+ * <p>
+ * 员工是系统中的一种实体，用于人事管理，有区别与用户user。
+ * 每个员工都有唯一的工号、姓名、所属部门组织、在职状态、入职日期、离职日期、主管状态等信息。
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

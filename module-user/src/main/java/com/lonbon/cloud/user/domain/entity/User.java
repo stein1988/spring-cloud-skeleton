@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 用户
+ * 用户实体类
+ * <p>
+ * 用户是系统中的一种实体，用于表示系统中的个体或实体。
+ * 每个用户都有唯一的用户名和密码，用于登录系统并进行操作。
+ * 用户还可以关联多个角色，角色定义了用户在系统中的操作权限。
+ * </p>
  */
 @Data
 @FieldNameConstants

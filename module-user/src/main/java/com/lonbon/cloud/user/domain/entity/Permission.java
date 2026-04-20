@@ -10,6 +10,10 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 权限
+ * <p>
+ * 权限实体类，用于存储系统中的权限信息。
+ * 权限是系统中对用户操作进行限制的一种机制，通过定义不同的权限可以控制用户对系统资源的访问权限。
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

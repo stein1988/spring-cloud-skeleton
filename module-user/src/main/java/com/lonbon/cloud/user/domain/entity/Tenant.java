@@ -18,7 +18,18 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 租户
+ * 租户实体
+ * <p>
+ * 表示系统中的租户（组织/机构），支持树形层级结构。
+ * 继承自 {@link BaseEntity}，包含创建时间、更新时间、逻辑删除等公共字段。
+ * 通过闭包表（{@link TenantClosure}）维护层级关系。
+ * </p>
+ *
+ * @author stein
+ * @since 1.0.0
+ * @see BaseEntity
+ * @see TenantClosure
+ * @see ClosureAvailable
  */
 @Data
 @FieldNameConstants
@@ -30,20 +41,27 @@ public class Tenant extends BaseEntity
 
     /**
      * 类型
-     * 对应lb_location_care.lb_organization.org_type
-     * TODO：确定字典表的意义
+     * <p>
+     * 对应 lb_location_care.lb_organization.org_type
+     * </p>
+     *
+     * @todo 确定字典表的意义
      */
     private String type;
 
     /**
      * 名称
-     * 对应lb_location_care.lb_organization.org_name
+     * <p>
+     * 对应 lb_location_care.lb_organization.org_name
+     * </p>
      */
     private String name;
 
     /**
      * 描述
-     * 对应lb_location_care.lb_organization.org_desc
+     * <p>
+     * 对应 lb_location_care.lb_organization.org_desc
+     * </p>
      */
     private String description;
 
@@ -54,18 +72,26 @@ public class Tenant extends BaseEntity
 
     /**
      * 是否激活
-     * 对应lb_location_care.lb_organization.is_use
+     * <p>
+     * 对应 lb_location_care.lb_organization.is_use
+     * </p>
      */
     @Column(dbDefault = "true")
     private Boolean isActive;
 
     /**
      * 父节点ID
+     * <p>
+     * 用于构建树形结构，null表示根节点
+     * </p>
      */
     private UUID parentId;
 
     /**
      * 祖先列表
+     * <p>
+     * 导航属性，通过闭包表关联查询当前租户的所有祖先节点
+     * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
             TenantClosure.Fields.descendantId)
@@ -73,11 +99,19 @@ public class Tenant extends BaseEntity
 
     /**
      * 后代列表
+     * <p>
+     * 导航属性，通过闭包表关联查询当前租户的所有后代节点
+     * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
             TenantClosure.Fields.ancestorId)
     private List<TenantClosure> descendants;
 }
+
+/**
+ * 预留字段（已注释）
+ * 以下字段在数据库中存在但当前实体类中未使用
+ */
 
 /**
  * 地址
@@ -88,7 +122,7 @@ public class Tenant extends BaseEntity
 /**
  * 行政区划ID
  * 对应lb_location_care.lb_organization.region_id
- * TODO：确定和address字段的关系，确认是否要冗余region_desc
+ * @todo 确定和address字段的关系，确认是否要冗余region_desc
  */
 // private String region_id;
 

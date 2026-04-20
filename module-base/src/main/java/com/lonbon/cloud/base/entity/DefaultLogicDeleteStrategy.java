@@ -11,9 +11,27 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 
+/**
+ * 默认逻辑删除策略
+ * <p>
+ * 实现了基于 isDelete 字段的逻辑删除功能。
+ * 查询时自动过滤已删除的记录，删除操作时设置删除标志、删除时间和删除人。
+ * </p>
+ *
+ * @author lonbon
+ * @since 1.0.0
+ */
 @Component
 public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
-    //    private final CurrentUser currentUser;
+    
+    /**
+     * 获取策略名称
+     * <p>
+     * 返回该逻辑删除策略的唯一标识符，用于在实体中引用此策略。
+     * </p>
+     *
+     * @return 策略名称
+     */
     @Override
     public String getStrategy() {
         return "DEFAULT_LOGIC_DELETE_STRATEGY";//后续用户指定逻辑删除名称就是用这个名称即可

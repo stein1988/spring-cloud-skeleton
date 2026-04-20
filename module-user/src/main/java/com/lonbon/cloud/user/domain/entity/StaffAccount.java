@@ -13,6 +13,10 @@ import lombok.EqualsAndHashCode;
  * 对应旧表：lb_location_care.lb_ims_staff（账号权限字段）
  * 职责：敏感账号密码、系统权限配置，最高安全级别
  * 权限控制：仅系统管理员可读写，其他角色无访问权限
+ * <p>
+ * 员工账号与权限配置表实体类，用于存储员工账号与权限配置信息。
+ * 每个员工账号都有唯一的账号ID、密码、验证账号、验证密码、完成护理设置类型、遗嘱查看权限、是否允许查看库存物资价格等信息。
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

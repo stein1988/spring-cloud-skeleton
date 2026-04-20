@@ -11,7 +11,11 @@ import lombok.EqualsAndHashCode;
 import java.util.UUID;
 
 /**
- * 角色权限关联表
+ * 角色权限关联表实体类
+ * <p>
+ * 角色权限关联表用于存储角色与权限之间的关联关系，一个角色可以关联多个权限。
+ * 每个关联记录包含角色ID、权限ID等信息。
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

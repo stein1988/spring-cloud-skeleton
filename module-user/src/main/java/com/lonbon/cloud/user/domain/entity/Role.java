@@ -14,7 +14,11 @@ import lombok.experimental.FieldNameConstants;
 import java.util.List;
 
 /**
- * 角色
+ * 角色实体类
+ * <p>
+ * 角色是系统中的一种权限实体，用于定义用户在系统中的操作权限。
+ * 每个角色可以关联多个用户，而每个用户可以被分配多个角色。
+ * </p>
  */
 @Data
 @FieldNameConstants
