@@ -1,10 +1,8 @@
 package com.lonbon.cloud.user.api.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import com.lonbon.cloud.base.response.Response;
 import com.lonbon.cloud.user.domain.dto.UserCreateDTO;
 import com.lonbon.cloud.user.domain.dto.UserUpdateDTO;
-import com.lonbon.cloud.user.domain.entity.Role;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +27,6 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @SaCheckRole(Role.SUPER_ADMIN)
     @PostMapping
     @Operation(summary = "创建", description = "创建用户")
     public Response<UUID> create(@RequestBody @Validated @NotNull UserCreateDTO user) {

@@ -8,7 +8,6 @@ import com.lonbon.cloud.user.domain.service.RoleService;
 import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ public class RoleServiceImpl extends SimpleEntityService<Role, RoleProxy> implem
 
     @Override
     public List<Role> getRolesByUserId(UUID userId) {
-        // TODO：实现
-        return new ArrayList<>();
+        return repository.getAll(r -> r.userRoles().any(userRole -> userRole.userId().eq(userId)));
     }
 }

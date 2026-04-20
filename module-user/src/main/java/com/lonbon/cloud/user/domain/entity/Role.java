@@ -1,13 +1,17 @@
 package com.lonbon.cloud.user.domain.entity;
 
 import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Navigate;
 import com.easy.query.core.annotation.Table;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.RoleProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
+
+import java.util.List;
 
 /**
  * 角色
@@ -41,4 +45,13 @@ public class Role extends BaseEntity implements ProxyEntityAvailable<Role, RoleP
      * 描述
      */
     private String description;
+
+    @Navigate(value = RelationTypeEnum.ManyToMany, mappingClass = UserRole.class, selfProperty = BaseEntity.Fields.id
+            , selfMappingProperty = UserRole.Fields.roleId, targetMappingProperty = UserRole.Fields.userId,
+            targetProperty = BaseEntity.Fields.id, subQueryToGroupJoin = true)
+    private List<User> users;
+
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            UserRole.Fields.roleId)
+    private List<UserRole> userRoles;
 }

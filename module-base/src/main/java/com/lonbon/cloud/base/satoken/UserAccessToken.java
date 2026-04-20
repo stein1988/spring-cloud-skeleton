@@ -21,7 +21,8 @@ public class UserAccessToken {
     private long timeout;
 
     public static UserAccessToken generate(UUID userId, List<String> roles) {
-        StpUtil.login(userId, new SaLoginParameter().setExtra(JWTUtil.SUBJECT, userId).setExtra(JWTUtil.ROLES, roles));
+        StpUtil.login(userId.toString(),
+                      new SaLoginParameter().setExtra(JWTUtil.SUBJECT, userId).setExtra(JWTUtil.ROLES, roles));
         SaTokenInfo info = StpUtil.getTokenInfo();
         UserAccessToken accessToken = new UserAccessToken();
         accessToken.userId = userId;

@@ -6,15 +6,14 @@ import com.easy.query.core.basic.extension.logicdel.abstraction.AbstractLogicDel
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.parser.core.base.ColumnSetter;
 import com.easy.query.core.expression.parser.core.base.WherePredicate;
+import com.lonbon.cloud.base.satoken.SaTokenHelper;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
-import java.util.UUID;
 
 @Component
 public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
-//    private final CurrentUser currentUser;
+    //    private final CurrentUser currentUser;
     @Override
     public String getStrategy() {
         return "DEFAULT_LOGIC_DELETE_STRATEGY";//后续用户指定逻辑删除名称就是用这个名称即可
@@ -24,33 +23,39 @@ public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
      * 逻辑删除的情况下，select操作需要添加的查询过滤器
      */
     @Override
-    protected SQLActionExpression1<WherePredicate<Object>> getPredicateFilterExpression(LogicDeleteBuilder builder, String propertyName) {
-        return o->o.eq(propertyName, false);
+    protected SQLActionExpression1<WherePredicate<Object>> getPredicateFilterExpression(
+            LogicDeleteBuilder builder, String propertyName) {
+        return o -> o.eq(propertyName, false);
     }
 
     /**
      * 进行逻辑删除的update操作时，需要set哪些值，这里返回一个lambda表达式，所以set的值都要写在表达式里面动态获取，不要用局部变量，用局部变量的话，就变成一个固定值了
      */
     @Override
-    protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String propertyName) {
-        // TODO: deletedBy改成sa-token获取的当前用户id
-        return o->o.set(propertyName, true).set("deleteBy", UUID.randomUUID()).set("deleteTime", OffsetDateTime.now());
+    protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(
+            LogicDeleteBuilder builder, String propertyName) {
+        return o -> o.set(propertyName, true).set("deleteBy", SaTokenHelper.getLoginId())
+                     .set("deleteTime", OffsetDateTime.now());
     }
 
 
 //    @Override
-//    protected SQLActionExpression1<WherePredicate<Object>> getPredicateFilterExpression(LogicDeleteBuilder builder, String propertyName) {
+//    protected SQLActionExpression1<WherePredicate<Object>> getPredicateFilterExpression(LogicDeleteBuilder builder,
+//    String propertyName) {
 //        return o -> o.eq(propertyName, false);
 //    }
 //
 //    @Override
-//    protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String propertyName) {
+//    protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String
+//    propertyName) {
 //        //表达式内部的参数不可以提取出来,如果提取出来那么就确定了,而不是实时的 如果一定要提取出来请参考下面的方法
-//        return o -> o.set(propertyName, true).set("deleteBy",currentUser.getUserId()).set("deleteTime", LocalDateTime.now());
+//        return o -> o.set(propertyName, true).set("deleteBy",currentUser.getUserId()).set("deleteTime",
+//        LocalDateTime.now());
 //    }
 
     //@Override
-    //protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String propertyName) {
+    //protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(LogicDeleteBuilder builder, String
+    // propertyName) {
     //    //表达式内部的参数不可以提取出来,如果提取出来那么就确定了,而不是实时的
     //    return o -> {
     //        //如果判断动态条件过于复杂可以通过大括号来实现内部的编程而不是链式
