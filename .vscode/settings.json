@@ -1,4 +1,25 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+  // 禁用对编译目录的文件监视、关闭自动保存、限制后台索引，让 Maven 能独占读写 target/ 等目录。
+  // 避免 IntelliJ IDEA 编译失败
+  // 1. 核心：释放文件锁（最重要）
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/.idea/**": true,
+    "**/node_modules/**": true,
+    "**/.git/**": true
+  },
+  "search.exclude": {
+    "**/target": true,
+    "**/.idea": true
+  },
+  "files.autoSave": "off",
+
+  // 2. 关闭后台编译（关键）
+  "java.compile.nullAnalysis.mode": "disabled",
+
+  // 3. 关闭 pom.xml 自动同步（关键）
+  "java.configuration.updateBuildConfiguration": "disabled",
+
+  // 4. 关闭 VSCode Java 自动构建（彻底不编译）
+  "java.autobuild.enabled": false
 }
