@@ -5,6 +5,7 @@ import com.easy.query.core.basic.jdbc.executor.internal.props.JdbcProperty;
 import com.easy.query.core.basic.jdbc.types.EasyParameter;
 import com.easy.query.core.basic.jdbc.types.handler.JdbcTypeHandler;
 import com.easy.query.sql.starter.config.JdbcTypeHandlerReplaceConfigurer;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ public class OffsetDateTimeTypeHandler implements JdbcTypeHandler, JdbcTypeHandl
     }
 
     @Override
-    public Object getValue(JdbcProperty jdbcProperty, StreamResultSet streamResultSet) throws SQLException {
+    public @Nullable Object getValue(JdbcProperty jdbcProperty, StreamResultSet streamResultSet) throws SQLException {
         Timestamp timestamp = streamResultSet.getTimestamp(jdbcProperty.getJdbcIndex());
         if (timestamp == null) {
             return null;

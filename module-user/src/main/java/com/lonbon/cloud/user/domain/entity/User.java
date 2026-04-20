@@ -22,10 +22,10 @@ import java.util.UUID;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user", ignoreProperties = {"tenantId", "departmentId"})
+@Table(value = "sys_user", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy
 public class User extends BaseEntity implements ProxyEntityAvailable<User, UserProxy> {
-    
+
     /**
      * 用户名
      * 对应lb_location_care.lb_account.username

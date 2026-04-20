@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.UUID;
 
@@ -17,10 +18,11 @@ import java.util.UUID;
  * 部门闭包表，表达部门之间的层级关系
  */
 @Data
+@FieldNameConstants
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_department_closure", ignoreProperties = {"departmentId"})
+@Table(value = "sys_department_closure", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class DepartmentClosure extends BaseEntity
         implements ProxyEntityAvailable<DepartmentClosure, DepartmentClosureProxy>, Closure {
@@ -36,8 +38,7 @@ public class DepartmentClosure extends BaseEntity
     private UUID descendantId;
 
     /**
-     * 层级距离，取值>=0，0表示自身，ancestorId=descendantId，1表示直接后代
+     * 层级距离，取值>=0，不能为负数，0表示自身，ancestorId=descendantId，1表示直接后代
      */
-//    @Min(value = 0, message = "层级距离（distance）不能为负数")
     private Integer distance;
 }

@@ -17,11 +17,17 @@ import java.util.UUID;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_user_role")
+@Table(value = "sys_user_role", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class UserRole extends BaseEntity implements ProxyEntityAvailable<UserRole, UserRoleProxy> {
-    private UUID tenantId;
-    private UUID teamId;
+
+    /**
+     * 用户ID
+     */
     private UUID userId;
+
+    /**
+     * 角色ID
+     */
     private UUID roleId;
 }

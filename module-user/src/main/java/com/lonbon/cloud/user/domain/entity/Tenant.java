@@ -1,15 +1,18 @@
 package com.lonbon.cloud.user.domain.entity;
 
-import com.easy.query.core.annotation.*;
+import com.easy.query.core.annotation.Column;
+import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Navigate;
+import com.easy.query.core.annotation.Table;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
-import com.lonbon.cloud.user.domain.filter.TenantClosureFilter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,10 +23,10 @@ import java.util.UUID;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_tenant", ignoreProperties = {"tenantId", "departmentId"})
+@Table(value = "sys_tenant", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy
 public class Tenant extends BaseEntity
-        implements ProxyEntityAvailable<Tenant, TenantProxy>, ClosureAvailable<TenantClosure> {
+        implements ProxyEntityAvailable<Tenant, TenantProxy>, ClosureAvailable<@NonNull TenantClosure> {
 
     /**
      * 类型
@@ -56,26 +59,24 @@ public class Tenant extends BaseEntity
     @Column(dbDefault = "true")
     private Boolean isActive;
 
+    /**
+     * 父节点ID
+     */
     private UUID parentId;
 
     /**
      * 祖先列表
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"descendantId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            TenantClosure.Fields.descendantId)
     private List<TenantClosure> ancestors;
 
     /**
      * 后代列表
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"ancestorId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = TenantClosureFilter.class)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            TenantClosure.Fields.ancestorId)
     private List<TenantClosure> descendants;
-
-//    @Override
-//    public TenantClosure createClosure(UUID ancestorId, UUID descendantId, int distance) {
-//        return new TenantClosure(ancestorId, descendantId, distance);
-//    }
 }
 
 /**

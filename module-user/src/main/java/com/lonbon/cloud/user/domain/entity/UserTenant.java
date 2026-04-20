@@ -17,7 +17,7 @@ import java.util.UUID;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user_tenant", ignoreProperties = {"departmentId"})
+@Table(value = "sys_user_tenant", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class UserTenant extends BaseEntity implements ProxyEntityAvailable<UserTenant, UserTenantProxy> {
 
@@ -26,8 +26,8 @@ public class UserTenant extends BaseEntity implements ProxyEntityAvailable<UserT
      */
     private UUID userId;
 
-    /**
-     * 租户ID在BaseEntity中定义
+    /*
+      租户ID在BaseEntity中定义
      */
 
     /**

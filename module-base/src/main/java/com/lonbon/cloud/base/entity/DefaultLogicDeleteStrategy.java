@@ -34,8 +34,8 @@ public class DefaultLogicDeleteStrategy extends AbstractLogicDeleteStrategy {
     @Override
     protected SQLActionExpression1<ColumnSetter<Object>> getDeletedSQLExpression(
             LogicDeleteBuilder builder, String propertyName) {
-        return o -> o.set(propertyName, true).set("deleteBy", SaTokenHelper.getLoginId())
-                     .set("deleteTime", OffsetDateTime.now());
+        return o -> o.set(propertyName, true).set(BaseEntity.Fields.deleteBy, SaTokenHelper.getLoginId())
+                     .set(BaseEntity.Fields.deleteTime, OffsetDateTime.now());
     }
 
 

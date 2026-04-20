@@ -1,15 +1,18 @@
 package com.lonbon.cloud.user.domain.entity;
 
-import com.easy.query.core.annotation.*;
+import com.easy.query.core.annotation.Column;
+import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Navigate;
+import com.easy.query.core.annotation.Table;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentProxy;
-import com.lonbon.cloud.user.domain.filter.DepartmentClosureFilter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,10 +23,10 @@ import java.util.UUID;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_department", ignoreProperties = {"departmentId"})
+@Table(value = "sys_department", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class Department extends BaseEntity
-        implements ProxyEntityAvailable<Department, DepartmentProxy>, ClosureAvailable<DepartmentClosure> {
+        implements ProxyEntityAvailable<Department, DepartmentProxy>, ClosureAvailable<@NonNull DepartmentClosure> {
 
     /**
      * 类型
@@ -87,15 +90,15 @@ public class Department extends BaseEntity
     /**
      * 祖先列表
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"descendantId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = DepartmentClosureFilter.class)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            DepartmentClosure.Fields.descendantId)
     private List<DepartmentClosure> ancestors;
 
     /**
      * 后代列表
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = {"id"}, targetProperty = {"ancestorId"},
-            orderByProps = @OrderByProperty(property = "distance"), extraFilter = DepartmentClosureFilter.class)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            DepartmentClosure.Fields.ancestorId)
     private List<DepartmentClosure> descendants;
 
 }
