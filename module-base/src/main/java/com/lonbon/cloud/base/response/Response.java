@@ -2,6 +2,7 @@ package com.lonbon.cloud.base.response;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -16,18 +17,19 @@ import java.io.Serializable;
  */
 @Data
 public class Response<T> implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 状态码
      */
     private int code;
-    
+
     /**
      * 消息
      */
     private String message;
-    
+
     /**
      * 数据
      */

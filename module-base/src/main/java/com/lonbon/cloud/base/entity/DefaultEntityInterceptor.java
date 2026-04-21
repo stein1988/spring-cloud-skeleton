@@ -116,6 +116,7 @@ public class DefaultEntityInterceptor
     public void configure(
             Class<?> entityClass, LambdaEntityExpressionBuilder lambdaEntityExpressionBuilder,
             WherePredicate<Object> wherePredicate) {
+
         Set<String> ignoreProperties = getIgnoreProperties(entityClass);
         if (!ignoreProperties.contains(BaseEntity.Fields.tenantId)) {
             UUID currentTenantId = getCurrentTenantId();
