@@ -25,7 +25,7 @@ public class Pageable {
     // Spring MVC 对 List 类型的请求参数，会以 逗号、空格、分号 作为分隔符，将参数值拆分成多个元素。
     // 例如 sort=createTime,desc 会被拆分为 ["createTime", "desc"]。
     // 所以改用点号做分隔符
-    @Schema(description = "排序规则，格式：字段名.方向（asc/desc），可以接受多个参数，注意分隔符是点，不是逗号", example = "createTime.desc")
+    @Schema(description = "排序规则，格式：字段名.方向（asc/desc），可以接受多个参数，注意分隔符是点，不是逗号，例如：user.name.desc 或 user.department.name.asc，当不指定方向时默认 asc", example = "user.name.desc")
     private @Nullable List<String> sort;
 
     @Schema(description = "解析后的排序数据，不显示在接口文档中", hidden = true)
@@ -53,24 +53,33 @@ public class Pageable {
         for (String s : this.sort) {
             if (StringUtils.isBlank(s)) continue;
 
-            // 拆分 字段,方向
-            String[] parts = s.split("\\.");
-            String property = parts[0].trim();
-            if (StringUtils.isBlank(property)) {
-                continue;
-            }
-            // 解析排序方向
-            Sortable.Direction direction = Sortable.Direction.DESC;
-            if (parts.length >= 2) {
-                String dirStr = parts[1].trim().toUpperCase();
-                try {
-                    direction = Sortable.Direction.valueOf(dirStr);
-                } catch (IllegalArgumentException _) {
+            String trimmed = s.trim();
+            if (StringUtils.isBlank(trimmed)) continue;
 
+            // 提取末尾的方向（asc 或 desc，大小写忽略）
+            String[] parts = trimmed.split("\\.");
+            String lastPart = parts[parts.length - 1].trim().toLowerCase();
+            Sortable.Direction direction = Sortable.Direction.ASC;
+
+            if (lastPart.equals("asc") || lastPart.equals("desc")) {
+                // 去掉末尾的方向部分，其余都是字段名
+                StringBuilder propertyBuilder = new StringBuilder();
+                for (int i = 0; i < parts.length - 1; i++) {
+                    if (i > 0) propertyBuilder.append(".");
+                    propertyBuilder.append(parts[i].trim());
+                }
+                direction = lastPart.equals("desc") ? Sortable.Direction.DESC : Sortable.Direction.ASC;
+                String property = propertyBuilder.toString();
+                if (StringUtils.isNotBlank(property)) {
+                    this.sortables.add(new Sortable(property, direction));
+                }
+            } else {
+                // 没有指定方向，全部都是字段名，默认 asc
+                String property = trimmed;
+                if (StringUtils.isNotBlank(property)) {
+                    this.sortables.add(new Sortable(property, direction));
                 }
             }
-
-            this.sortables.add(new Sortable(property, direction));
         }
 
         return this.sortables;
