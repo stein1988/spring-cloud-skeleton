@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/permissions")
+@RequestMapping("/permissions")
 @Tag(name = "权限", description = "权限操作")
 public class PermissionController {
 

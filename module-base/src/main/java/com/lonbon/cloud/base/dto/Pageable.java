@@ -17,10 +17,10 @@ import java.util.List;
 public class Pageable {
 
     @Schema(description = "页码（从1开始）", example = "1", defaultValue = "1")
-    private Integer page;
+    private @Nullable Integer page;
 
     @Schema(description = "每页条数", example = "10", defaultValue = "10")
-    private Integer size;
+    private @Nullable Integer size;
 
     // Spring MVC 对 List 类型的请求参数，会以 逗号、空格、分号 作为分隔符，将参数值拆分成多个元素。
     // 例如 sort=createTime,desc 会被拆分为 ["createTime", "desc"]。
@@ -33,13 +33,13 @@ public class Pageable {
     private @Nullable List<Sortable> sortables;
 
     public Integer getPage() {
-        if (page <= 0) page = 1;
+        if (page == null || page <= 0) page = 1;
 
         return page;
     }
 
     public Integer getSize() {
-        if (size <= 0) size = 10;
+        if (size == null || size <= 0) size = 10;
 
         return size;
     }

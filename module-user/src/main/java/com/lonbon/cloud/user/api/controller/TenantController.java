@@ -34,7 +34,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/tenants")
+@RequestMapping("/tenants")
 @Tag(name = "租户", description = "租户操作")
 public class TenantController {
 

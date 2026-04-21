@@ -17,10 +17,10 @@ public class LoginResponse {
     private UUID userId;
 
     @Schema(description = "访问令牌")
-    private String token;
+    private String accessToken;
 
     @Schema(description = "访问令牌过期时间(秒)")
-    private long tokenExpireIn;
+    private long accessExpireIn;
 
     @Schema(description = "刷新令牌")
     private String refreshToken;

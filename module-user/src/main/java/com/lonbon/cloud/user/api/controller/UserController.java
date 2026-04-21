@@ -30,7 +30,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @Tag(name = "用户", description = "用户操作")
 public class UserController {
 

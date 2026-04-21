@@ -1,5 +1,6 @@
 package com.lonbon.cloud.base.spring;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
  * - 如果控制器的 @RequestMapping 中已包含版本号（如 /v2/users），则前缀为 /api/{module}/v2/users
  * - 如果控制器的 @RequestMapping 中未包含版本号（如 /users），则前缀为 /api/{module}/v1/users
  */
+@Slf4j
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
@@ -82,6 +84,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
             // 从类信息中提取前缀
             String prefix = extractPrefix(controllerClass);
+            log.info("prefix : {}", prefix);
             if (prefix == null) continue;
 
             // 3. 按前缀分组

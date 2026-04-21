@@ -31,7 +31,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 @Tag(name = "部门", description = "部门操作")
 public class DepartmentController {
 

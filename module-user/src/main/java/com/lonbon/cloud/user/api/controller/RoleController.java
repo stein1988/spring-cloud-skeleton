@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/roles")
 @Tag(name = "角色", description = "角色操作")
 public class RoleController {
 
