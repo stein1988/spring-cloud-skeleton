@@ -66,6 +66,10 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
         this.entityType = entityType;
     }
 
+    public Repository<T, TProxy> getEntityRepository() {
+        return repository;
+    }
+
     /**
      * 创建实体
      * <p>

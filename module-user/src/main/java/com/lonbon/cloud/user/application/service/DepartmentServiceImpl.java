@@ -4,7 +4,9 @@ import com.easy.query.core.expression.lambda.SQLActionExpression2;
 import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
-import com.lonbon.cloud.base.service.ClosureEntityService;
+import com.lonbon.cloud.base.repository.Repository;
+import com.lonbon.cloud.base.service.ClosureOperations;
+import com.lonbon.cloud.base.service.SimpleEntityService;
 import com.lonbon.cloud.user.domain.entity.Department;
 import com.lonbon.cloud.user.domain.entity.DepartmentClosure;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
@@ -27,14 +29,16 @@ import java.util.UUID;
  *
  * @author lonbon
  * @since 1.0.0
- * @see ClosureEntityService
+ * @see ClosureOperations
  * @see DepartmentService
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DepartmentServiceImpl extends ClosureEntityService<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy>
-        implements DepartmentService {
-    
+public class DepartmentServiceImpl extends SimpleEntityService<Department, DepartmentProxy>
+        implements DepartmentService, ClosureOperations<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
+
+    private final DepartmentClosureRepository closureRepository;
+
     /**
      * 构造部门服务实现
      *
@@ -44,49 +48,32 @@ public class DepartmentServiceImpl extends ClosureEntityService<Department, Depa
      */
     public DepartmentServiceImpl(
             Converter converter, DepartmentRepository repository, DepartmentClosureRepository closureRepository) {
-        super(converter, repository, closureRepository, Department.class);
+        super(converter, repository, Department.class);
+        this.closureRepository = closureRepository;
     }
 
-    /**
-     * 获取导航属性表达式
-     * <p>
-     * 配置部门实体的导航属性，用于关联查询祖先节点。
-     * </p>
-     *
-     * @return 导航属性表达式
-     */
     @Override
-    protected SQLActionExpression2<IncludeContext, DepartmentProxy> navigate() {
+    public Repository<DepartmentClosure, DepartmentClosureProxy> getClosureRepository() {
+        return closureRepository;
+    }
+
+    @Override
+    public DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
+        return new DepartmentClosure(ancestorId, descendantId, distance);
+    }
+
+    @Override
+    public Department createBaseEntity(Object createDto) {
+        return super.createEntity(createDto);
+    }
+
+    @Override
+    public SQLActionExpression2<IncludeContext, DepartmentProxy> navigate() {
         return (c, t) -> c.query(t.ancestors());
     }
 
-    /**
-     * 设置父ID列的更新表达式
-     * <p>
-     * 定义更新父ID字段的表达式，用于移动节点操作。
-     * </p>
-     *
-     * @return 父ID列更新表达式
-     */
     @Override
-    protected SQLFuncExpression1<DepartmentProxy, SQLSelectExpression> setColumnParentId() {
+    public SQLFuncExpression1<DepartmentProxy, SQLSelectExpression> setColumnParentId() {
         return DepartmentProxy::parentId;
-    }
-
-
-    /**
-     * 创建闭包记录
-     * <p>
-     * 用于在创建部门或移动部门时，创建闭包表记录。
-     * </p>
-     *
-     * @param ancestorId   祖先节点ID
-     * @param descendantId 后代节点ID
-     * @param distance     距离（层级差）
-     * @return 部门闭包记录
-     */
-    @Override
-    protected DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
-        return new DepartmentClosure(ancestorId, descendantId, distance);
     }
 }
