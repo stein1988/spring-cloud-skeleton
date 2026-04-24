@@ -8,7 +8,6 @@ import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.FieldNameConstants;
 
 import java.util.UUID;
 
@@ -16,7 +15,6 @@ import java.util.UUID;
  * 租户闭包表，表达租户之间的层级关系
  */
 @Data
-@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_tenant_closure", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy

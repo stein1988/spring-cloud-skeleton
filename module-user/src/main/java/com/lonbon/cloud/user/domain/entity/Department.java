@@ -8,6 +8,7 @@ import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
+import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,10 +27,10 @@ import java.util.UUID;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see BaseEntity
  * @see DepartmentClosure
  * @see ClosureAvailable
+ * @since 1.0.0
  */
 @Data
 @FieldNameConstants
@@ -122,7 +123,7 @@ public class Department extends BaseEntity
      * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            DepartmentClosure.Fields.descendantId)
+            ClosureEntity.Fields.descendantId)
     private List<DepartmentClosure> ancestors;
 
     /**
@@ -132,7 +133,7 @@ public class Department extends BaseEntity
      * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            DepartmentClosure.Fields.ancestorId)
+            ClosureEntity.Fields.ancestorId)
     private List<DepartmentClosure> descendants;
 
 }

@@ -61,11 +61,11 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      * 这些常量用于构建闭包表查询条件。
      * </p>
      */
-    String CLOSURE_ANCESTOR_ID = "ancestorId";
+    String ANCESTOR_ID = ClosureEntity.Fields.ancestorId;
 
-    String CLOSURE_DESCENDANT_ID = "descendantId";
+    String DESCENDANT_ID = ClosureEntity.Fields.descendantId;
 
-    String CLOSURE_DISTANCE = "distance";
+    String DISTANCE = ClosureEntity.Fields.distance;
 
     /**
      * 获取闭包实体仓库
@@ -174,8 +174,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     default List<T> getDirectChildren(UUID parentId) {
         List<U> childClosures = getClosureRepository().getAll(u -> {
-            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(parentId);
-            u.anyColumn(CLOSURE_DISTANCE).eq(1);
+            u.anyColumn(ANCESTOR_ID).eq(parentId);
+            u.anyColumn(DISTANCE).eq(1);
         });
 
         List<UUID> childIds = childClosures.stream().map(U::getDescendantId).collect(Collectors.toList());
@@ -197,8 +197,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     default List<T> getDescendants(UUID parentId) {
         List<U> childClosures = getClosureRepository().getAll(u -> {
-            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(parentId);
-            u.anyColumn(CLOSURE_DISTANCE).gt(0);
+            u.anyColumn(ANCESTOR_ID).eq(parentId);
+            u.anyColumn(DISTANCE).gt(0);
         });
 
         List<UUID> childIds = childClosures.stream().map(U::getDescendantId).collect(Collectors.toList());
@@ -220,8 +220,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     default Optional<T> getDirectParent(UUID childId) {
         List<U> parentClosures = getClosureRepository().getAll(u -> {
-            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(childId);
-            u.anyColumn(CLOSURE_DISTANCE).eq(1);
+            u.anyColumn(DESCENDANT_ID).eq(childId);
+            u.anyColumn(DISTANCE).eq(1);
         });
 
         if (parentClosures.isEmpty()) {
@@ -243,8 +243,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     default List<T> getAllAncestors(UUID childId) {
         List<U> ancestorClosures = getClosureRepository().getAll(u -> {
-            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(childId);
-            u.anyColumn(CLOSURE_DISTANCE).gt(0);
+            u.anyColumn(DESCENDANT_ID).eq(childId);
+            u.anyColumn(DISTANCE).gt(0);
         });
 
         List<UUID> ancestorIds = ancestorClosures.stream().map(U::getAncestorId).collect(Collectors.toList());
@@ -277,7 +277,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
         }
 
         Repository<U, UProxy> closureRepo = getClosureRepository();
-        List<U> nodeClosures = closureRepo.getAll(u -> u.anyColumn(CLOSURE_DESCENDANT_ID).eq(nodeId));
+        List<U> nodeClosures = closureRepo.getAll(u -> u.anyColumn(DESCENDANT_ID).eq(nodeId));
         for (U closure : nodeClosures) {
             closureRepo.delete(closure);
         }
@@ -314,8 +314,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
         Repository<T, TProxy> entityRepo = getEntityRepository();
 
         List<U> descendantClosures = closureRepo.getAll(u -> {
-            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(nodeId);
-            u.anyColumn(CLOSURE_DISTANCE).gt(0);
+            u.anyColumn(ANCESTOR_ID).eq(nodeId);
+            u.anyColumn(DISTANCE).gt(0);
         });
 
         List<UUID> ids = descendantClosures.stream().map(U::getDescendantId).collect(Collectors.toList());
@@ -323,8 +323,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
         ids.add(nodeId);
 
         List<U> allClosures = closureRepo.getAll(u -> u.or(() -> {
-            u.anyColumn(CLOSURE_ANCESTOR_ID).in(ids);
-            u.anyColumn(CLOSURE_DESCENDANT_ID).in(ids);
+            u.anyColumn(ANCESTOR_ID).in(ids);
+            u.anyColumn(DESCENDANT_ID).in(ids);
         }));
 
         for (U closure : allClosures) {
@@ -362,8 +362,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     private boolean isDescendant(UUID nodeId, UUID ancestorId) {
         List<U> closures = getClosureRepository().getAll(u -> {
-            u.anyColumn(CLOSURE_ANCESTOR_ID).eq(ancestorId);
-            u.anyColumn(CLOSURE_DESCENDANT_ID).eq(nodeId);
+            u.anyColumn(ANCESTOR_ID).eq(ancestorId);
+            u.anyColumn(DESCENDANT_ID).eq(nodeId);
         });
         return !closures.isEmpty();
     }

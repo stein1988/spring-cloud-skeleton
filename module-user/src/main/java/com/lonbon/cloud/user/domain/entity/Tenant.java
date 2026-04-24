@@ -8,6 +8,7 @@ import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
+import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,10 +27,10 @@ import java.util.UUID;
  * </p>
  *
  * @author stein
- * @since 1.0.0
  * @see BaseEntity
  * @see TenantClosure
  * @see ClosureAvailable
+ * @since 1.0.0
  */
 @Data
 @FieldNameConstants
@@ -94,7 +95,7 @@ public class Tenant extends BaseEntity
      * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            TenantClosure.Fields.descendantId)
+            ClosureEntity.Fields.descendantId)
     private List<TenantClosure> ancestors;
 
     /**
@@ -104,7 +105,7 @@ public class Tenant extends BaseEntity
      * </p>
      */
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            TenantClosure.Fields.ancestorId)
+            ClosureEntity.Fields.ancestorId)
     private List<TenantClosure> descendants;
 }
 
@@ -122,6 +123,7 @@ public class Tenant extends BaseEntity
 /**
  * 行政区划ID
  * 对应lb_location_care.lb_organization.region_id
+ *
  * @todo 确定和address字段的关系，确认是否要冗余region_desc
  */
 // private String region_id;
