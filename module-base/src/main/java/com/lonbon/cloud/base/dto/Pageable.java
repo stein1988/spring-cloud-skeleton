@@ -25,7 +25,8 @@ public class Pageable {
     // Spring MVC 对 List 类型的请求参数，会以 逗号、空格、分号 作为分隔符，将参数值拆分成多个元素。
     // 例如 sort=createTime,desc 会被拆分为 ["createTime", "desc"]。
     // 所以改用点号做分隔符
-    @Schema(description = "排序规则，格式：字段名.方向（asc/desc），可以接受多个参数，注意分隔符是点，不是逗号，例如：user.name.desc 或 user.department.name.asc，当不指定方向时默认 asc", example = "user.name.desc")
+    @Schema(description = "排序规则，格式：字段名.方向（asc/desc），可以接受多个参数，例如：user.name.desc 或 user.department.name.asc，当不指定方向时默认 " +
+            "asc", example = "id.desc")
     private @Nullable List<String> sort;
 
     @Schema(description = "解析后的排序数据，不显示在接口文档中", hidden = true)

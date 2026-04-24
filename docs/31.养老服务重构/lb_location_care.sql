@@ -1,26 +1,9 @@
-/*
- Navicat Premium Dump SQL
+-- Database: lb_location_care
+-- Tables only, no data
+-- Exported at: 2026-04-21 19:25:54
 
- Source Server         : 47.110.59.43
- Source Server Type    : MySQL
- Source Server Version : 50741 (5.7.41-log)
- Source Host           : 47.110.59.43:3306
- Source Schema         : lb_location_care
 
- Target Server Type    : MySQL
- Target Server Version : 50741 (5.7.41-log)
- File Encoding         : 65001
-
- Date: 30/03/2026 15:27:11
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for checksums
--- ----------------------------
-DROP TABLE IF EXISTS `checksums`;
+-- Table: checksums
 CREATE TABLE `checksums` (
   `db` char(64) CHARACTER SET utf8 NOT NULL,
   `tbl` char(64) CHARACTER SET utf8 NOT NULL,
@@ -39,10 +22,8 @@ CREATE TABLE `checksums` (
   KEY `ts_db_tbl` (`ts`,`db`,`tbl`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_abed_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abed_report`;
+
+-- Table: lb_abed_report
 CREATE TABLE `lb_abed_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -63,10 +44,8 @@ CREATE TABLE `lb_abed_report` (
   UNIQUE KEY `care_object_report_date_device_category_health_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`,`health_device_category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在床报表';
 
--- ----------------------------
--- Table structure for lb_abnormal_blood_glucose_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_blood_glucose_record`;
+
+-- Table: lb_abnormal_blood_glucose_record
 CREATE TABLE `lb_abnormal_blood_glucose_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -85,10 +64,8 @@ CREATE TABLE `lb_abnormal_blood_glucose_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血糖异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_blood_oxygen_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_blood_oxygen_record`;
+
+-- Table: lb_abnormal_blood_oxygen_record
 CREATE TABLE `lb_abnormal_blood_oxygen_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -108,10 +85,26 @@ CREATE TABLE `lb_abnormal_blood_oxygen_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血氧异常记录表';
 
 
--- ----------------------------
--- Table structure for lb_abnormal_blood_pressure_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_blood_pressure_record`;
+-- Table: lb_abnormal_blood_oxygen_record_20250801
+CREATE TABLE `lb_abnormal_blood_oxygen_record_20250801` (
+  `id` varchar(32) NOT NULL COMMENT '主键',
+  `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
+  `report_date` varchar(16) NOT NULL DEFAULT '' COMMENT '上报时间（yyyyMMddHHmmss）',
+  `device_category` smallint(6) NOT NULL DEFAULT '0' COMMENT '设备种类',
+  `blood_oxygen` int(11) NOT NULL DEFAULT '0' COMMENT '异常血氧',
+  `create_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识（0-未删除，1-已删除）',
+  `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '项目标识',
+  `device_iteration_number` smallint(6) NOT NULL DEFAULT '0' COMMENT '设备迭代版本号',
+  `health_device_category` smallint(6) NOT NULL DEFAULT '0' COMMENT '健康设备种类',
+  `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
+  PRIMARY KEY (`id`),
+  KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血氧异常记录表';
+
+
+-- Table: lb_abnormal_blood_pressure_record
 CREATE TABLE `lb_abnormal_blood_pressure_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -133,10 +126,8 @@ CREATE TABLE `lb_abnormal_blood_pressure_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血压异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_breathe_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_breathe_record`;
+
+-- Table: lb_abnormal_breathe_record
 CREATE TABLE `lb_abnormal_breathe_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -155,10 +146,8 @@ CREATE TABLE `lb_abnormal_breathe_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='呼吸异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_electrocardiogram_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_electrocardiogram_record`;
+
+-- Table: lb_abnormal_electrocardiogram_record
 CREATE TABLE `lb_abnormal_electrocardiogram_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -178,10 +167,8 @@ CREATE TABLE `lb_abnormal_electrocardiogram_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='心电异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_heart_rate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_heart_rate_record`;
+
+-- Table: lb_abnormal_heart_rate_record
 CREATE TABLE `lb_abnormal_heart_rate_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -200,10 +187,8 @@ CREATE TABLE `lb_abnormal_heart_rate_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='心率异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_pressure_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_pressure_record`;
+
+-- Table: lb_abnormal_pressure_record
 CREATE TABLE `lb_abnormal_pressure_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -222,10 +207,8 @@ CREATE TABLE `lb_abnormal_pressure_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='压力异常记录表';
 
--- ----------------------------
--- Table structure for lb_abnormal_temperature_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_abnormal_temperature_record`;
+
+-- Table: lb_abnormal_temperature_record
 CREATE TABLE `lb_abnormal_temperature_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -244,10 +227,8 @@ CREATE TABLE `lb_abnormal_temperature_record` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='异常体温记录表';
 
--- ----------------------------
--- Table structure for lb_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account`;
+
+-- Table: lb_account
 CREATE TABLE `lb_account` (
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `username` varchar(128) DEFAULT '' COMMENT '登录用户名',
@@ -293,10 +274,8 @@ CREATE TABLE `lb_account` (
   KEY `idx_account_type` (`account_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统账号表';
 
--- ----------------------------
--- Table structure for lb_account_alarm_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_alarm_config`;
+
+-- Table: lb_account_alarm_config
 CREATE TABLE `lb_account_alarm_config` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` varchar(32) DEFAULT '' COMMENT '账号主键',
@@ -307,10 +286,8 @@ CREATE TABLE `lb_account_alarm_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_account_app_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_app_info`;
+
+-- Table: lb_account_app_info
 CREATE TABLE `lb_account_app_info` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `org_app_id` varchar(32) NOT NULL DEFAULT '' COMMENT '应用信息对应应用id',
@@ -327,10 +304,8 @@ CREATE TABLE `lb_account_app_info` (
   KEY `org_app_id_index` (`org_app_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户应用信息表';
 
--- ----------------------------
--- Table structure for lb_account_approval_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_approval_record`;
+
+-- Table: lb_account_approval_record
 CREATE TABLE `lb_account_approval_record` (
   `account_approval_record_id` varchar(32) NOT NULL DEFAULT '',
   `org_id` varchar(64) DEFAULT '' COMMENT '项目id',
@@ -356,10 +331,8 @@ CREATE TABLE `lb_account_approval_record` (
   PRIMARY KEY (`account_approval_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户审计记录表';
 
--- ----------------------------
--- Table structure for lb_account_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_balance`;
+
+-- Table: lb_account_balance
 CREATE TABLE `lb_account_balance` (
   `account_balance_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `username` varchar(32) DEFAULT '' COMMENT '用户',
@@ -380,10 +353,8 @@ CREATE TABLE `lb_account_balance` (
   KEY `account_id` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_account_card_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_card_config`;
+
+-- Table: lb_account_card_config
 CREATE TABLE `lb_account_card_config` (
   `config_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目id',
@@ -407,10 +378,8 @@ CREATE TABLE `lb_account_card_config` (
   PRIMARY KEY (`config_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账号健康卡片配置表';
 
--- ----------------------------
--- Table structure for lb_account_center_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_center_relation`;
+
+-- Table: lb_account_center_relation
 CREATE TABLE `lb_account_center_relation` (
   `account_center_id` varchar(32) NOT NULL DEFAULT '' COMMENT '关联关系主键',
   `account_id` varchar(32) DEFAULT '' COMMENT '用户主键',
@@ -422,10 +391,8 @@ CREATE TABLE `lb_account_center_relation` (
   PRIMARY KEY (`account_center_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户守护中心关联表';
 
--- ----------------------------
--- Table structure for lb_account_composite_view_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_composite_view_config`;
+
+-- Table: lb_account_composite_view_config
 CREATE TABLE `lb_account_composite_view_config` (
   `id` varchar(32) NOT NULL COMMENT '记录主键',
   `account_id` varchar(32) DEFAULT NULL COMMENT '账号ＩＤ',
@@ -446,10 +413,8 @@ CREATE TABLE `lb_account_composite_view_config` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='综合一览表账户显示配置';
 
--- ----------------------------
--- Table structure for lb_account_csr
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_csr`;
+
+-- Table: lb_account_csr
 CREATE TABLE `lb_account_csr` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account_id` varchar(64) DEFAULT NULL COMMENT '用户id',
@@ -466,12 +431,10 @@ CREATE TABLE `lb_account_csr` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19056 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=19454 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户属性表';
 
--- ----------------------------
--- Table structure for lb_account_csr_organization
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_csr_organization`;
+
+-- Table: lb_account_csr_organization
 CREATE TABLE `lb_account_csr_organization` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '账户id',
@@ -482,12 +445,10 @@ CREATE TABLE `lb_account_csr_organization` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `org_id` (`org_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23036 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户管理报警关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=24906 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户管理报警关联表';
 
--- ----------------------------
--- Table structure for lb_account_csr_region
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_csr_region`;
+
+-- Table: lb_account_csr_region
 CREATE TABLE `lb_account_csr_region` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '账户id',
@@ -500,12 +461,10 @@ CREATE TABLE `lb_account_csr_region` (
   PRIMARY KEY (`id`),
   KEY `region_id` (`region_id`) USING BTREE,
   KEY `account_id` (`account_id`,`region_level`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=184486 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户管理区域关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=186738 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='坐席用户管理区域关联表';
 
--- ----------------------------
--- Table structure for lb_account_family_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_family_relation`;
+
+-- Table: lb_account_family_relation
 CREATE TABLE `lb_account_family_relation` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '用户id',
@@ -519,10 +478,8 @@ CREATE TABLE `lb_account_family_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='家庭-账号关联表';
 
--- ----------------------------
--- Table structure for lb_account_login_organization
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_login_organization`;
+
+-- Table: lb_account_login_organization
 CREATE TABLE `lb_account_login_organization` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '账户id',
@@ -533,12 +490,10 @@ CREATE TABLE `lb_account_login_organization` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `org_id` (`org_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=53540 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='子平台账号免登录管理';
+) ENGINE=InnoDB AUTO_INCREMENT=54988 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='子平台账号免登录管理';
 
--- ----------------------------
--- Table structure for lb_account_org_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_org_relation`;
+
+-- Table: lb_account_org_relation
 CREATE TABLE `lb_account_org_relation` (
   `account_org_re_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '用户id',
@@ -553,10 +508,8 @@ CREATE TABLE `lb_account_org_relation` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户项目关联表';
 
--- ----------------------------
--- Table structure for lb_account_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_relation`;
+
+-- Table: lb_account_relation
 CREATE TABLE `lb_account_relation` (
   `id` varchar(32) NOT NULL COMMENT 'id',
   `account_id` varchar(32) NOT NULL COMMENT '账号id',
@@ -571,10 +524,8 @@ CREATE TABLE `lb_account_relation` (
   KEY `user_key_index` (`user_key`) USING BTREE COMMENT '唯一标识索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账号实体关联表';
 
--- ----------------------------
--- Table structure for lb_account_relation_third
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_relation_third`;
+
+-- Table: lb_account_relation_third
 CREATE TABLE `lb_account_relation_third` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `account_id` varchar(32) NOT NULL,
@@ -588,10 +539,8 @@ CREATE TABLE `lb_account_relation_third` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账号与三方平台关系表';
 
--- ----------------------------
--- Table structure for lb_account_role
--- ----------------------------
-DROP TABLE IF EXISTS `lb_account_role`;
+
+-- Table: lb_account_role
 CREATE TABLE `lb_account_role` (
   `account_role_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '用户id',
@@ -604,10 +553,8 @@ CREATE TABLE `lb_account_role` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_activity_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_activity_record`;
+
+-- Table: lb_activity_record
 CREATE TABLE `lb_activity_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT NULL COMMENT '看护对象',
@@ -636,10 +583,8 @@ CREATE TABLE `lb_activity_record` (
   KEY `activity_record_care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='活动记录';
 
--- ----------------------------
--- Table structure for lb_aep_ota_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_aep_ota_task`;
+
+-- Table: lb_aep_ota_task
 CREATE TABLE `lb_aep_ota_task` (
   `id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -654,10 +599,8 @@ CREATE TABLE `lb_aep_ota_task` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AEP平台设备远程升级记录';
 
--- ----------------------------
--- Table structure for lb_alarm_action
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_action`;
+
+-- Table: lb_alarm_action
 CREATE TABLE `lb_alarm_action` (
   `alarm_action_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT '' COMMENT '名字',
@@ -668,10 +611,8 @@ CREATE TABLE `lb_alarm_action` (
   PRIMARY KEY (`alarm_action_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警处理行为表';
 
--- ----------------------------
--- Table structure for lb_alarm_action_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_action_relation`;
+
+-- Table: lb_alarm_action_relation
 CREATE TABLE `lb_alarm_action_relation` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `alarm_action_id` varchar(32) DEFAULT '' COMMENT '行为',
@@ -683,10 +624,8 @@ CREATE TABLE `lb_alarm_action_relation` (
   PRIMARY KEY (`relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警和处理行为绑定关系表';
 
--- ----------------------------
--- Table structure for lb_alarm_additional_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_additional_info`;
+
+-- Table: lb_alarm_additional_info
 CREATE TABLE `lb_alarm_additional_info` (
   `alarm_id` varchar(32) NOT NULL COMMENT '报警标识',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构标识',
@@ -724,10 +663,8 @@ CREATE TABLE `lb_alarm_additional_info` (
   KEY `idx_session_id` (`session_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警附加信息表';
 
--- ----------------------------
--- Table structure for lb_alarm_btn
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_btn`;
+
+-- Table: lb_alarm_btn
 CREATE TABLE `lb_alarm_btn` (
   `alarm_btn_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) DEFAULT '' COMMENT '房间',
@@ -795,10 +732,8 @@ CREATE TABLE `lb_alarm_btn` (
   KEY `iot_device_id` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警按钮';
 
--- ----------------------------
--- Table structure for lb_alarm_call_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_call_record`;
+
+-- Table: lb_alarm_call_record
 CREATE TABLE `lb_alarm_call_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构标识',
@@ -824,10 +759,8 @@ CREATE TABLE `lb_alarm_call_record` (
   KEY `call_type` (`call_type`,`call_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警云呼记录表';
 
--- ----------------------------
--- Table structure for lb_alarm_count_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_count_record`;
+
+-- Table: lb_alarm_count_record
 CREATE TABLE `lb_alarm_count_record` (
   `alarm_count_id` varchar(32) NOT NULL COMMENT '主键',
   `alarm_count` int(11) NOT NULL DEFAULT '0' COMMENT '报警数量',
@@ -842,10 +775,8 @@ CREATE TABLE `lb_alarm_count_record` (
   PRIMARY KEY (`alarm_count_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报警数量统计记录表';
 
--- ----------------------------
--- Table structure for lb_alarm_dispose_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_dispose_account`;
+
+-- Table: lb_alarm_dispose_account
 CREATE TABLE `lb_alarm_dispose_account` (
   `alarm_dispose_account_id` varchar(32) NOT NULL COMMENT '主键',
   `alarm_id` varchar(32) DEFAULT '' COMMENT '报警记录id',
@@ -863,10 +794,8 @@ CREATE TABLE `lb_alarm_dispose_account` (
   KEY `dispose_account_id` (`dispose_account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警处理人;';
 
--- ----------------------------
--- Table structure for lb_alarm_dispose_org
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_dispose_org`;
+
+-- Table: lb_alarm_dispose_org
 CREATE TABLE `lb_alarm_dispose_org` (
   `alarm_dispose_org_id` varchar(64) NOT NULL COMMENT '主键',
   `alarm_id` varchar(64) DEFAULT '' COMMENT '报警编号',
@@ -879,10 +808,8 @@ CREATE TABLE `lb_alarm_dispose_org` (
   PRIMARY KEY (`alarm_dispose_org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_alarm_dispose_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_dispose_record`;
+
+-- Table: lb_alarm_dispose_record
 CREATE TABLE `lb_alarm_dispose_record` (
   `alarm_dispose_record_id` varchar(64) NOT NULL COMMENT '报警处理记录id',
   `alarm_dispose_account_id` varchar(64) DEFAULT NULL COMMENT '报警处理人id',
@@ -916,10 +843,8 @@ CREATE TABLE `lb_alarm_dispose_record` (
   KEY `dispose_time` (`dispose_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警处理记录';
 
--- ----------------------------
--- Table structure for lb_alarm_dispose_result_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_dispose_result_record`;
+
+-- Table: lb_alarm_dispose_result_record
 CREATE TABLE `lb_alarm_dispose_result_record` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构标识',
@@ -949,10 +874,8 @@ CREATE TABLE `lb_alarm_dispose_result_record` (
   KEY `dispose_account_id` (`dispose_account_id`,`dispose_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警处理结果记录表';
 
--- ----------------------------
--- Table structure for lb_alarm_elder
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_elder`;
+
+-- Table: lb_alarm_elder
 CREATE TABLE `lb_alarm_elder` (
   `alarm_elder_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -968,10 +891,8 @@ CREATE TABLE `lb_alarm_elder` (
   PRIMARY KEY (`alarm_elder_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离院报警老人关系';
 
--- ----------------------------
--- Table structure for lb_alarm_event_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_event_record`;
+
+-- Table: lb_alarm_event_record
 CREATE TABLE `lb_alarm_event_record` (
   `alarm_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '项目标识',
@@ -1023,10 +944,8 @@ CREATE TABLE `lb_alarm_event_record` (
   KEY `idx_org_id_alarm_time` (`org_id`,`alarm_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警&事件记录表';
 
--- ----------------------------
--- Table structure for lb_alarm_mode
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_mode`;
+
+-- Table: lb_alarm_mode
 CREATE TABLE `lb_alarm_mode` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -1042,10 +961,8 @@ CREATE TABLE `lb_alarm_mode` (
   KEY `care_object_id` (`care_object_id`,`alarm_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警模式设置表';
 
--- ----------------------------
--- Table structure for lb_alarm_push_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_push_record`;
+
+-- Table: lb_alarm_push_record
 CREATE TABLE `lb_alarm_push_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `content` mediumtext COMMENT '报警内容 jsonString',
@@ -1073,10 +990,8 @@ CREATE TABLE `lb_alarm_push_record` (
   KEY `org_receive_client_time` (`org_id`,`is_receive`,`client_type`,`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_alarm_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_record`;
+
+-- Table: lb_alarm_record
 CREATE TABLE `lb_alarm_record` (
   `alarm_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -1139,10 +1054,8 @@ CREATE TABLE `lb_alarm_record` (
   KEY `call_order_id` (`call_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警记录';
 
--- ----------------------------
--- Table structure for lb_alarm_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_set`;
+
+-- Table: lb_alarm_set
 CREATE TABLE `lb_alarm_set` (
   `alarm_set_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '老人id',
@@ -1172,10 +1085,8 @@ CREATE TABLE `lb_alarm_set` (
   KEY `alarm_mode` (`alarm_mode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者处警设置表';
 
--- ----------------------------
--- Table structure for lb_alarm_switch_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_switch_config`;
+
+-- Table: lb_alarm_switch_config
 CREATE TABLE `lb_alarm_switch_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
@@ -1196,10 +1107,8 @@ CREATE TABLE `lb_alarm_switch_config` (
   KEY `object_id` (`object_id`,`alarm_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警开关配置表';
 
--- ----------------------------
--- Table structure for lb_alarm_time
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_time`;
+
+-- Table: lb_alarm_time
 CREATE TABLE `lb_alarm_time` (
   `alarm_time_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -1215,10 +1124,8 @@ CREATE TABLE `lb_alarm_time` (
   PRIMARY KEY (`alarm_time_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离院报警时间段';
 
--- ----------------------------
--- Table structure for lb_alarm_track_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_track_record`;
+
+-- Table: lb_alarm_track_record
 CREATE TABLE `lb_alarm_track_record` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构标识',
@@ -1272,10 +1179,8 @@ CREATE TABLE `lb_alarm_track_record` (
   KEY `is_intact` (`is_intact`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警轨迹记录表';
 
--- ----------------------------
--- Table structure for lb_alarm_type_enum
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alarm_type_enum`;
+
+-- Table: lb_alarm_type_enum
 CREATE TABLE `lb_alarm_type_enum` (
   `alarm_type` smallint(6) NOT NULL COMMENT '报警类型',
   `alarm_type_desc` varchar(32) NOT NULL DEFAULT '' COMMENT '报警类型描述',
@@ -1289,10 +1194,8 @@ CREATE TABLE `lb_alarm_type_enum` (
   KEY `idx_alarm_type_desc` (`alarm_type_desc`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='报警类型枚举表';
 
--- ----------------------------
--- Table structure for lb_ali_csr
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_csr`;
+
+-- Table: lb_ali_csr
 CREATE TABLE `lb_ali_csr` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) DEFAULT NULL COMMENT '来邦客服用户id',
@@ -1313,10 +1216,8 @@ CREATE TABLE `lb_ali_csr` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='阿里云呼座席信息表';
 
--- ----------------------------
--- Table structure for lb_ali_csr_dispose_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_csr_dispose_record`;
+
+-- Table: lb_ali_csr_dispose_record
 CREATE TABLE `lb_ali_csr_dispose_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `alarm_id` varchar(64) NOT NULL COMMENT '报警id',
@@ -1337,10 +1238,8 @@ CREATE TABLE `lb_ali_csr_dispose_record` (
   KEY `ivr_id` (`ivr_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ali_ivr
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_ivr`;
+
+-- Table: lb_ali_ivr
 CREATE TABLE `lb_ali_ivr` (
   `ivr_id` varchar(64) NOT NULL COMMENT '主键',
   `status` tinyint(4) DEFAULT NULL COMMENT '状态，1工作，0不工作',
@@ -1354,10 +1253,8 @@ CREATE TABLE `lb_ali_ivr` (
   PRIMARY KEY (`ivr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ali_sign
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_sign`;
+
+-- Table: lb_ali_sign
 CREATE TABLE `lb_ali_sign` (
   `sign_code` varchar(16) NOT NULL DEFAULT '' COMMENT '签名cod (signXX)',
   `sign_name` varchar(32) NOT NULL DEFAULT '' COMMENT '签名名称',
@@ -1367,10 +1264,8 @@ CREATE TABLE `lb_ali_sign` (
   PRIMARY KEY (`sign_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='阿里签名信息';
 
--- ----------------------------
--- Table structure for lb_ali_sign_template_org_relation_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_sign_template_org_relation_v2`;
+
+-- Table: lb_ali_sign_template_org_relation_v2
 CREATE TABLE `lb_ali_sign_template_org_relation_v2` (
   `id` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '',
   `sign_code` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '签名code(ali_sign)',
@@ -1382,10 +1277,8 @@ CREATE TABLE `lb_ali_sign_template_org_relation_v2` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='机构-模板-签名信息';
 
--- ----------------------------
--- Table structure for lb_ali_sign_template_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_sign_template_relation`;
+
+-- Table: lb_ali_sign_template_relation
 CREATE TABLE `lb_ali_sign_template_relation` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `sign_code` varchar(16) NOT NULL DEFAULT '' COMMENT '签名code (signXX)',
@@ -1396,10 +1289,8 @@ CREATE TABLE `lb_ali_sign_template_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ali_sign_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_sign_v2`;
+
+-- Table: lb_ali_sign_v2
 CREATE TABLE `lb_ali_sign_v2` (
   `sign_code` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '签名code (signXX)',
   `sign_name` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '签名名称',
@@ -1408,10 +1299,8 @@ CREATE TABLE `lb_ali_sign_v2` (
   PRIMARY KEY (`sign_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='阿里签名信息';
 
--- ----------------------------
--- Table structure for lb_ali_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_template`;
+
+-- Table: lb_ali_template
 CREATE TABLE `lb_ali_template` (
   `id` varchar(32) NOT NULL COMMENT 'template_type',
   `type` tinyint(1) NOT NULL COMMENT '模板类型 0欠费/1退住/2用药不足/3预缴',
@@ -1426,10 +1315,8 @@ CREATE TABLE `lb_ali_template` (
   UNIQUE KEY `code_value` (`code_value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='阿里短信模板信息';
 
--- ----------------------------
--- Table structure for lb_ali_template_param_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_template_param_v2`;
+
+-- Table: lb_ali_template_param_v2
 CREATE TABLE `lb_ali_template_param_v2` (
   `id` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '',
   `key_id` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'code_num/sms_template_id',
@@ -1442,10 +1329,8 @@ CREATE TABLE `lb_ali_template_param_v2` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='模板占位参数值信息';
 
--- ----------------------------
--- Table structure for lb_ali_template_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ali_template_v2`;
+
+-- Table: lb_ali_template_v2
 CREATE TABLE `lb_ali_template_v2` (
   `code_num` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '模板代号',
   `code_value` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '阿里模板code',
@@ -1456,10 +1341,8 @@ CREATE TABLE `lb_ali_template_v2` (
   PRIMARY KEY (`code_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='阿里模板信息';
 
--- ----------------------------
--- Table structure for lb_alipay_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_alipay_order`;
+
+-- Table: lb_alipay_order
 CREATE TABLE `lb_alipay_order` (
   `order_id` varchar(64) NOT NULL COMMENT '主键',
   `order_num` varchar(64) DEFAULT '' COMMENT '支付订单号',
@@ -1488,10 +1371,8 @@ CREATE TABLE `lb_alipay_order` (
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_annual_fee
--- ----------------------------
-DROP TABLE IF EXISTS `lb_annual_fee`;
+
+-- Table: lb_annual_fee
 CREATE TABLE `lb_annual_fee` (
   `annual_fee_id` varchar(32) NOT NULL COMMENT '主键',
   `type` tinyint(1) DEFAULT '0' COMMENT '类型',
@@ -1504,10 +1385,8 @@ CREATE TABLE `lb_annual_fee` (
   PRIMARY KEY (`annual_fee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_anti_lost_host
--- ----------------------------
-DROP TABLE IF EXISTS `lb_anti_lost_host`;
+
+-- Table: lb_anti_lost_host
 CREATE TABLE `lb_anti_lost_host` (
   `id` varchar(32) NOT NULL,
   `device_type` int(3) NOT NULL DEFAULT '117' COMMENT '设备类型',
@@ -1527,10 +1406,8 @@ CREATE TABLE `lb_anti_lost_host` (
   KEY `idx_sn` (`sn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='防走失主机表';
 
--- ----------------------------
--- Table structure for lb_anti_lost_tag
--- ----------------------------
-DROP TABLE IF EXISTS `lb_anti_lost_tag`;
+
+-- Table: lb_anti_lost_tag
 CREATE TABLE `lb_anti_lost_tag` (
   `id` varchar(32) NOT NULL,
   `device_type` int(3) NOT NULL DEFAULT '118' COMMENT '设备类型',
@@ -1550,10 +1427,8 @@ CREATE TABLE `lb_anti_lost_tag` (
   KEY `idx_tag_group` (`tag_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='防走失标签表';
 
--- ----------------------------
--- Table structure for lb_approval_process
--- ----------------------------
-DROP TABLE IF EXISTS `lb_approval_process`;
+
+-- Table: lb_approval_process
 CREATE TABLE `lb_approval_process` (
   `process_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `approval_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '审批记录id',
@@ -1579,10 +1454,8 @@ CREATE TABLE `lb_approval_process` (
   KEY `approval_record_id_IDX` (`approval_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批流程表';
 
--- ----------------------------
--- Table structure for lb_approval_process_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_approval_process_setting`;
+
+-- Table: lb_approval_process_setting
 CREATE TABLE `lb_approval_process_setting` (
   `setting_id` varchar(32) NOT NULL COMMENT '主键',
   `group_id` varchar(32) NOT NULL DEFAULT '' COMMENT '分组id（区分流程设置）',
@@ -1605,10 +1478,8 @@ CREATE TABLE `lb_approval_process_setting` (
   KEY `applicant_org_id_IDX` (`applicant_org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批流程设置表';
 
--- ----------------------------
--- Table structure for lb_approval_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_approval_record`;
+
+-- Table: lb_approval_record
 CREATE TABLE `lb_approval_record` (
   `approval_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -1641,10 +1512,8 @@ CREATE TABLE `lb_approval_record` (
   KEY `business_id_index` (`business_id`(64))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批记录表';
 
--- ----------------------------
--- Table structure for lb_approval_type_enum
--- ----------------------------
-DROP TABLE IF EXISTS `lb_approval_type_enum`;
+
+-- Table: lb_approval_type_enum
 CREATE TABLE `lb_approval_type_enum` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `approval_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审批类型 1 入住审批 2 退住审批 3 评估审批 4 通用审批 5 物业保修审批',
@@ -1658,10 +1527,8 @@ CREATE TABLE `lb_approval_type_enum` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='审批类型枚举表';
 
--- ----------------------------
--- Table structure for lb_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area`;
+
+-- Table: lb_area
 CREATE TABLE `lb_area` (
   `area_id` varchar(32) NOT NULL COMMENT '主键',
   `building_id` varchar(32) DEFAULT '' COMMENT '所属楼层',
@@ -1702,10 +1569,8 @@ CREATE TABLE `lb_area` (
   KEY `idx_floor_id` (`floor_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='房间';
 
--- ----------------------------
--- Table structure for lb_area_alarm_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area_alarm_set`;
+
+-- Table: lb_area_alarm_set
 CREATE TABLE `lb_area_alarm_set` (
   `alarm_set_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) DEFAULT '' COMMENT '区域id',
@@ -1726,10 +1591,8 @@ CREATE TABLE `lb_area_alarm_set` (
   PRIMARY KEY (`alarm_set_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='区域处警设置表';
 
--- ----------------------------
--- Table structure for lb_area_bed
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area_bed`;
+
+-- Table: lb_area_bed
 CREATE TABLE `lb_area_bed` (
   `area_bed_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) DEFAULT '' COMMENT '房间',
@@ -1776,10 +1639,8 @@ CREATE TABLE `lb_area_bed` (
   KEY `is_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_area_map
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area_map`;
+
+-- Table: lb_area_map
 CREATE TABLE `lb_area_map` (
   `area_map_id` varchar(32) NOT NULL COMMENT '主键',
   `area_map_name` varchar(32) NOT NULL DEFAULT '' COMMENT '地图名称',
@@ -1797,10 +1658,8 @@ CREATE TABLE `lb_area_map` (
   KEY `area_id` (`area_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='区域地图';
 
--- ----------------------------
--- Table structure for lb_area_map_area_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area_map_area_relation`;
+
+-- Table: lb_area_map_area_relation
 CREATE TABLE `lb_area_map_area_relation` (
   `area_map_area_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(64) NOT NULL DEFAULT '' COMMENT '区域id',
@@ -1817,10 +1676,8 @@ CREATE TABLE `lb_area_map_area_relation` (
   KEY `area_id` (`area_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='区域地图关联区域信息表';
 
--- ----------------------------
--- Table structure for lb_area_map_poi
--- ----------------------------
-DROP TABLE IF EXISTS `lb_area_map_poi`;
+
+-- Table: lb_area_map_poi
 CREATE TABLE `lb_area_map_poi` (
   `area_map_poi_id` varchar(32) NOT NULL COMMENT '主键',
   `area_map_id` varchar(32) NOT NULL DEFAULT '' COMMENT '所属区域地图id',
@@ -1840,10 +1697,8 @@ CREATE TABLE `lb_area_map_poi` (
   KEY `area_map_id` (`area_map_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='区域地图兴趣点表';
 
--- ----------------------------
--- Table structure for lb_assessment_transaction
--- ----------------------------
-DROP TABLE IF EXISTS `lb_assessment_transaction`;
+
+-- Table: lb_assessment_transaction
 CREATE TABLE `lb_assessment_transaction` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目主键',
@@ -1865,10 +1720,8 @@ CREATE TABLE `lb_assessment_transaction` (
   KEY `assessment_id_index` (`assessment_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评估事务信息表';
 
--- ----------------------------
--- Table structure for lb_async_export_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_async_export_task`;
+
+-- Table: lb_async_export_task
 CREATE TABLE `lb_async_export_task` (
   `task_id` varchar(32) NOT NULL COMMENT '任务id',
   `task_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
@@ -1895,10 +1748,8 @@ CREATE TABLE `lb_async_export_task` (
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='异步导出任务表';
 
--- ----------------------------
--- Table structure for lb_atest
--- ----------------------------
-DROP TABLE IF EXISTS `lb_atest`;
+
+-- Table: lb_atest
 CREATE TABLE `lb_atest` (
   `id` int(11) NOT NULL,
   `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -1908,10 +1759,8 @@ CREATE TABLE `lb_atest` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_auth_refresh_token
--- ----------------------------
-DROP TABLE IF EXISTS `lb_auth_refresh_token`;
+
+-- Table: lb_auth_refresh_token
 CREATE TABLE `lb_auth_refresh_token` (
   `refresh_token_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `token_id` varchar(32) NOT NULL DEFAULT '' COMMENT '表auth_access_token对应的主键',
@@ -1925,10 +1774,8 @@ CREATE TABLE `lb_auth_refresh_token` (
   PRIMARY KEY (`refresh_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Refresh Token信息表';
 
--- ----------------------------
--- Table structure for lb_authorized_application_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_authorized_application_info`;
+
+-- Table: lb_authorized_application_info
 CREATE TABLE `lb_authorized_application_info` (
   `app_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `app_name` varchar(32) NOT NULL DEFAULT '' COMMENT '应用名称',
@@ -1949,10 +1796,8 @@ CREATE TABLE `lb_authorized_application_info` (
   PRIMARY KEY (`app_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='第三方客户端信息表';
 
--- ----------------------------
--- Table structure for lb_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_balance`;
+
+-- Table: lb_balance
 CREATE TABLE `lb_balance` (
   `balance_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -1971,10 +1816,8 @@ CREATE TABLE `lb_balance` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='余额表';
 
--- ----------------------------
--- Table structure for lb_band
--- ----------------------------
-DROP TABLE IF EXISTS `lb_band`;
+
+-- Table: lb_band
 CREATE TABLE `lb_band` (
   `band_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -2050,10 +1893,8 @@ CREATE TABLE `lb_band` (
   KEY `mainframe_num` (`mainframe_num`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='手环';
 
--- ----------------------------
--- Table structure for lb_band_position_status_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_band_position_status_record`;
+
+-- Table: lb_band_position_status_record
 CREATE TABLE `lb_band_position_status_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `band_id` varchar(64) DEFAULT '' COMMENT '手表id',
@@ -2067,10 +1908,8 @@ CREATE TABLE `lb_band_position_status_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='位置状态记录';
 
--- ----------------------------
--- Table structure for lb_band_power_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_band_power_record`;
+
+-- Table: lb_band_power_record
 CREATE TABLE `lb_band_power_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `band_id` varchar(32) DEFAULT '' COMMENT '手表id',
@@ -2083,10 +1922,8 @@ CREATE TABLE `lb_band_power_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='电量记录';
 
--- ----------------------------
--- Table structure for lb_band_wear_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_band_wear_record`;
+
+-- Table: lb_band_wear_record
 CREATE TABLE `lb_band_wear_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `band_id` varchar(32) DEFAULT '' COMMENT '手表id',
@@ -2099,10 +1936,8 @@ CREATE TABLE `lb_band_wear_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='佩带记录';
 
--- ----------------------------
--- Table structure for lb_beacon
--- ----------------------------
-DROP TABLE IF EXISTS `lb_beacon`;
+
+-- Table: lb_beacon
 CREATE TABLE `lb_beacon` (
   `beacon_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) DEFAULT '' COMMENT '房间',
@@ -2164,10 +1999,8 @@ CREATE TABLE `lb_beacon` (
   KEY `device_type` (`device_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='信标';
 
--- ----------------------------
--- Table structure for lb_beacon_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_beacon_area`;
+
+-- Table: lb_beacon_area
 CREATE TABLE `lb_beacon_area` (
   `beacon_area_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) NOT NULL DEFAULT '' COMMENT '房间id',
@@ -2177,10 +2010,8 @@ CREATE TABLE `lb_beacon_area` (
   PRIMARY KEY (`beacon_area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='楼栋楼层设备与房间对应关系表';
 
--- ----------------------------
--- Table structure for lb_beacon_position_re
--- ----------------------------
-DROP TABLE IF EXISTS `lb_beacon_position_re`;
+
+-- Table: lb_beacon_position_re
 CREATE TABLE `lb_beacon_position_re` (
   `position_re_id` varchar(32) NOT NULL COMMENT '主键',
   `position_desc` varchar(64) DEFAULT '' COMMENT '位置叙述',
@@ -2194,10 +2025,8 @@ CREATE TABLE `lb_beacon_position_re` (
   PRIMARY KEY (`position_re_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_big_toilet_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_big_toilet_report`;
+
+-- Table: lb_big_toilet_report
 CREATE TABLE `lb_big_toilet_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -2217,10 +2046,8 @@ CREATE TABLE `lb_big_toilet_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='大解报表';
 
--- ----------------------------
--- Table structure for lb_blood_band_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_band_device`;
+
+-- Table: lb_blood_band_device
 CREATE TABLE `lb_blood_band_device` (
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `company_name` varchar(32) NOT NULL DEFAULT '' COMMENT '厂商名称',
@@ -2237,10 +2064,8 @@ CREATE TABLE `lb_blood_band_device` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血压手表表';
 
--- ----------------------------
--- Table structure for lb_blood_glucose_meter
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_glucose_meter`;
+
+-- Table: lb_blood_glucose_meter
 CREATE TABLE `lb_blood_glucose_meter` (
   `blood_glucose_meter_id` varchar(32) NOT NULL COMMENT '主键',
   `mac` varchar(32) DEFAULT '' COMMENT 'mac地址',
@@ -2268,10 +2093,8 @@ CREATE TABLE `lb_blood_glucose_meter` (
   PRIMARY KEY (`blood_glucose_meter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='血糖仪表';
 
--- ----------------------------
--- Table structure for lb_blood_glucose_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_glucose_record_statistics`;
+
+-- Table: lb_blood_glucose_record_statistics
 CREATE TABLE `lb_blood_glucose_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -2291,10 +2114,8 @@ CREATE TABLE `lb_blood_glucose_record_statistics` (
   KEY `lb_blood_glucose_record_statistics_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='血糖记录统计表';
 
--- ----------------------------
--- Table structure for lb_blood_glucose_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_glucose_report`;
+
+-- Table: lb_blood_glucose_report
 CREATE TABLE `lb_blood_glucose_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -2318,10 +2139,8 @@ CREATE TABLE `lb_blood_glucose_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血糖报表';
 
--- ----------------------------
--- Table structure for lb_blood_oxygen_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_oxygen_record`;
+
+-- Table: lb_blood_oxygen_record
 CREATE TABLE `lb_blood_oxygen_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '看护对象',
@@ -2346,10 +2165,8 @@ CREATE TABLE `lb_blood_oxygen_record` (
   KEY `lb_blood_oxygen_record_create_time_IDX` (`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='血氧记录';
 
--- ----------------------------
--- Table structure for lb_blood_oxygen_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_oxygen_report`;
+
+-- Table: lb_blood_oxygen_report
 CREATE TABLE `lb_blood_oxygen_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -2373,10 +2190,8 @@ CREATE TABLE `lb_blood_oxygen_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血氧报表';
 
--- ----------------------------
--- Table structure for lb_blood_pressure_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_pressure_record`;
+
+-- Table: lb_blood_pressure_record
 CREATE TABLE `lb_blood_pressure_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT ' 老人id',
@@ -2401,10 +2216,8 @@ CREATE TABLE `lb_blood_pressure_record` (
   KEY `lb_blood_pressure_record_create_time_IDX` (`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='血压记录';
 
--- ----------------------------
--- Table structure for lb_blood_pressure_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_blood_pressure_report`;
+
+-- Table: lb_blood_pressure_report
 CREATE TABLE `lb_blood_pressure_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -2433,10 +2246,8 @@ CREATE TABLE `lb_blood_pressure_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='血压报表';
 
--- ----------------------------
--- Table structure for lb_bluetooth_thermometer_binding
--- ----------------------------
-DROP TABLE IF EXISTS `lb_bluetooth_thermometer_binding`;
+
+-- Table: lb_bluetooth_thermometer_binding
 CREATE TABLE `lb_bluetooth_thermometer_binding` (
   `mac` varchar(32) NOT NULL COMMENT '体温计mac',
   `identity` varchar(32) NOT NULL DEFAULT '' COMMENT '绑定长者身份证号',
@@ -2447,10 +2258,8 @@ CREATE TABLE `lb_bluetooth_thermometer_binding` (
   PRIMARY KEY (`mac`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='蓝牙体温计绑定关系表';
 
--- ----------------------------
--- Table structure for lb_body_temperature_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_body_temperature_record_statistics`;
+
+-- Table: lb_body_temperature_record_statistics
 CREATE TABLE `lb_body_temperature_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '长者主键',
@@ -2473,10 +2282,8 @@ CREATE TABLE `lb_body_temperature_record_statistics` (
   KEY `lb_body_temperature_record_statistics_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='体温记录统计表';
 
--- ----------------------------
--- Table structure for lb_breathe_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_breathe_record_statistics`;
+
+-- Table: lb_breathe_record_statistics
 CREATE TABLE `lb_breathe_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者主键',
@@ -2496,10 +2303,8 @@ CREATE TABLE `lb_breathe_record_statistics` (
   KEY `lb_breathe_record_statistics_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='呼吸记录统计表';
 
--- ----------------------------
--- Table structure for lb_breathe_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_breathe_report`;
+
+-- Table: lb_breathe_report
 CREATE TABLE `lb_breathe_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -2523,10 +2328,8 @@ CREATE TABLE `lb_breathe_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='呼吸报表';
 
--- ----------------------------
--- Table structure for lb_building
--- ----------------------------
-DROP TABLE IF EXISTS `lb_building`;
+
+-- Table: lb_building
 CREATE TABLE `lb_building` (
   `building_id` varchar(32) NOT NULL COMMENT '主键',
   `building_name` varchar(32) DEFAULT '' COMMENT '楼栋名称',
@@ -2551,10 +2354,8 @@ CREATE TABLE `lb_building` (
   KEY `community_id_IDX` (`community_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='楼栋';
 
--- ----------------------------
--- Table structure for lb_butler_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_butler_care_object`;
+
+-- Table: lb_butler_care_object
 CREATE TABLE `lb_butler_care_object` (
   `butler_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `butler_worker_id` varchar(32) DEFAULT NULL COMMENT 'butler_worker_id',
@@ -2569,10 +2370,8 @@ CREATE TABLE `lb_butler_care_object` (
   KEY `butler_worker_id` (`butler_worker_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管家长者关系表';
 
--- ----------------------------
--- Table structure for lb_call_alert_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_call_alert_set`;
+
+-- Table: lb_call_alert_set
 CREATE TABLE `lb_call_alert_set` (
   `call_alert_set_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者Id',
@@ -2595,10 +2394,8 @@ CREATE TABLE `lb_call_alert_set` (
   KEY `care_object_id` (`care_object_id`,`alert_type`,`is_valid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='云呼告警时间段设置表';
 
--- ----------------------------
--- Table structure for lb_call_device_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_call_device_relation`;
+
+-- Table: lb_call_device_relation
 CREATE TABLE `lb_call_device_relation` (
   `call_device_relation_id` varchar(32) NOT NULL COMMENT '主键id',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -2614,10 +2411,8 @@ CREATE TABLE `lb_call_device_relation` (
   PRIMARY KEY (`call_device_relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通话设备联动信息表';
 
--- ----------------------------
--- Table structure for lb_call_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_call_record`;
+
+-- Table: lb_call_record
 CREATE TABLE `lb_call_record` (
   `call_record_id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(64) DEFAULT '' COMMENT '机构id',
@@ -2645,10 +2440,8 @@ CREATE TABLE `lb_call_record` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='通话记录';
 
--- ----------------------------
--- Table structure for lb_care_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_config`;
+
+-- Table: lb_care_config
 CREATE TABLE `lb_care_config` (
   `care_config_id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
@@ -2680,10 +2473,8 @@ CREATE TABLE `lb_care_config` (
   KEY `lb_care_config_org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='监护配置表';
 
--- ----------------------------
--- Table structure for lb_care_config_page
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_config_page`;
+
+-- Table: lb_care_config_page
 CREATE TABLE `lb_care_config_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `page_type` int(11) NOT NULL DEFAULT '0' COMMENT '页面类型枚举',
@@ -2700,12 +2491,10 @@ CREATE TABLE `lb_care_config_page` (
   KEY `lb_care_config_page_page_type_index` (`page_type`),
   KEY `lb_care_config_page_show_type_index` (`show_type`),
   KEY `lb_care_config_page_system_type_index` (`system_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=61258 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=61468 DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object`;
+
+-- Table: lb_care_object
 CREATE TABLE `lb_care_object` (
   `care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `family_id` varchar(32) DEFAULT '' COMMENT '家庭组',
@@ -2781,10 +2570,8 @@ CREATE TABLE `lb_care_object` (
   KEY `idx_phone_num` (`phone_num`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='看护对象';
 
--- ----------------------------
--- Table structure for lb_care_object_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_area`;
+
+-- Table: lb_care_object_area
 CREATE TABLE `lb_care_object_area` (
   `elder_area_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -2799,10 +2586,8 @@ CREATE TABLE `lb_care_object_area` (
   PRIMARY KEY (`elder_area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='看护对象绑定房间表';
 
--- ----------------------------
--- Table structure for lb_care_object_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_balance`;
+
+-- Table: lb_care_object_balance
 CREATE TABLE `lb_care_object_balance` (
   `care_object_balance_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '长者id',
@@ -2832,10 +2617,8 @@ CREATE TABLE `lb_care_object_balance` (
   KEY `idx_org_id_identity` (`identity`,`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者余额表';
 
--- ----------------------------
--- Table structure for lb_care_object_careinfo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_careinfo`;
+
+-- Table: lb_care_object_careinfo
 CREATE TABLE `lb_care_object_careinfo` (
   `careinfo_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'care_object_id',
@@ -2922,16 +2705,15 @@ CREATE TABLE `lb_care_object_careinfo` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   `check_in_level_id` varchar(32) NOT NULL DEFAULT '' COMMENT '入住等级id',
+  `key_care` varchar(255) NOT NULL DEFAULT '' COMMENT '重点照护',
   PRIMARY KEY (`careinfo_id`),
   KEY `care_object_id` (`care_object_id`) USING BTREE,
   KEY `care_level_id` (`care_level_id`),
   KEY `region` (`region`(191))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='看护对象在机构的看护信息;';
 
--- ----------------------------
--- Table structure for lb_care_object_careinfo_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_careinfo_contacts`;
+
+-- Table: lb_care_object_careinfo_contacts
 CREATE TABLE `lb_care_object_careinfo_contacts` (
   `contacts_id` varchar(64) NOT NULL COMMENT '主键',
   `name` varchar(128) DEFAULT NULL,
@@ -2958,10 +2740,8 @@ CREATE TABLE `lb_care_object_careinfo_contacts` (
   KEY `delete_time` (`is_delete`,`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象亲属表';
 
--- ----------------------------
--- Table structure for lb_care_object_careinfo_trace_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_careinfo_trace_record`;
+
+-- Table: lb_care_object_careinfo_trace_record
 CREATE TABLE `lb_care_object_careinfo_trace_record` (
   `trace_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'care_object_id,长者id',
@@ -2979,10 +2759,8 @@ CREATE TABLE `lb_care_object_careinfo_trace_record` (
   KEY `lb_care_object_careinfo_trace_record_care_object_id_IDX` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='居家长者跟踪记录表';
 
--- ----------------------------
--- Table structure for lb_care_object_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_device`;
+
+-- Table: lb_care_object_device
 CREATE TABLE `lb_care_object_device` (
   `care_object_device_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -2999,10 +2777,8 @@ CREATE TABLE `lb_care_object_device` (
   KEY `device_id` (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='看护对象与设备绑定';
 
--- ----------------------------
--- Table structure for lb_care_object_expense
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_expense`;
+
+-- Table: lb_care_object_expense
 CREATE TABLE `lb_care_object_expense` (
   `care_object_expense_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -3019,10 +2795,8 @@ CREATE TABLE `lb_care_object_expense` (
   KEY `expense_id` (`expense_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='长者费用表';
 
--- ----------------------------
--- Table structure for lb_care_object_family
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_family`;
+
+-- Table: lb_care_object_family
 CREATE TABLE `lb_care_object_family` (
   `care_object_family_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '老人id',
@@ -3040,10 +2814,8 @@ CREATE TABLE `lb_care_object_family` (
   KEY `idx_org_type_is_valid` (`org_type`,`is_valid`,`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='老人家庭表';
 
--- ----------------------------
--- Table structure for lb_care_object_health_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_health_device`;
+
+-- Table: lb_care_object_health_device
 CREATE TABLE `lb_care_object_health_device` (
   `care_object_health_device_id` varchar(32) NOT NULL COMMENT '主键',
   `device_category` smallint(6) NOT NULL DEFAULT '0' COMMENT '设备种类',
@@ -3073,10 +2845,8 @@ CREATE TABLE `lb_care_object_health_device` (
   KEY `lb_care_object_health_device_org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='长者健康设备表';
 
--- ----------------------------
--- Table structure for lb_care_object_health_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_health_record`;
+
+-- Table: lb_care_object_health_record
 CREATE TABLE `lb_care_object_health_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -3092,10 +2862,8 @@ CREATE TABLE `lb_care_object_health_record` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='体征记录表';
 
--- ----------------------------
--- Table structure for lb_care_object_insurance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_insurance`;
+
+-- Table: lb_care_object_insurance
 CREATE TABLE `lb_care_object_insurance` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `care_object_id` varchar(32) NOT NULL DEFAULT '',
@@ -3114,10 +2882,8 @@ CREATE TABLE `lb_care_object_insurance` (
   KEY `care_object_id_index` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者-长期护理保险账户表';
 
--- ----------------------------
--- Table structure for lb_care_object_insurance_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_insurance_detail`;
+
+-- Table: lb_care_object_insurance_detail
 CREATE TABLE `lb_care_object_insurance_detail` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `insurance_id` varchar(32) NOT NULL DEFAULT '',
@@ -3140,10 +2906,8 @@ CREATE TABLE `lb_care_object_insurance_detail` (
   KEY `insurance_id_index` (`insurance_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_care_object_jpush_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_jpush_record`;
+
+-- Table: lb_care_object_jpush_record
 CREATE TABLE `lb_care_object_jpush_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '老人id',
@@ -3171,10 +2935,8 @@ CREATE TABLE `lb_care_object_jpush_record` (
   KEY `record_type` (`record_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_care_object_last_track
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_last_track`;
+
+-- Table: lb_care_object_last_track
 CREATE TABLE `lb_care_object_last_track` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -3217,17 +2979,15 @@ CREATE TABLE `lb_care_object_last_track` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`track_id`),
   KEY `record_time` (`record_time`) USING BTREE,
-  KEY `iot_device_id` (`iot_device_id`),
   KEY `idx_position_mac` (`position_mac`) USING BTREE,
   KEY `create_time` (`create_time`) USING BTREE,
   KEY `record_type` (`record_type`) USING BTREE,
-  KEY `care_object_id` (`care_object_id`,`record_time`) USING BTREE
+  KEY `care_object_id` (`care_object_id`,`record_time`) USING BTREE,
+  KEY `iot_device_id` (`iot_device_id`,`record_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者轨迹最新记录信息';
 
--- ----------------------------
--- Table structure for lb_care_object_location_adjust
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_location_adjust`;
+
+-- Table: lb_care_object_location_adjust
 CREATE TABLE `lb_care_object_location_adjust` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -3241,10 +3001,8 @@ CREATE TABLE `lb_care_object_location_adjust` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='长者定位校准表';
 
--- ----------------------------
--- Table structure for lb_care_object_org
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_org`;
+
+-- Table: lb_care_object_org
 CREATE TABLE `lb_care_object_org` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '老人id',
@@ -3262,10 +3020,8 @@ CREATE TABLE `lb_care_object_org` (
   KEY `belong_org_id` (`belong_org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者归属项目关联信息表';
 
--- ----------------------------
--- Table structure for lb_care_object_password
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_password`;
+
+-- Table: lb_care_object_password
 CREATE TABLE `lb_care_object_password` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `care_object_id` varchar(32) NOT NULL DEFAULT '',
@@ -3282,10 +3038,8 @@ CREATE TABLE `lb_care_object_password` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者密码信息';
 
--- ----------------------------
--- Table structure for lb_care_object_reported
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_reported`;
+
+-- Table: lb_care_object_reported
 CREATE TABLE `lb_care_object_reported` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -3296,10 +3050,8 @@ CREATE TABLE `lb_care_object_reported` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='手表上报时间表';
 
--- ----------------------------
--- Table structure for lb_care_object_terminal
--- ----------------------------
-DROP TABLE IF EXISTS `lb_care_object_terminal`;
+
+-- Table: lb_care_object_terminal
 CREATE TABLE `lb_care_object_terminal` (
   `care_object_terminal_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '老人ID',
@@ -3318,10 +3070,8 @@ CREATE TABLE `lb_care_object_terminal` (
   PRIMARY KEY (`care_object_terminal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='老人与智能终端绑定关系表';
 
--- ----------------------------
--- Table structure for lb_careinfo_building
--- ----------------------------
-DROP TABLE IF EXISTS `lb_careinfo_building`;
+
+-- Table: lb_careinfo_building
 CREATE TABLE `lb_careinfo_building` (
   `careinfo_building_id` varchar(32) NOT NULL COMMENT '主键',
   `careinfo_id` varchar(32) DEFAULT '' COMMENT '看护对象ID',
@@ -3344,10 +3094,8 @@ CREATE TABLE `lb_careinfo_building` (
   KEY `community_id` (`community_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='老人机构房间绑定关系表;';
 
--- ----------------------------
--- Table structure for lb_check_out_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_check_out_care_object`;
+
+-- Table: lb_check_out_care_object
 CREATE TABLE `lb_check_out_care_object` (
   `care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `family_id` varchar(32) DEFAULT '' COMMENT '家庭组',
@@ -3397,10 +3145,8 @@ CREATE TABLE `lb_check_out_care_object` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='退住看护对象';
 
--- ----------------------------
--- Table structure for lb_check_out_care_object_careinfo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_check_out_care_object_careinfo`;
+
+-- Table: lb_check_out_care_object_careinfo
 CREATE TABLE `lb_check_out_care_object_careinfo` (
   `careinfo_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'care_object_id',
@@ -3455,10 +3201,8 @@ CREATE TABLE `lb_check_out_care_object_careinfo` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='看护对象在机构的看护信息';
 
--- ----------------------------
--- Table structure for lb_check_out_care_object_careinfo_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_check_out_care_object_careinfo_contacts`;
+
+-- Table: lb_check_out_care_object_careinfo_contacts
 CREATE TABLE `lb_check_out_care_object_careinfo_contacts` (
   `contacts_id` varchar(64) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT '' COMMENT '姓名',
@@ -3481,10 +3225,8 @@ CREATE TABLE `lb_check_out_care_object_careinfo_contacts` (
   PRIMARY KEY (`contacts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退住长者亲属信息';
 
--- ----------------------------
--- Table structure for lb_check_out_emergency_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_check_out_emergency_contacts`;
+
+-- Table: lb_check_out_emergency_contacts
 CREATE TABLE `lb_check_out_emergency_contacts` (
   `emergency_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `family_id` varchar(32) DEFAULT '' COMMENT '家庭id',
@@ -3511,10 +3253,8 @@ CREATE TABLE `lb_check_out_emergency_contacts` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='退住紧急救助人信息';
 
--- ----------------------------
--- Table structure for lb_cms_abandon_serve
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_abandon_serve`;
+
+-- Table: lb_cms_abandon_serve
 CREATE TABLE `lb_cms_abandon_serve` (
   `abandon_serve_id` varchar(32) NOT NULL COMMENT '放弃服务id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -3532,10 +3272,8 @@ CREATE TABLE `lb_cms_abandon_serve` (
   PRIMARY KEY (`abandon_serve_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='放弃服务长者表';
 
--- ----------------------------
--- Table structure for lb_cms_account_composite_view_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_account_composite_view_config`;
+
+-- Table: lb_cms_account_composite_view_config
 CREATE TABLE `lb_cms_account_composite_view_config` (
   `id` varchar(32) NOT NULL COMMENT '记录主键',
   `account_id` varchar(32) DEFAULT NULL COMMENT '账号ＩＤ',
@@ -3560,10 +3298,8 @@ CREATE TABLE `lb_cms_account_composite_view_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区综合一览表账户显示配置';
 
--- ----------------------------
--- Table structure for lb_cms_account_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_account_relation`;
+
+-- Table: lb_cms_account_relation
 CREATE TABLE `lb_cms_account_relation` (
   `account_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '用户id',
@@ -3580,10 +3316,8 @@ CREATE TABLE `lb_cms_account_relation` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户关联信息表';
 
--- ----------------------------
--- Table structure for lb_cms_account_show
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_account_show`;
+
+-- Table: lb_cms_account_show
 CREATE TABLE `lb_cms_account_show` (
   `account_show_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) DEFAULT NULL COMMENT '登录用户id',
@@ -3598,10 +3332,8 @@ CREATE TABLE `lb_cms_account_show` (
   PRIMARY KEY (`account_show_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区信息一览表演示模式配置';
 
--- ----------------------------
--- Table structure for lb_cms_advert
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_advert`;
+
+-- Table: lb_cms_advert
 CREATE TABLE `lb_cms_advert` (
   `advert_id` varchar(32) NOT NULL COMMENT '主键',
   `photo` varchar(1000) DEFAULT NULL COMMENT '图片链接',
@@ -3617,10 +3349,8 @@ CREATE TABLE `lb_cms_advert` (
   PRIMARY KEY (`advert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序广告表';
 
--- ----------------------------
--- Table structure for lb_cms_advice
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_advice`;
+
+-- Table: lb_cms_advice
 CREATE TABLE `lb_cms_advice` (
   `advice_id` varchar(32) NOT NULL COMMENT '主键',
   `source_id` varchar(32) DEFAULT NULL COMMENT '咨询来源主键',
@@ -3640,10 +3370,8 @@ CREATE TABLE `lb_cms_advice` (
   UNIQUE KEY `uk_index` (`source_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区意见反馈表';
 
--- ----------------------------
--- Table structure for lb_cms_age_subsidy_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_age_subsidy_config`;
+
+-- Table: lb_cms_age_subsidy_config
 CREATE TABLE `lb_cms_age_subsidy_config` (
   `subsidy_config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `age_level_one` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '60~69周岁的补贴金额',
@@ -3660,10 +3388,8 @@ CREATE TABLE `lb_cms_age_subsidy_config` (
   PRIMARY KEY (`subsidy_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府平台高龄补贴配置表';
 
--- ----------------------------
--- Table structure for lb_cms_alarm_docking_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_alarm_docking_info`;
+
+-- Table: lb_cms_alarm_docking_info
 CREATE TABLE `lb_cms_alarm_docking_info` (
   `docking_info_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -3680,10 +3406,8 @@ CREATE TABLE `lb_cms_alarm_docking_info` (
   KEY `alarm_id_index` (`alarm_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者报警记录对接详情表';
 
--- ----------------------------
--- Table structure for lb_cms_all_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_all_order`;
+
+-- Table: lb_cms_all_order
 CREATE TABLE `lb_cms_all_order` (
   `order_id` varchar(32) NOT NULL COMMENT '订单id',
   `order_type` tinyint(2) NOT NULL COMMENT '订单类型',
@@ -3706,10 +3430,8 @@ CREATE TABLE `lb_cms_all_order` (
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 
--- ----------------------------
--- Table structure for lb_cms_archives_disease_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_archives_disease_contacts`;
+
+-- Table: lb_cms_archives_disease_contacts
 CREATE TABLE `lb_cms_archives_disease_contacts` (
   `contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `archives_record_id` varchar(32) DEFAULT NULL COMMENT '档案记录id',
@@ -3725,10 +3447,8 @@ CREATE TABLE `lb_cms_archives_disease_contacts` (
   PRIMARY KEY (`contacts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康管理档案记录和既往病史关系对照表';
 
--- ----------------------------
--- Table structure for lb_cms_archives_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_archives_record`;
+
+-- Table: lb_cms_archives_record
 CREATE TABLE `lb_cms_archives_record` (
   `archives_record_id` varchar(32) NOT NULL COMMENT '档案记录id主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '看护对象id',
@@ -3782,10 +3502,8 @@ CREATE TABLE `lb_cms_archives_record` (
   PRIMARY KEY (`archives_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康管理档案记录表';
 
--- ----------------------------
--- Table structure for lb_cms_assess_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assess_item`;
+
+-- Table: lb_cms_assess_item
 CREATE TABLE `lb_cms_assess_item` (
   `assess_item_id` varchar(32) NOT NULL COMMENT '主键',
   `serial_number` int(32) NOT NULL COMMENT '问题序号',
@@ -3805,10 +3523,8 @@ CREATE TABLE `lb_cms_assess_item` (
   PRIMARY KEY (`assess_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='体质类型评估-评估项字典表';
 
--- ----------------------------
--- Table structure for lb_cms_assess_result
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assess_result`;
+
+-- Table: lb_cms_assess_result
 CREATE TABLE `lb_cms_assess_result` (
   `assess_result_id` varchar(32) NOT NULL COMMENT '主键',
   `body_type_key` varchar(32) DEFAULT NULL COMMENT '体质类型key值',
@@ -3825,10 +3541,8 @@ CREATE TABLE `lb_cms_assess_result` (
   PRIMARY KEY (`assess_result_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='体质类型评估-评估结果字典表';
 
--- ----------------------------
--- Table structure for lb_cms_assess_score
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assess_score`;
+
+-- Table: lb_cms_assess_score
 CREATE TABLE `lb_cms_assess_score` (
   `assess_score_id` varchar(32) NOT NULL COMMENT '评估结果得分id（主键）',
   `body_type_assessment_id` varchar(32) DEFAULT NULL COMMENT '自理评估主表id',
@@ -3849,10 +3563,8 @@ CREATE TABLE `lb_cms_assess_score` (
   PRIMARY KEY (`assess_score_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='体质类型评估-选择评估项表';
 
--- ----------------------------
--- Table structure for lb_cms_assess_sign_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assess_sign_record`;
+
+-- Table: lb_cms_assess_sign_record
 CREATE TABLE `lb_cms_assess_sign_record` (
   `sign_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `relation_id` varchar(32) NOT NULL DEFAULT '' COMMENT '关联记录主键',
@@ -3872,10 +3584,8 @@ CREATE TABLE `lb_cms_assess_sign_record` (
   KEY `idx_org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='签字记录表';
 
--- ----------------------------
--- Table structure for lb_cms_assessment_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assessment_record`;
+
+-- Table: lb_cms_assessment_record
 CREATE TABLE `lb_cms_assessment_record` (
   `assessment_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -3933,10 +3643,8 @@ CREATE TABLE `lb_cms_assessment_record` (
   KEY `lb_assessment_record_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='评估记录表';
 
--- ----------------------------
--- Table structure for lb_cms_assessment_topic
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assessment_topic`;
+
+-- Table: lb_cms_assessment_topic
 CREATE TABLE `lb_cms_assessment_topic` (
   `assessment_topic_id` varchar(64) NOT NULL COMMENT '自然主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -3954,10 +3662,8 @@ CREATE TABLE `lb_cms_assessment_topic` (
   KEY `lb_cms_assessment_topic_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康评估题目';
 
--- ----------------------------
--- Table structure for lb_cms_assessment_topic_option
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_assessment_topic_option`;
+
+-- Table: lb_cms_assessment_topic_option
 CREATE TABLE `lb_cms_assessment_topic_option` (
   `assessment_topic_option_id` varchar(64) NOT NULL COMMENT '自然主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -3973,10 +3679,8 @@ CREATE TABLE `lb_cms_assessment_topic_option` (
   KEY `lb_cms_assessment_topic_option_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康评估题目选项及分值';
 
--- ----------------------------
--- Table structure for lb_cms_auxiliary_equipment_lease_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_auxiliary_equipment_lease_record`;
+
+-- Table: lb_cms_auxiliary_equipment_lease_record
 CREATE TABLE `lb_cms_auxiliary_equipment_lease_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `tenant_name` varchar(128) DEFAULT NULL COMMENT '姓名',
@@ -4017,10 +3721,8 @@ CREATE TABLE `lb_cms_auxiliary_equipment_lease_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='辅具租赁记录';
 
--- ----------------------------
--- Table structure for lb_cms_auxiliary_equipment_month_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_auxiliary_equipment_month_check`;
+
+-- Table: lb_cms_auxiliary_equipment_month_check
 CREATE TABLE `lb_cms_auxiliary_equipment_month_check` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_id` varchar(32) DEFAULT '' COMMENT '物资id',
@@ -4038,10 +3740,8 @@ CREATE TABLE `lb_cms_auxiliary_equipment_month_check` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='辅助库存统计表';
 
--- ----------------------------
--- Table structure for lb_cms_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_balance`;
+
+-- Table: lb_cms_balance
 CREATE TABLE `lb_cms_balance` (
   `balance_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -4061,10 +3761,8 @@ CREATE TABLE `lb_cms_balance` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='余额表';
 
--- ----------------------------
--- Table structure for lb_cms_body_type_assess
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_body_type_assess`;
+
+-- Table: lb_cms_body_type_assess
 CREATE TABLE `lb_cms_body_type_assess` (
   `body_type_assessment_id` varchar(32) NOT NULL COMMENT '主键（自理评估id）',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '老人id',
@@ -4088,10 +3786,8 @@ CREATE TABLE `lb_cms_body_type_assess` (
   PRIMARY KEY (`body_type_assessment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='体质类型评估-信息登记表';
 
--- ----------------------------
--- Table structure for lb_cms_booking_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_booking_order`;
+
+-- Table: lb_cms_booking_order
 CREATE TABLE `lb_cms_booking_order` (
   `booking_id` varchar(32) NOT NULL COMMENT '主键',
   `booking_type` tinyint(1) NOT NULL COMMENT '预约类型 1 按服务人员类型 2 按长者预约',
@@ -4120,10 +3816,8 @@ CREATE TABLE `lb_cms_booking_order` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定时工单';
 
--- ----------------------------
--- Table structure for lb_cms_call_center_guard
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_call_center_guard`;
+
+-- Table: lb_cms_call_center_guard
 CREATE TABLE `lb_cms_call_center_guard` (
   `call_center_guard` varchar(30) NOT NULL COMMENT '主键',
   `guard_time` tinyint(1) DEFAULT NULL COMMENT '守护时长(小时)',
@@ -4135,10 +3829,8 @@ CREATE TABLE `lb_cms_call_center_guard` (
   PRIMARY KEY (`call_center_guard`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='呼叫中心资费详情';
 
--- ----------------------------
--- Table structure for lb_cms_care_object_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_care_object_balance`;
+
+-- Table: lb_cms_care_object_balance
 CREATE TABLE `lb_cms_care_object_balance` (
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -4163,10 +3855,8 @@ CREATE TABLE `lb_cms_care_object_balance` (
   UNIQUE KEY `pk_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区长者余额表';
 
--- ----------------------------
--- Table structure for lb_cms_care_object_settle
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_care_object_settle`;
+
+-- Table: lb_cms_care_object_settle
 CREATE TABLE `lb_cms_care_object_settle` (
   `care_object_settle_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '长者扣费记录主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者主键',
@@ -4183,10 +3873,8 @@ CREATE TABLE `lb_cms_care_object_settle` (
   PRIMARY KEY (`care_object_settle_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=756 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区长者订单信息表';
 
--- ----------------------------
--- Table structure for lb_cms_care_object_treatment_evaluation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_care_object_treatment_evaluation`;
+
+-- Table: lb_cms_care_object_treatment_evaluation
 CREATE TABLE `lb_cms_care_object_treatment_evaluation` (
   `evaluation_id` varchar(32) NOT NULL COMMENT '评价id',
   `record_id` varchar(32) DEFAULT NULL COMMENT '治疗记录id',
@@ -4209,10 +3897,8 @@ CREATE TABLE `lb_cms_care_object_treatment_evaluation` (
   PRIMARY KEY (`evaluation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务人员评价表';
 
--- ----------------------------
--- Table structure for lb_cms_care_object_treatment_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_care_object_treatment_item`;
+
+-- Table: lb_cms_care_object_treatment_item
 CREATE TABLE `lb_cms_care_object_treatment_item` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者id',
@@ -4246,10 +3932,8 @@ CREATE TABLE `lb_cms_care_object_treatment_item` (
   PRIMARY KEY (`relation_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='长者已购治疗项目表';
 
--- ----------------------------
--- Table structure for lb_cms_care_object_treatment_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_care_object_treatment_record`;
+
+-- Table: lb_cms_care_object_treatment_record
 CREATE TABLE `lb_cms_care_object_treatment_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者id',
@@ -4300,10 +3984,8 @@ CREATE TABLE `lb_cms_care_object_treatment_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='治疗处理记录表';
 
--- ----------------------------
--- Table structure for lb_cms_cash_extract
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_cash_extract`;
+
+-- Table: lb_cms_cash_extract
 CREATE TABLE `lb_cms_cash_extract` (
   `cash_extract_id` varchar(32) NOT NULL COMMENT '提现主键id',
   `account_id` varchar(32) DEFAULT NULL COMMENT '提现人 主键',
@@ -4326,10 +4008,8 @@ CREATE TABLE `lb_cms_cash_extract` (
   PRIMARY KEY (`cash_extract_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='提现审核记录表';
 
--- ----------------------------
--- Table structure for lb_cms_catering_assistance_service
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_catering_assistance_service`;
+
+-- Table: lb_cms_catering_assistance_service
 CREATE TABLE `lb_cms_catering_assistance_service` (
   `service_id` varchar(32) NOT NULL COMMENT '主键',
   `month` varchar(32) NOT NULL DEFAULT '' COMMENT '月份',
@@ -4369,10 +4049,8 @@ CREATE TABLE `lb_cms_catering_assistance_service` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='助餐配餐服务';
 
--- ----------------------------
--- Table structure for lb_cms_check_out_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_check_out_record`;
+
+-- Table: lb_cms_check_out_record
 CREATE TABLE `lb_cms_check_out_record` (
   `check_out_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者id',
@@ -4401,10 +4079,8 @@ CREATE TABLE `lb_cms_check_out_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者退住记录表';
 
--- ----------------------------
--- Table structure for lb_cms_consult_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_consult_record`;
+
+-- Table: lb_cms_consult_record
 CREATE TABLE `lb_cms_consult_record` (
   `consult_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -4434,10 +4110,8 @@ CREATE TABLE `lb_cms_consult_record` (
   KEY `org_id_index` (`org_id`) USING BTREE COMMENT 'org_id索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区意向登记记录表';
 
--- ----------------------------
--- Table structure for lb_cms_consumption_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_consumption_record`;
+
+-- Table: lb_cms_consumption_record
 CREATE TABLE `lb_cms_consumption_record` (
   `consumption_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -4489,10 +4163,8 @@ CREATE TABLE `lb_cms_consumption_record` (
   KEY `start_time` (`start_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消费记录表';
 
--- ----------------------------
--- Table structure for lb_cms_consumption_record_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_consumption_record_stat`;
+
+-- Table: lb_cms_consumption_record_stat
 CREATE TABLE `lb_cms_consumption_record_stat` (
   `consumption_record_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -4509,10 +4181,8 @@ CREATE TABLE `lb_cms_consumption_record_stat` (
   PRIMARY KEY (`consumption_record_stat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消费记录统计报表';
 
--- ----------------------------
--- Table structure for lb_cms_coupon_consumption_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_coupon_consumption_record`;
+
+-- Table: lb_cms_coupon_consumption_record
 CREATE TABLE `lb_cms_coupon_consumption_record` (
   `coupon_consumption_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `work_order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '工单id',
@@ -4532,10 +4202,8 @@ CREATE TABLE `lb_cms_coupon_consumption_record` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单代金券结算消费记录';
 
--- ----------------------------
--- Table structure for lb_cms_crutch
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_crutch`;
+
+-- Table: lb_cms_crutch
 CREATE TABLE `lb_cms_crutch` (
   `crutch_id` varchar(32) NOT NULL COMMENT '主键',
   `mac` varchar(32) DEFAULT NULL COMMENT 'mac地址',
@@ -4548,10 +4216,8 @@ CREATE TABLE `lb_cms_crutch` (
   PRIMARY KEY (`crutch_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拐杖表';
 
--- ----------------------------
--- Table structure for lb_cms_data_docking_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_data_docking_record`;
+
+-- Table: lb_cms_data_docking_record
 CREATE TABLE `lb_cms_data_docking_record` (
   `record_id` varchar(32) NOT NULL COMMENT '记录id',
   `docking_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '同步时间',
@@ -4567,10 +4233,8 @@ CREATE TABLE `lb_cms_data_docking_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区数据增量同步记录表';
 
--- ----------------------------
--- Table structure for lb_cms_day_care_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_day_care_record`;
+
+-- Table: lb_cms_day_care_record
 CREATE TABLE `lb_cms_day_care_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录id',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -4592,10 +4256,8 @@ CREATE TABLE `lb_cms_day_care_record` (
   KEY `org_id_idx` (`org_id`) USING BTREE COMMENT '机构id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='日间照料托管服务';
 
--- ----------------------------
--- Table structure for lb_cms_dementia_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_dementia_config`;
+
+-- Table: lb_cms_dementia_config
 CREATE TABLE `lb_cms_dementia_config` (
   `dementia_config_id` varchar(64) NOT NULL COMMENT '主键',
   `educational` varchar(32) DEFAULT NULL COMMENT '学历情况',
@@ -4610,10 +4272,8 @@ CREATE TABLE `lb_cms_dementia_config` (
   PRIMARY KEY (`dementia_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='失智评估标准配置';
 
--- ----------------------------
--- Table structure for lb_cms_device_docking_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_device_docking_info`;
+
+-- Table: lb_cms_device_docking_info
 CREATE TABLE `lb_cms_device_docking_info` (
   `docking_info_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -4636,10 +4296,8 @@ CREATE TABLE `lb_cms_device_docking_info` (
   KEY `device_id_index` (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备数据对接详情表';
 
--- ----------------------------
--- Table structure for lb_cms_device_grant_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_device_grant_record`;
+
+-- Table: lb_cms_device_grant_record
 CREATE TABLE `lb_cms_device_grant_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `device_name` varchar(64) NOT NULL DEFAULT '' COMMENT '设备名称',
@@ -4664,10 +4322,8 @@ CREATE TABLE `lb_cms_device_grant_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备发放记录表';
 
--- ----------------------------
--- Table structure for lb_cms_device_install_docking_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_device_install_docking_info`;
+
+-- Table: lb_cms_device_install_docking_info
 CREATE TABLE `lb_cms_device_install_docking_info` (
   `docking_info_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -4686,10 +4342,8 @@ CREATE TABLE `lb_cms_device_install_docking_info` (
   KEY `care_object_id_index` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造对接详情表';
 
--- ----------------------------
--- Table structure for lb_cms_device_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_device_type`;
+
+-- Table: lb_cms_device_type
 CREATE TABLE `lb_cms_device_type` (
   `device_type_id` varchar(32) NOT NULL COMMENT '主键',
   `device_name` varchar(32) DEFAULT '' COMMENT '设备名称',
@@ -4704,10 +4358,8 @@ CREATE TABLE `lb_cms_device_type` (
   PRIMARY KEY (`device_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备型号表';
 
--- ----------------------------
--- Table structure for lb_cms_docking_platform
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_docking_platform`;
+
+-- Table: lb_cms_docking_platform
 CREATE TABLE `lb_cms_docking_platform` (
   `docking_platform_id` varchar(32) NOT NULL COMMENT '主键',
   `docking_manufacturers_name` varchar(64) NOT NULL COMMENT '对接厂商',
@@ -4732,10 +4384,8 @@ CREATE TABLE `lb_cms_docking_platform` (
   PRIMARY KEY (`docking_platform_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管对接平台表';
 
--- ----------------------------
--- Table structure for lb_cms_docking_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_docking_setting`;
+
+-- Table: lb_cms_docking_setting
 CREATE TABLE `lb_cms_docking_setting` (
   `docking_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -4755,10 +4405,8 @@ CREATE TABLE `lb_cms_docking_setting` (
   PRIMARY KEY (`docking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='南陵特困平台对接设置';
 
--- ----------------------------
--- Table structure for lb_cms_elder_ability_estimate_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_ability_estimate_object`;
+
+-- Table: lb_cms_elder_ability_estimate_object
 CREATE TABLE `lb_cms_elder_ability_estimate_object` (
   `estimate_object_id` varchar(32) NOT NULL COMMENT '主键',
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '评估记录主键',
@@ -4804,10 +4452,8 @@ CREATE TABLE `lb_cms_elder_ability_estimate_object` (
   PRIMARY KEY (`estimate_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='适老监管评估对象基本信息';
 
--- ----------------------------
--- Table structure for lb_cms_elder_ability_estimate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_ability_estimate_record`;
+
+-- Table: lb_cms_elder_ability_estimate_record
 CREATE TABLE `lb_cms_elder_ability_estimate_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -4853,10 +4499,8 @@ CREATE TABLE `lb_cms_elder_ability_estimate_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='长者能力评估记录表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_base_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_base_info`;
+
+-- Table: lb_cms_elder_base_info
 CREATE TABLE `lb_cms_elder_base_info` (
   `elder_id` varchar(32) NOT NULL COMMENT '长者id',
   `name` varchar(128) DEFAULT NULL COMMENT '长者姓名',
@@ -4884,10 +4528,8 @@ CREATE TABLE `lb_cms_elder_base_info` (
   PRIMARY KEY (`elder_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老监管长者基本信息表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_base_registration_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_base_registration_record`;
+
+-- Table: lb_cms_elder_base_registration_record
 CREATE TABLE `lb_cms_elder_base_registration_record` (
   `registration_record_id` varchar(32) NOT NULL COMMENT '主键',
   `elder_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -4910,10 +4552,8 @@ CREATE TABLE `lb_cms_elder_base_registration_record` (
   PRIMARY KEY (`registration_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者登记记录信息';
 
--- ----------------------------
--- Table structure for lb_cms_elder_care
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_care`;
+
+-- Table: lb_cms_elder_care
 CREATE TABLE `lb_cms_elder_care` (
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
   `care_way` tinyint(4) NOT NULL DEFAULT '1' COMMENT '关怀方式 1 电话关怀 2 上门关怀',
@@ -4931,10 +4571,8 @@ CREATE TABLE `lb_cms_elder_care` (
   UNIQUE KEY `pk_index` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者关怀表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_care_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_care_record`;
+
+-- Table: lb_cms_elder_care_record
 CREATE TABLE `lb_cms_elder_care_record` (
   `elder_care_record_id` varchar(32) NOT NULL COMMENT '关怀记录主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -4966,10 +4604,8 @@ CREATE TABLE `lb_cms_elder_care_record` (
   KEY `index_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_elder_care_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_care_stat`;
+
+-- Table: lb_cms_elder_care_stat
 CREATE TABLE `lb_cms_elder_care_stat` (
   `elder_care_stat_id` varchar(32) NOT NULL,
   `stat_year` varchar(16) NOT NULL COMMENT '统计年份',
@@ -4993,10 +4629,8 @@ CREATE TABLE `lb_cms_elder_care_stat` (
   KEY `org_idx` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_elder_count_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_count_stat`;
+
+-- Table: lb_cms_elder_count_stat
 CREATE TABLE `lb_cms_elder_count_stat` (
   `elder_count_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `elder_count` int(10) DEFAULT NULL COMMENT '平台下长者总数',
@@ -5019,10 +4653,8 @@ CREATE TABLE `lb_cms_elder_count_stat` (
   KEY `index_org` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府监管平台一览表长者年龄段数据分布展示';
 
--- ----------------------------
--- Table structure for lb_cms_elder_docking_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_docking_info`;
+
+-- Table: lb_cms_elder_docking_info
 CREATE TABLE `lb_cms_elder_docking_info` (
   `docking_info_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5040,10 +4672,8 @@ CREATE TABLE `lb_cms_elder_docking_info` (
   KEY `care_object_id_index` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者数据对接详情表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_gov_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_gov_stat`;
+
+-- Table: lb_cms_elder_gov_stat
 CREATE TABLE `lb_cms_elder_gov_stat` (
   `elder_gov_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `stat_year` varchar(16) NOT NULL COMMENT '统计年份 格式2022',
@@ -5065,10 +4695,8 @@ CREATE TABLE `lb_cms_elder_gov_stat` (
   KEY `index_org` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府监管平台一览表退住入住数据展示';
 
--- ----------------------------
--- Table structure for lb_cms_elder_migrate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_migrate_record`;
+
+-- Table: lb_cms_elder_migrate_record
 CREATE TABLE `lb_cms_elder_migrate_record` (
   `migrate_record_id` varchar(32) NOT NULL COMMENT '长者机构迁移主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者id',
@@ -5085,10 +4713,8 @@ CREATE TABLE `lb_cms_elder_migrate_record` (
   KEY `care_object_id_index` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区平台长者迁移记录';
 
--- ----------------------------
--- Table structure for lb_cms_elder_modification_evaluation_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_modification_evaluation_record`;
+
+-- Table: lb_cms_elder_modification_evaluation_record
 CREATE TABLE `lb_cms_elder_modification_evaluation_record` (
   `modification_evaluation_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5120,10 +4746,8 @@ CREATE TABLE `lb_cms_elder_modification_evaluation_record` (
   KEY `package_id_IDX` (`package_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造长者改造评定';
 
--- ----------------------------
--- Table structure for lb_cms_elder_msg
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_msg`;
+
+-- Table: lb_cms_elder_msg
 CREATE TABLE `lb_cms_elder_msg` (
   `msg_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL COMMENT '长者ID',
@@ -5151,10 +4775,8 @@ CREATE TABLE `lb_cms_elder_msg` (
   PRIMARY KEY (`msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者消息表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_packet_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_packet_info`;
+
+-- Table: lb_cms_elder_packet_info
 CREATE TABLE `lb_cms_elder_packet_info` (
   `packet_info_id` varchar(32) NOT NULL COMMENT '主键',
   `elder_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5170,10 +4792,8 @@ CREATE TABLE `lb_cms_elder_packet_info` (
   PRIMARY KEY (`packet_info_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者所在包的关系表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_check_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_check_record`;
+
+-- Table: lb_cms_elder_renovation_check_record
 CREATE TABLE `lb_cms_elder_renovation_check_record` (
   `record_id` varchar(64) NOT NULL COMMENT '记录主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5207,10 +4827,8 @@ CREATE TABLE `lb_cms_elder_renovation_check_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造验收记录表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_construct_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_construct_record`;
+
+-- Table: lb_cms_elder_renovation_construct_record
 CREATE TABLE `lb_cms_elder_renovation_construct_record` (
   `record_id` varchar(64) NOT NULL COMMENT '记录主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5241,10 +4859,8 @@ CREATE TABLE `lb_cms_elder_renovation_construct_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造建设记录表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_device_message
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_device_message`;
+
+-- Table: lb_cms_elder_renovation_device_message
 CREATE TABLE `lb_cms_elder_renovation_device_message` (
   `device_id` varchar(64) NOT NULL COMMENT '设备主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5285,10 +4901,8 @@ CREATE TABLE `lb_cms_elder_renovation_device_message` (
   PRIMARY KEY (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造建设设备表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_estimate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_estimate_record`;
+
+-- Table: lb_cms_elder_renovation_estimate_record
 CREATE TABLE `lb_cms_elder_renovation_estimate_record` (
   `record_id` varchar(64) NOT NULL COMMENT '记录主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5316,10 +4930,8 @@ CREATE TABLE `lb_cms_elder_renovation_estimate_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造评估记录表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_inventory_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_inventory_device`;
+
+-- Table: lb_cms_elder_renovation_inventory_device
 CREATE TABLE `lb_cms_elder_renovation_inventory_device` (
   `inventory_id` varchar(64) NOT NULL COMMENT '清单主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5339,10 +4951,8 @@ CREATE TABLE `lb_cms_elder_renovation_inventory_device` (
   PRIMARY KEY (`inventory_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造建设设备清单表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_renovation_position_list
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_renovation_position_list`;
+
+-- Table: lb_cms_elder_renovation_position_list
 CREATE TABLE `lb_cms_elder_renovation_position_list` (
   `position_id` varchar(64) NOT NULL COMMENT '位置主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -5359,10 +4969,8 @@ CREATE TABLE `lb_cms_elder_renovation_position_list` (
   PRIMARY KEY (`position_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者改造建设设备安装位置记录表';
 
--- ----------------------------
--- Table structure for lb_cms_elder_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_stat`;
+
+-- Table: lb_cms_elder_stat
 CREATE TABLE `lb_cms_elder_stat` (
   `elder_stat_id` varchar(32) NOT NULL,
   `stat_year` varchar(16) NOT NULL COMMENT '统计年份',
@@ -5399,10 +5007,8 @@ CREATE TABLE `lb_cms_elder_stat` (
   KEY `org_idx` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_cms_elder_subsidy_archives
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elder_subsidy_archives`;
+
+-- Table: lb_cms_elder_subsidy_archives
 CREATE TABLE `lb_cms_elder_subsidy_archives` (
   `archives_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `subsidy_name` varchar(128) NOT NULL DEFAULT '' COMMENT '补贴名称',
@@ -5420,10 +5026,8 @@ CREATE TABLE `lb_cms_elder_subsidy_archives` (
   KEY `care_object_id_index` (`care_object_id`) USING BTREE COMMENT '账户id索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区长者国家补贴档案表';
 
--- ----------------------------
--- Table structure for lb_cms_elderinfo_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_elderinfo_contacts`;
+
+-- Table: lb_cms_elderinfo_contacts
 CREATE TABLE `lb_cms_elderinfo_contacts` (
   `contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(128) DEFAULT NULL COMMENT '联系人姓名',
@@ -5440,10 +5044,8 @@ CREATE TABLE `lb_cms_elderinfo_contacts` (
   PRIMARY KEY (`contacts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者亲属关系表';
 
--- ----------------------------
--- Table structure for lb_cms_estimate_commdict
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_estimate_commdict`;
+
+-- Table: lb_cms_estimate_commdict
 CREATE TABLE `lb_cms_estimate_commdict` (
   `commdict_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type_order` int(4) NOT NULL DEFAULT '0' COMMENT '类型排序',
@@ -5466,10 +5068,8 @@ CREATE TABLE `lb_cms_estimate_commdict` (
   PRIMARY KEY (`commdict_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=270 DEFAULT CHARSET=utf8mb4 COMMENT='适老监管能力评估字典表';
 
--- ----------------------------
--- Table structure for lb_cms_food
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food`;
+
+-- Table: lb_cms_food
 CREATE TABLE `lb_cms_food` (
   `food_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5502,10 +5102,8 @@ CREATE TABLE `lb_cms_food` (
   KEY `food_sort_id` (`food_sort_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食物表';
 
--- ----------------------------
--- Table structure for lb_cms_food_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_order`;
+
+-- Table: lb_cms_food_order
 CREATE TABLE `lb_cms_food_order` (
   `food_order_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5552,10 +5150,8 @@ CREATE TABLE `lb_cms_food_order` (
   KEY `status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订餐记录表';
 
--- ----------------------------
--- Table structure for lb_cms_food_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_order_detail`;
+
+-- Table: lb_cms_food_order_detail
 CREATE TABLE `lb_cms_food_order_detail` (
   `food_order_detail_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5583,10 +5179,8 @@ CREATE TABLE `lb_cms_food_order_detail` (
   KEY `food_id` (`food_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订餐明细表';
 
--- ----------------------------
--- Table structure for lb_cms_food_purchase
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_purchase`;
+
+-- Table: lb_cms_food_purchase
 CREATE TABLE `lb_cms_food_purchase` (
   `food_purchase_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5607,10 +5201,8 @@ CREATE TABLE `lb_cms_food_purchase` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食材采购记录表';
 
--- ----------------------------
--- Table structure for lb_cms_food_shop
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_shop`;
+
+-- Table: lb_cms_food_shop
 CREATE TABLE `lb_cms_food_shop` (
   `food_shop_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5635,10 +5227,8 @@ CREATE TABLE `lb_cms_food_shop` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='餐饮店铺表';
 
--- ----------------------------
--- Table structure for lb_cms_food_shop_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_shop_account`;
+
+-- Table: lb_cms_food_shop_account
 CREATE TABLE `lb_cms_food_shop_account` (
   `food_shop_account_id` varchar(32) NOT NULL COMMENT '主键',
   `food_shop_id` varchar(32) NOT NULL DEFAULT '' COMMENT '餐饮店铺主键',
@@ -5653,10 +5243,8 @@ CREATE TABLE `lb_cms_food_shop_account` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='餐饮店铺用户关联表';
 
--- ----------------------------
--- Table structure for lb_cms_food_sort
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_food_sort`;
+
+-- Table: lb_cms_food_sort
 CREATE TABLE `lb_cms_food_sort` (
   `food_sort_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5674,10 +5262,8 @@ CREATE TABLE `lb_cms_food_sort` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食物类别表';
 
--- ----------------------------
--- Table structure for lb_cms_gift
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_gift`;
+
+-- Table: lb_cms_gift
 CREATE TABLE `lb_cms_gift` (
   `gift_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) NOT NULL COMMENT '类型',
@@ -5700,10 +5286,8 @@ CREATE TABLE `lb_cms_gift` (
   PRIMARY KEY (`gift_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='礼品表';
 
--- ----------------------------
--- Table structure for lb_cms_gift_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_gift_type`;
+
+-- Table: lb_cms_gift_type
 CREATE TABLE `lb_cms_gift_type` (
   `gift_type_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) NOT NULL COMMENT '名称',
@@ -5719,10 +5303,8 @@ CREATE TABLE `lb_cms_gift_type` (
   PRIMARY KEY (`gift_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='礼品类别表';
 
--- ----------------------------
--- Table structure for lb_cms_gift_unit
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_gift_unit`;
+
+-- Table: lb_cms_gift_unit
 CREATE TABLE `lb_cms_gift_unit` (
   `gift_unit_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) NOT NULL COMMENT '名称',
@@ -5738,10 +5320,8 @@ CREATE TABLE `lb_cms_gift_unit` (
   PRIMARY KEY (`gift_unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='礼品单位表';
 
--- ----------------------------
--- Table structure for lb_cms_goods
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods`;
+
+-- Table: lb_cms_goods
 CREATE TABLE `lb_cms_goods` (
   `goods_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_name` varchar(64) DEFAULT '' COMMENT '商品名称',
@@ -5777,10 +5357,8 @@ CREATE TABLE `lb_cms_goods` (
   KEY `is_delete` (`is_delete`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_inventory_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_inventory_change`;
+
+-- Table: lb_cms_goods_inventory_change
 CREATE TABLE `lb_cms_goods_inventory_change` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `batch` varchar(32) DEFAULT NULL COMMENT '批次',
@@ -5809,10 +5387,8 @@ CREATE TABLE `lb_cms_goods_inventory_change` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品库存变动记录表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_inventory_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_inventory_check`;
+
+-- Table: lb_cms_goods_inventory_check
 CREATE TABLE `lb_cms_goods_inventory_check` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5841,10 +5417,8 @@ CREATE TABLE `lb_cms_goods_inventory_check` (
   KEY `goods_shop_id` (`goods_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品库存盘点记录表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_order`;
+
+-- Table: lb_cms_goods_order
 CREATE TABLE `lb_cms_goods_order` (
   `goods_order_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -5880,10 +5454,8 @@ CREATE TABLE `lb_cms_goods_order` (
   KEY `goods_shop_id` (`goods_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购物订单表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_order_detail`;
+
+-- Table: lb_cms_goods_order_detail
 CREATE TABLE `lb_cms_goods_order_detail` (
   `goods_order_detail_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_order_id` varchar(32) NOT NULL COMMENT '订单号',
@@ -5912,10 +5484,8 @@ CREATE TABLE `lb_cms_goods_order_detail` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单详细表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_shop
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_shop`;
+
+-- Table: lb_cms_goods_shop
 CREATE TABLE `lb_cms_goods_shop` (
   `goods_shop_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -5938,10 +5508,8 @@ CREATE TABLE `lb_cms_goods_shop` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商家店铺表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_shop_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_shop_account`;
+
+-- Table: lb_cms_goods_shop_account
 CREATE TABLE `lb_cms_goods_shop_account` (
   `goods_shop_account_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_shop_id` varchar(32) NOT NULL DEFAULT '' COMMENT '商家店铺主键',
@@ -5956,10 +5524,8 @@ CREATE TABLE `lb_cms_goods_shop_account` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商家店铺用户关联表';
 
--- ----------------------------
--- Table structure for lb_cms_goods_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_goods_type`;
+
+-- Table: lb_cms_goods_type
 CREATE TABLE `lb_cms_goods_type` (
   `goods_type_id` varchar(32) NOT NULL COMMENT '商品类型主键',
   `name` varchar(32) NOT NULL COMMENT '类别名称',
@@ -5976,10 +5542,8 @@ CREATE TABLE `lb_cms_goods_type` (
   KEY `goods_shop_id` (`goods_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型表';
 
--- ----------------------------
--- Table structure for lb_cms_gov_region_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_gov_region_config`;
+
+-- Table: lb_cms_gov_region_config
 CREATE TABLE `lb_cms_gov_region_config` (
   `gov_region_config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL,
@@ -6012,10 +5576,8 @@ CREATE TABLE `lb_cms_gov_region_config` (
   KEY `org_index` (`org_id`) USING BTREE COMMENT '机构索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府监管平台统计区域配置表';
 
--- ----------------------------
--- Table structure for lb_cms_health_index
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_health_index`;
+
+-- Table: lb_cms_health_index
 CREATE TABLE `lb_cms_health_index` (
   `health_index_id` int(10) NOT NULL DEFAULT '0' COMMENT '主键',
   `index_type` varchar(32) NOT NULL COMMENT '指标类型',
@@ -6036,10 +5598,8 @@ CREATE TABLE `lb_cms_health_index` (
   PRIMARY KEY (`health_index_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_health_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_health_record`;
+
+-- Table: lb_cms_health_record
 CREATE TABLE `lb_cms_health_record` (
   `health_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -6066,10 +5626,8 @@ CREATE TABLE `lb_cms_health_record` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_health_report_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_health_report_record`;
+
+-- Table: lb_cms_health_report_record
 CREATE TABLE `lb_cms_health_report_record` (
   `report_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -6091,10 +5649,8 @@ CREATE TABLE `lb_cms_health_report_record` (
   KEY `report_id_index` (`report_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康一体机健康报告记录表';
 
--- ----------------------------
--- Table structure for lb_cms_health_station
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_health_station`;
+
+-- Table: lb_cms_health_station
 CREATE TABLE `lb_cms_health_station` (
   `health_station_id` varchar(32) NOT NULL COMMENT '主键',
   `station_name` varchar(32) DEFAULT NULL COMMENT '服务站名称',
@@ -6117,10 +5673,8 @@ CREATE TABLE `lb_cms_health_station` (
   PRIMARY KEY (`health_station_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区卫生服务站';
 
--- ----------------------------
--- Table structure for lb_cms_health_warning
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_health_warning`;
+
+-- Table: lb_cms_health_warning
 CREATE TABLE `lb_cms_health_warning` (
   `health_warning_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '老人id',
@@ -6138,10 +5692,8 @@ CREATE TABLE `lb_cms_health_warning` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_holiday
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_holiday`;
+
+-- Table: lb_cms_holiday
 CREATE TABLE `lb_cms_holiday` (
   `holiday_id` varchar(32) NOT NULL COMMENT '主键',
   `holiday_str` varchar(255) DEFAULT NULL COMMENT '节假日字符串，‘,’分割',
@@ -6151,10 +5703,8 @@ CREATE TABLE `lb_cms_holiday` (
   UNIQUE KEY `pk_holiday_id` (`holiday_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_cms_home_bed_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_home_bed_record`;
+
+-- Table: lb_cms_home_bed_record
 CREATE TABLE `lb_cms_home_bed_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -6200,10 +5750,8 @@ CREATE TABLE `lb_cms_home_bed_record` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='家庭养老床位工作记录';
 
--- ----------------------------
--- Table structure for lb_cms_home_care_service
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_home_care_service`;
+
+-- Table: lb_cms_home_care_service
 CREATE TABLE `lb_cms_home_care_service` (
   `home_care_service_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -6229,10 +5777,8 @@ CREATE TABLE `lb_cms_home_care_service` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上门照料服务';
 
--- ----------------------------
--- Table structure for lb_cms_home_remake_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_home_remake_record`;
+
+-- Table: lb_cms_home_remake_record
 CREATE TABLE `lb_cms_home_remake_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -6263,10 +5809,8 @@ CREATE TABLE `lb_cms_home_remake_record` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='居家适老改造工作记录';
 
--- ----------------------------
--- Table structure for lb_cms_ic_card
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_ic_card`;
+
+-- Table: lb_cms_ic_card
 CREATE TABLE `lb_cms_ic_card` (
   `card_id` varchar(32) NOT NULL COMMENT '卡id',
   `card_num` varchar(128) NOT NULL COMMENT '卡号',
@@ -6289,10 +5833,8 @@ CREATE TABLE `lb_cms_ic_card` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='IC卡信息表';
 
--- ----------------------------
--- Table structure for lb_cms_ic_operate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_ic_operate_record`;
+
+-- Table: lb_cms_ic_operate_record
 CREATE TABLE `lb_cms_ic_operate_record` (
   `operate_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `operate_type` tinyint(1) DEFAULT NULL COMMENT '操作类型：0激活，1冻结，2注销',
@@ -6312,10 +5854,8 @@ CREATE TABLE `lb_cms_ic_operate_record` (
   PRIMARY KEY (`operate_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卡操作记录';
 
--- ----------------------------
--- Table structure for lb_cms_ic_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_ic_setting`;
+
+-- Table: lb_cms_ic_setting
 CREATE TABLE `lb_cms_ic_setting` (
   `setting_id` varchar(32) NOT NULL COMMENT '设置id',
   `meal_name` varchar(32) DEFAULT NULL COMMENT '餐次名称',
@@ -6333,10 +5873,8 @@ CREATE TABLE `lb_cms_ic_setting` (
   PRIMARY KEY (`setting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_cms_import_export_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_import_export_task`;
+
+-- Table: lb_cms_import_export_task
 CREATE TABLE `lb_cms_import_export_task` (
   `task_id` varchar(32) NOT NULL COMMENT '任务id',
   `task_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
@@ -6365,10 +5903,8 @@ CREATE TABLE `lb_cms_import_export_task` (
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='异步导入导出任务表';
 
--- ----------------------------
--- Table structure for lb_cms_level_subsidy_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_level_subsidy_config`;
+
+-- Table: lb_cms_level_subsidy_config
 CREATE TABLE `lb_cms_level_subsidy_config` (
   `subsidy_config_id` varchar(128) NOT NULL DEFAULT '' COMMENT '主键',
   `ability_good` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '能力完好补贴金额',
@@ -6384,10 +5920,8 @@ CREATE TABLE `lb_cms_level_subsidy_config` (
   PRIMARY KEY (`subsidy_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府平台能力补贴配置表';
 
--- ----------------------------
--- Table structure for lb_cms_literary_education_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_literary_education_record`;
+
+-- Table: lb_cms_literary_education_record
 CREATE TABLE `lb_cms_literary_education_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录id',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -6409,10 +5943,8 @@ CREATE TABLE `lb_cms_literary_education_record` (
   KEY `org_id_idx` (`org_id`) USING BTREE COMMENT '机构id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文体教育康乐服务明细';
 
--- ----------------------------
--- Table structure for lb_cms_maintenance_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_maintenance_record`;
+
+-- Table: lb_cms_maintenance_record
 CREATE TABLE `lb_cms_maintenance_record` (
   `maintenance_record_id` varchar(32) NOT NULL COMMENT '主键',
   `device_name` varchar(64) DEFAULT '' COMMENT '设备名称',
@@ -6440,10 +5972,8 @@ CREATE TABLE `lb_cms_maintenance_record` (
   PRIMARY KEY (`maintenance_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='维修记录表';
 
--- ----------------------------
--- Table structure for lb_cms_medical_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_medical_record`;
+
+-- Table: lb_cms_medical_record
 CREATE TABLE `lb_cms_medical_record` (
   `medical_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -6486,10 +6016,8 @@ CREATE TABLE `lb_cms_medical_record` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_medical_recovery_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_medical_recovery_record`;
+
+-- Table: lb_cms_medical_recovery_record
 CREATE TABLE `lb_cms_medical_recovery_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录id',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -6511,10 +6039,8 @@ CREATE TABLE `lb_cms_medical_recovery_record` (
   KEY `org_id_idx` (`org_id`) USING BTREE COMMENT '机构id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医疗康复护理服务';
 
--- ----------------------------
--- Table structure for lb_cms_meds_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_meds_item`;
+
+-- Table: lb_cms_meds_item
 CREATE TABLE `lb_cms_meds_item` (
   `meds_item_id` varchar(32) NOT NULL COMMENT '服药药品项目表',
   `meds_msg_id` varchar(32) NOT NULL COMMENT '闹钟id',
@@ -6532,10 +6058,8 @@ CREATE TABLE `lb_cms_meds_item` (
   PRIMARY KEY (`meds_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服药药品详情表';
 
--- ----------------------------
--- Table structure for lb_cms_meds_msg
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_meds_msg`;
+
+-- Table: lb_cms_meds_msg
 CREATE TABLE `lb_cms_meds_msg` (
   `meds_msg_id` varchar(32) NOT NULL COMMENT '服药计划闹钟id',
   `meds_plan_id` varchar(32) NOT NULL COMMENT '服药计划id',
@@ -6553,10 +6077,8 @@ CREATE TABLE `lb_cms_meds_msg` (
   PRIMARY KEY (`meds_msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服药计划闹钟信息表';
 
--- ----------------------------
--- Table structure for lb_cms_meds_plan
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_meds_plan`;
+
+-- Table: lb_cms_meds_plan
 CREATE TABLE `lb_cms_meds_plan` (
   `meds_plan_id` varchar(32) NOT NULL COMMENT '服药计划id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -6576,10 +6098,8 @@ CREATE TABLE `lb_cms_meds_plan` (
   PRIMARY KEY (`meds_plan_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服药计划表';
 
--- ----------------------------
--- Table structure for lb_cms_meds_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_meds_record`;
+
+-- Table: lb_cms_meds_record
 CREATE TABLE `lb_cms_meds_record` (
   `med_record_id` varchar(32) NOT NULL COMMENT '记录信息id',
   `device_number` varchar(32) DEFAULT NULL COMMENT '设备编号',
@@ -6599,10 +6119,8 @@ CREATE TABLE `lb_cms_meds_record` (
   PRIMARY KEY (`med_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能药盒服药记录表';
 
--- ----------------------------
--- Table structure for lb_cms_message_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_message_record`;
+
+-- Table: lb_cms_message_record
 CREATE TABLE `lb_cms_message_record` (
   `message_record_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '短信记录主键',
   `work_order_id` varchar(32) DEFAULT NULL COMMENT '关联工单Id',
@@ -6621,12 +6139,10 @@ CREATE TABLE `lb_cms_message_record` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`message_record_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=482 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_cms_msg_issue
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_msg_issue`;
+
+-- Table: lb_cms_msg_issue
 CREATE TABLE `lb_cms_msg_issue` (
   `msg_issue_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -6652,10 +6168,8 @@ CREATE TABLE `lb_cms_msg_issue` (
   KEY `org_index` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='政府监管平台信息发布';
 
--- ----------------------------
--- Table structure for lb_cms_notification_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_notification_record`;
+
+-- Table: lb_cms_notification_record
 CREATE TABLE `lb_cms_notification_record` (
   `notification_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `source_id` varchar(32) DEFAULT NULL COMMENT '消息公告来源id',
@@ -6676,10 +6190,8 @@ CREATE TABLE `lb_cms_notification_record` (
   PRIMARY KEY (`notification_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='社区居家通知发布记录表';
 
--- ----------------------------
--- Table structure for lb_cms_one_touch_dial
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_one_touch_dial`;
+
+-- Table: lb_cms_one_touch_dial
 CREATE TABLE `lb_cms_one_touch_dial` (
   `one_touch_dial_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL COMMENT '长者ID',
@@ -6697,10 +6209,8 @@ CREATE TABLE `lb_cms_one_touch_dial` (
   PRIMARY KEY (`one_touch_dial_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区长者一键拨打设置表';
 
--- ----------------------------
--- Table structure for lb_cms_order_add_deal
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_add_deal`;
+
+-- Table: lb_cms_order_add_deal
 CREATE TABLE `lb_cms_order_add_deal` (
   `deal_id` varchar(32) NOT NULL COMMENT '主键',
   `work_order_id` varchar(32) NOT NULL COMMENT '工单id',
@@ -6717,10 +6227,8 @@ CREATE TABLE `lb_cms_order_add_deal` (
   PRIMARY KEY (`deal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单维护处理表';
 
--- ----------------------------
--- Table structure for lb_cms_order_buyer
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_buyer`;
+
+-- Table: lb_cms_order_buyer
 CREATE TABLE `lb_cms_order_buyer` (
   `order_buyer_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `provider_id` varchar(32) DEFAULT NULL,
@@ -6736,10 +6244,8 @@ CREATE TABLE `lb_cms_order_buyer` (
   KEY `idx_service_staff_id` (`serve_staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区已完成订单表';
 
--- ----------------------------
--- Table structure for lb_cms_order_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_config`;
+
+-- Table: lb_cms_order_config
 CREATE TABLE `lb_cms_order_config` (
   `order_config_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL,
@@ -6758,10 +6264,8 @@ CREATE TABLE `lb_cms_order_config` (
   UNIQUE KEY `org_index` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务费用配置表';
 
--- ----------------------------
--- Table structure for lb_cms_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_detail`;
+
+-- Table: lb_cms_order_detail
 CREATE TABLE `lb_cms_order_detail` (
   `order_detail_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -6794,10 +6298,8 @@ CREATE TABLE `lb_cms_order_detail` (
   KEY `orgid_index` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区订单详情表';
 
--- ----------------------------
--- Table structure for lb_cms_order_export_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_export_record`;
+
+-- Table: lb_cms_order_export_record
 CREATE TABLE `lb_cms_order_export_record` (
   `order_export_record_id` varchar(32) NOT NULL COMMENT '主键',
   `export_month` varchar(32) NOT NULL COMMENT '导出月份',
@@ -6813,10 +6315,8 @@ CREATE TABLE `lb_cms_order_export_record` (
   PRIMARY KEY (`order_export_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单导出记录表';
 
--- ----------------------------
--- Table structure for lb_cms_order_news
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_news`;
+
+-- Table: lb_cms_order_news
 CREATE TABLE `lb_cms_order_news` (
   `order_news_id` varchar(32) NOT NULL DEFAULT '',
   `work_order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '工单id',
@@ -6835,10 +6335,8 @@ CREATE TABLE `lb_cms_order_news` (
   KEY `idx_account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单消息表';
 
--- ----------------------------
--- Table structure for lb_cms_order_process
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_process`;
+
+-- Table: lb_cms_order_process
 CREATE TABLE `lb_cms_order_process` (
   `order_process_id` varchar(32) NOT NULL COMMENT '主键',
   `work_order_id` varchar(32) NOT NULL,
@@ -6854,10 +6352,8 @@ CREATE TABLE `lb_cms_order_process` (
   PRIMARY KEY (`order_process_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区订单处理信息记录表';
 
--- ----------------------------
--- Table structure for lb_cms_order_update_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_order_update_record`;
+
+-- Table: lb_cms_order_update_record
 CREATE TABLE `lb_cms_order_update_record` (
   `order_update_record_id` varchar(32) NOT NULL COMMENT '主键',
   `work_order_id` varchar(32) NOT NULL COMMENT '工单id',
@@ -6876,10 +6372,8 @@ CREATE TABLE `lb_cms_order_update_record` (
   KEY `lb_cms_order_update_record_work_order_id_IDX` (`work_order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单修改记录';
 
--- ----------------------------
--- Table structure for lb_cms_org_config_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_org_config_set`;
+
+-- Table: lb_cms_org_config_set
 CREATE TABLE `lb_cms_org_config_set` (
   `config_set_id` varchar(32) NOT NULL COMMENT '主键',
   `is_open` tinyint(1) NOT NULL DEFAULT '0' COMMENT '辅具租用是否开启 0：关闭 1：开启',
@@ -6893,10 +6387,8 @@ CREATE TABLE `lb_cms_org_config_set` (
   PRIMARY KEY (`config_set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区国家补贴规则配置表';
 
--- ----------------------------
--- Table structure for lb_cms_org_invited
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_org_invited`;
+
+-- Table: lb_cms_org_invited
 CREATE TABLE `lb_cms_org_invited` (
   `org_invited_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL COMMENT '邀请入驻的机构Id',
@@ -6914,10 +6406,8 @@ CREATE TABLE `lb_cms_org_invited` (
   PRIMARY KEY (`org_invited_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区入驻邀请记录表';
 
--- ----------------------------
--- Table structure for lb_cms_org_provider
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_org_provider`;
+
+-- Table: lb_cms_org_provider
 CREATE TABLE `lb_cms_org_provider` (
   `org_provider_id` varchar(32) NOT NULL,
   `serve_provider_id` varchar(32) NOT NULL COMMENT '服务提供者Id：通过类型判断',
@@ -6933,10 +6423,8 @@ CREATE TABLE `lb_cms_org_provider` (
   KEY `serve_provider_id_IDX` (`serve_provider_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务人员及服务商关联表';
 
--- ----------------------------
--- Table structure for lb_cms_org_region_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_org_region_config`;
+
+-- Table: lb_cms_org_region_config
 CREATE TABLE `lb_cms_org_region_config` (
   `org_region_config_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL,
@@ -6964,10 +6452,8 @@ CREATE TABLE `lb_cms_org_region_config` (
   UNIQUE KEY `org_index` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区统计区域配置表';
 
--- ----------------------------
--- Table structure for lb_cms_photo_album
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_photo_album`;
+
+-- Table: lb_cms_photo_album
 CREATE TABLE `lb_cms_photo_album` (
   `photo_album_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -6983,10 +6469,8 @@ CREATE TABLE `lb_cms_photo_album` (
   PRIMARY KEY (`photo_album_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='相册管理表';
 
--- ----------------------------
--- Table structure for lb_cms_point_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_point_setting`;
+
+-- Table: lb_cms_point_setting
 CREATE TABLE `lb_cms_point_setting` (
   `setting_id` varchar(32) NOT NULL COMMENT '主键',
   `is_vip` tinyint(1) NOT NULL COMMENT '是否会员',
@@ -7003,10 +6487,8 @@ CREATE TABLE `lb_cms_point_setting` (
   PRIMARY KEY (`setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='积分设置表';
 
--- ----------------------------
--- Table structure for lb_cms_privacy_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_privacy_set`;
+
+-- Table: lb_cms_privacy_set
 CREATE TABLE `lb_cms_privacy_set` (
   `privacy_set_id` varchar(32) NOT NULL COMMENT '主键',
   `is_privacy_phone` tinyint(1) NOT NULL DEFAULT '0' COMMENT '手机号码、固话隐私开关 0:已开启 1：未开启',
@@ -7021,10 +6503,8 @@ CREATE TABLE `lb_cms_privacy_set` (
   PRIMARY KEY (`privacy_set_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='隐私设置表';
 
--- ----------------------------
--- Table structure for lb_cms_public_activity
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_public_activity`;
+
+-- Table: lb_cms_public_activity
 CREATE TABLE `lb_cms_public_activity` (
   `activity_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '活动名称',
@@ -7065,10 +6545,8 @@ CREATE TABLE `lb_cms_public_activity` (
   KEY `applyAccountId` (`apply_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公共活动表';
 
--- ----------------------------
--- Table structure for lb_cms_public_activity_care_object_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_public_activity_care_object_record`;
+
+-- Table: lb_cms_public_activity_care_object_record
 CREATE TABLE `lb_cms_public_activity_care_object_record` (
   `record_id` varchar(32) NOT NULL COMMENT '报名记录id',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者id',
@@ -7092,10 +6570,8 @@ CREATE TABLE `lb_cms_public_activity_care_object_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公共活动报名记录表';
 
--- ----------------------------
--- Table structure for lb_cms_public_activity_evaluate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_public_activity_evaluate_record`;
+
+-- Table: lb_cms_public_activity_evaluate_record
 CREATE TABLE `lb_cms_public_activity_evaluate_record` (
   `evaluate_id` varchar(32) NOT NULL COMMENT '评价记录id',
   `activity_id` varchar(32) NOT NULL COMMENT '报名记录id',
@@ -7113,10 +6589,8 @@ CREATE TABLE `lb_cms_public_activity_evaluate_record` (
   PRIMARY KEY (`evaluate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公共活动评价表';
 
--- ----------------------------
--- Table structure for lb_cms_public_activity_field
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_public_activity_field`;
+
+-- Table: lb_cms_public_activity_field
 CREATE TABLE `lb_cms_public_activity_field` (
   `field_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '场地名称',
@@ -7136,10 +6610,8 @@ CREATE TABLE `lb_cms_public_activity_field` (
   KEY `chargeAccountId` (`charge_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公共活动场地表';
 
--- ----------------------------
--- Table structure for lb_cms_receiver_address
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_receiver_address`;
+
+-- Table: lb_cms_receiver_address
 CREATE TABLE `lb_cms_receiver_address` (
   `receiver_address_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL COMMENT '长者ID',
@@ -7166,10 +6638,8 @@ CREATE TABLE `lb_cms_receiver_address` (
   PRIMARY KEY (`receiver_address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区长者收货地址表';
 
--- ----------------------------
--- Table structure for lb_cms_recharge_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_recharge_record`;
+
+-- Table: lb_cms_recharge_record
 CREATE TABLE `lb_cms_recharge_record` (
   `recharge_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -7194,13 +6664,12 @@ CREATE TABLE `lb_cms_recharge_record` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`recharge_record_id`) USING BTREE,
   UNIQUE KEY `pk_recharge_record_id` (`recharge_record_id`) USING BTREE,
-  KEY `idx_care_object_id` (`care_object_id`) USING BTREE
+  KEY `idx_care_object_id` (`care_object_id`) USING BTREE,
+  KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区长者充值记录表';
 
--- ----------------------------
--- Table structure for lb_cms_recharge_record_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_recharge_record_stat`;
+
+-- Table: lb_cms_recharge_record_stat
 CREATE TABLE `lb_cms_recharge_record_stat` (
   `recharge_record_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -7215,10 +6684,8 @@ CREATE TABLE `lb_cms_recharge_record_stat` (
   PRIMARY KEY (`recharge_record_stat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='充值记录统计报表';
 
--- ----------------------------
--- Table structure for lb_cms_renewal_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_renewal_record`;
+
+-- Table: lb_cms_renewal_record
 CREATE TABLE `lb_cms_renewal_record` (
   `renewal_record_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -7236,10 +6703,8 @@ CREATE TABLE `lb_cms_renewal_record` (
   PRIMARY KEY (`renewal_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区加盟续费记录表';
 
--- ----------------------------
--- Table structure for lb_cms_self_care_ability
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_self_care_ability`;
+
+-- Table: lb_cms_self_care_ability
 CREATE TABLE `lb_cms_self_care_ability` (
   `self_assessment_record_id` varchar(32) NOT NULL COMMENT '自理能力评估id主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者id',
@@ -7267,10 +6732,8 @@ CREATE TABLE `lb_cms_self_care_ability` (
   PRIMARY KEY (`self_assessment_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自理能力评估表';
 
--- ----------------------------
--- Table structure for lb_cms_send_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_send_order`;
+
+-- Table: lb_cms_send_order
 CREATE TABLE `lb_cms_send_order` (
   `send_order_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `order_id` varchar(32) NOT NULL COMMENT '工单编号',
@@ -7290,12 +6753,10 @@ CREATE TABLE `lb_cms_send_order` (
   UNIQUE KEY `pk_send_order_id` (`send_order_id`) USING BTREE,
   KEY `idx_send_user_id` (`serve_provider_id`) USING BTREE,
   KEY `idx_order_id` (`order_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1574138 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区派单表';
+) ENGINE=InnoDB AUTO_INCREMENT=1605192 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区派单表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_area`;
+
+-- Table: lb_cms_serve_area
 CREATE TABLE `lb_cms_serve_area` (
   `serve_area_id` varchar(32) NOT NULL COMMENT '服务区域主键',
   `region_id` varchar(255) NOT NULL COMMENT '区域id',
@@ -7317,10 +6778,8 @@ CREATE TABLE `lb_cms_serve_area` (
   PRIMARY KEY (`serve_area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区服务区域表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_category_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_category_stat`;
+
+-- Table: lb_cms_serve_category_stat
 CREATE TABLE `lb_cms_serve_category_stat` (
   `serve_category_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -7339,10 +6798,8 @@ CREATE TABLE `lb_cms_serve_category_stat` (
   PRIMARY KEY (`serve_category_stat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_cms_serve_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_item`;
+
+-- Table: lb_cms_serve_item
 CREATE TABLE `lb_cms_serve_item` (
   `serve_item_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -7381,10 +6838,8 @@ CREATE TABLE `lb_cms_serve_item` (
   UNIQUE KEY `pk_serve_item_id` (`serve_item_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务项目表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_item_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_item_stat`;
+
+-- Table: lb_cms_serve_item_stat
 CREATE TABLE `lb_cms_serve_item_stat` (
   `serve_item_stat_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -7405,10 +6860,8 @@ CREATE TABLE `lb_cms_serve_item_stat` (
   KEY `serve_item_id_index` (`serve_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区扩展服务项目统计表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_object`;
+
+-- Table: lb_cms_serve_object
 CREATE TABLE `lb_cms_serve_object` (
   `serve_object_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -7428,10 +6881,8 @@ CREATE TABLE `lb_cms_serve_object` (
   KEY `orgid_index` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务长者关联表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_order`;
+
+-- Table: lb_cms_serve_order
 CREATE TABLE `lb_cms_serve_order` (
   `order_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -7502,10 +6953,8 @@ CREATE TABLE `lb_cms_serve_order` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区订单表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_plan
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_plan`;
+
+-- Table: lb_cms_serve_plan
 CREATE TABLE `lb_cms_serve_plan` (
   `serve_plan_id` varchar(32) NOT NULL COMMENT '日程计划主键',
   `work_order_id` varchar(32) NOT NULL COMMENT '工单id',
@@ -7524,10 +6973,8 @@ CREATE TABLE `lb_cms_serve_plan` (
   PRIMARY KEY (`serve_plan_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='服务人员日程计划表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_staff
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_staff`;
+
+-- Table: lb_cms_serve_staff
 CREATE TABLE `lb_cms_serve_staff` (
   `serve_staff_id` varchar(32) NOT NULL COMMENT '主键',
   `serve_team_id` varchar(32) DEFAULT NULL COMMENT '服务团队Id，服务人员关联',
@@ -7564,10 +7011,8 @@ CREATE TABLE `lb_cms_serve_staff` (
   KEY `serve_team_id_IDX` (`serve_team_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务人员表';
 
--- ----------------------------
--- Table structure for lb_cms_serve_team
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_serve_team`;
+
+-- Table: lb_cms_serve_team
 CREATE TABLE `lb_cms_serve_team` (
   `serve_team_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -7611,10 +7056,8 @@ CREATE TABLE `lb_cms_serve_team` (
   KEY `uk_principal_phone` (`principal_phone`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='服务提供商表';
 
--- ----------------------------
--- Table structure for lb_cms_service_evaluation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_service_evaluation`;
+
+-- Table: lb_cms_service_evaluation
 CREATE TABLE `lb_cms_service_evaluation` (
   `evaluation_id` varchar(30) NOT NULL COMMENT '主键',
   `service_eval` tinyint(1) NOT NULL COMMENT '服务评分 1-5',
@@ -7633,10 +7076,8 @@ CREATE TABLE `lb_cms_service_evaluation` (
   KEY `lb_cms_service_evaluation_order_id_IDX` (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单服务评价表';
 
--- ----------------------------
--- Table structure for lb_cms_settlement_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_settlement_record`;
+
+-- Table: lb_cms_settlement_record
 CREATE TABLE `lb_cms_settlement_record` (
   `settlement_record_id` varchar(32) NOT NULL COMMENT '主键',
   `settlement_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '结算对象主键',
@@ -7666,10 +7107,8 @@ CREATE TABLE `lb_cms_settlement_record` (
   UNIQUE KEY `pk_settlement_record_id` (`settlement_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区费用结算记录表';
 
--- ----------------------------
--- Table structure for lb_cms_shopping_cart
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_shopping_cart`;
+
+-- Table: lb_cms_shopping_cart
 CREATE TABLE `lb_cms_shopping_cart` (
   `shopping_cart_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -7691,10 +7130,8 @@ CREATE TABLE `lb_cms_shopping_cart` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='购物车列表';
 
--- ----------------------------
--- Table structure for lb_cms_sign
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_sign`;
+
+-- Table: lb_cms_sign
 CREATE TABLE `lb_cms_sign` (
   `sigin_id` varchar(32) NOT NULL COMMENT '签字表主键',
   `apply_id` varchar(32) NOT NULL DEFAULT '' COMMENT '申请主键',
@@ -7710,10 +7147,8 @@ CREATE TABLE `lb_cms_sign` (
   KEY `apply_id` (`apply_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='二维码签字';
 
--- ----------------------------
--- Table structure for lb_cms_sign_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_sign_record`;
+
+-- Table: lb_cms_sign_record
 CREATE TABLE `lb_cms_sign_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(64) DEFAULT '' COMMENT '人员姓名',
@@ -7732,10 +7167,8 @@ CREATE TABLE `lb_cms_sign_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='签到记录表';
 
--- ----------------------------
--- Table structure for lb_cms_sms_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_sms_config`;
+
+-- Table: lb_cms_sms_config
 CREATE TABLE `lb_cms_sms_config` (
   `sms_config_id` varchar(32) NOT NULL COMMENT '主键',
   `region` varchar(128) DEFAULT NULL COMMENT '区域id',
@@ -7753,10 +7186,8 @@ CREATE TABLE `lb_cms_sms_config` (
   PRIMARY KEY (`sms_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区私有化短信配置';
 
--- ----------------------------
--- Table structure for lb_cms_staff_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_staff_balance`;
+
+-- Table: lb_cms_staff_balance
 CREATE TABLE `lb_cms_staff_balance` (
   `serve_staff_id` varchar(32) NOT NULL COMMENT '用户Id，服务商id',
   `staff_type` tinyint(4) DEFAULT '0' COMMENT '0 服务提供商 1 服务人员 2 应急人员 3 志愿者',
@@ -7782,10 +7213,8 @@ CREATE TABLE `lb_cms_staff_balance` (
   PRIMARY KEY (`serve_staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务人员余额表';
 
--- ----------------------------
--- Table structure for lb_cms_stat_change_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_stat_change_log`;
+
+-- Table: lb_cms_stat_change_log
 CREATE TABLE `lb_cms_stat_change_log` (
   `stat_change_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -7799,12 +7228,10 @@ CREATE TABLE `lb_cms_stat_change_log` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`stat_change_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=694 DEFAULT CHARSET=utf8mb4 COMMENT='报表修改记录日志';
+) ENGINE=InnoDB AUTO_INCREMENT=696 DEFAULT CHARSET=utf8mb4 COMMENT='报表修改记录日志';
 
--- ----------------------------
--- Table structure for lb_cms_subsidy_consumption_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_subsidy_consumption_record`;
+
+-- Table: lb_cms_subsidy_consumption_record
 CREATE TABLE `lb_cms_subsidy_consumption_record` (
   `consumption_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -7826,10 +7253,8 @@ CREATE TABLE `lb_cms_subsidy_consumption_record` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区长者国家补贴消费记录表';
 
--- ----------------------------
--- Table structure for lb_cms_subsidy_recharge_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_subsidy_recharge_record`;
+
+-- Table: lb_cms_subsidy_recharge_record
 CREATE TABLE `lb_cms_subsidy_recharge_record` (
   `recharge_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -7846,10 +7271,8 @@ CREATE TABLE `lb_cms_subsidy_recharge_record` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区长者国家补贴充值记录表';
 
--- ----------------------------
--- Table structure for lb_cms_suit_elder_migrate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_suit_elder_migrate_record`;
+
+-- Table: lb_cms_suit_elder_migrate_record
 CREATE TABLE `lb_cms_suit_elder_migrate_record` (
   `migrate_record_id` varchar(32) NOT NULL COMMENT '长者机构绑定主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -7865,10 +7288,8 @@ CREATE TABLE `lb_cms_suit_elder_migrate_record` (
   KEY `care_object_id_index` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造长者绑定记录';
 
--- ----------------------------
--- Table structure for lb_cms_supplier
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_supplier`;
+
+-- Table: lb_cms_supplier
 CREATE TABLE `lb_cms_supplier` (
   `supplier_id` varchar(32) NOT NULL COMMENT '主键',
   `supplier_name` varchar(64) DEFAULT '' COMMENT '供应商名称',
@@ -7891,10 +7312,8 @@ CREATE TABLE `lb_cms_supplier` (
   PRIMARY KEY (`supplier_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='供应商表';
 
--- ----------------------------
--- Table structure for lb_cms_supplies
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_supplies`;
+
+-- Table: lb_cms_supplies
 CREATE TABLE `lb_cms_supplies` (
   `supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_name` varchar(64) DEFAULT '' COMMENT '物资名称',
@@ -7918,10 +7337,8 @@ CREATE TABLE `lb_cms_supplies` (
   PRIMARY KEY (`supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='物资表';
 
--- ----------------------------
--- Table structure for lb_cms_supplies_category
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_supplies_category`;
+
+-- Table: lb_cms_supplies_category
 CREATE TABLE `lb_cms_supplies_category` (
   `supplies_category_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_category_name` varchar(64) DEFAULT '' COMMENT '类别名称',
@@ -7936,10 +7353,8 @@ CREATE TABLE `lb_cms_supplies_category` (
   PRIMARY KEY (`supplies_category_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='物资类别表';
 
--- ----------------------------
--- Table structure for lb_cms_supplies_month_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_supplies_month_check`;
+
+-- Table: lb_cms_supplies_month_check
 CREATE TABLE `lb_cms_supplies_month_check` (
   `month_check_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_category_id` varchar(32) DEFAULT '' COMMENT '物资id',
@@ -7958,10 +7373,8 @@ CREATE TABLE `lb_cms_supplies_month_check` (
   PRIMARY KEY (`month_check_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='库存统计表';
 
--- ----------------------------
--- Table structure for lb_cms_sys_dict
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_sys_dict`;
+
+-- Table: lb_cms_sys_dict
 CREATE TABLE `lb_cms_sys_dict` (
   `sys_dict_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `data_type` varchar(32) DEFAULT '0' COMMENT '类型',
@@ -7982,12 +7395,10 @@ CREATE TABLE `lb_cms_sys_dict` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`sys_dict_id`) USING BTREE,
   UNIQUE KEY `pk_index` (`sys_dict_id`) USING BTREE COMMENT '主键索引'
-) ENGINE=InnoDB AUTO_INCREMENT=28430 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='服务类别表';
+) ENGINE=InnoDB AUTO_INCREMENT=29260 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='服务类别表';
 
--- ----------------------------
--- Table structure for lb_cms_system_news
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_system_news`;
+
+-- Table: lb_cms_system_news
 CREATE TABLE `lb_cms_system_news` (
   `system_news_id` varchar(32) NOT NULL,
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者唯一标识',
@@ -8008,10 +7419,8 @@ CREATE TABLE `lb_cms_system_news` (
   KEY `idx_care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统消息表';
 
--- ----------------------------
--- Table structure for lb_cms_treatment_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_treatment_item`;
+
+-- Table: lb_cms_treatment_item
 CREATE TABLE `lb_cms_treatment_item` (
   `item_id` varchar(32) NOT NULL COMMENT '主键',
   `item_type` tinyint(1) DEFAULT '0' COMMENT '项目类型 1 基础服务 2 服务包',
@@ -8032,10 +7441,8 @@ CREATE TABLE `lb_cms_treatment_item` (
   PRIMARY KEY (`item_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='治疗项目表';
 
--- ----------------------------
--- Table structure for lb_cms_video_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_video_area`;
+
+-- Table: lb_cms_video_area
 CREATE TABLE `lb_cms_video_area` (
   `area_id` varchar(32) NOT NULL COMMENT '主键',
   `area_name` varchar(100) NOT NULL COMMENT '区域名称',
@@ -8050,10 +7457,8 @@ CREATE TABLE `lb_cms_video_area` (
   PRIMARY KEY (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管区域';
 
--- ----------------------------
--- Table structure for lb_cms_video_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_video_config`;
+
+-- Table: lb_cms_video_config
 CREATE TABLE `lb_cms_video_config` (
   `video_config_id` varchar(32) NOT NULL COMMENT '主键',
   `title` varchar(100) NOT NULL COMMENT '标题设置',
@@ -8069,10 +7474,8 @@ CREATE TABLE `lb_cms_video_config` (
   PRIMARY KEY (`video_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监控配置';
 
--- ----------------------------
--- Table structure for lb_cms_video_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_video_device`;
+
+-- Table: lb_cms_video_device
 CREATE TABLE `lb_cms_video_device` (
   `video_device_id` varchar(32) NOT NULL COMMENT '主键',
   `device_id` varchar(32) NOT NULL COMMENT '设备序列号，主键',
@@ -8104,10 +7507,8 @@ CREATE TABLE `lb_cms_video_device` (
   PRIMARY KEY (`video_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管设备';
 
--- ----------------------------
--- Table structure for lb_cms_vip_card
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_vip_card`;
+
+-- Table: lb_cms_vip_card
 CREATE TABLE `lb_cms_vip_card` (
   `vip_card_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL COMMENT '长者ID',
@@ -8135,10 +7536,8 @@ CREATE TABLE `lb_cms_vip_card` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员卡表';
 
--- ----------------------------
--- Table structure for lb_cms_vip_card_face
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_vip_card_face`;
+
+-- Table: lb_cms_vip_card_face
 CREATE TABLE `lb_cms_vip_card_face` (
   `face_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -8158,10 +7557,8 @@ CREATE TABLE `lb_cms_vip_card_face` (
   KEY `care_object_id_IDX` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员卡面部图片表';
 
--- ----------------------------
--- Table structure for lb_cms_vip_card_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_vip_card_log`;
+
+-- Table: lb_cms_vip_card_log
 CREATE TABLE `lb_cms_vip_card_log` (
   `vip_card_log_id` varchar(32) NOT NULL COMMENT '主键',
   `vip_card_id` varchar(64) DEFAULT NULL COMMENT '会员卡ID',
@@ -8200,10 +7597,8 @@ CREATE TABLE `lb_cms_vip_card_log` (
   PRIMARY KEY (`vip_card_log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员卡日志表';
 
--- ----------------------------
--- Table structure for lb_cms_vip_face_upload_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_vip_face_upload_record`;
+
+-- Table: lb_cms_vip_face_upload_record
 CREATE TABLE `lb_cms_vip_face_upload_record` (
   `record_id` varchar(32) NOT NULL COMMENT '记录id',
   `face_id` varchar(32) NOT NULL DEFAULT '' COMMENT '人脸id',
@@ -8224,10 +7619,8 @@ CREATE TABLE `lb_cms_vip_face_upload_record` (
   KEY `device_id_IDX` (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员人脸上传记录';
 
--- ----------------------------
--- Table structure for lb_cms_vip_level
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_vip_level`;
+
+-- Table: lb_cms_vip_level
 CREATE TABLE `lb_cms_vip_level` (
   `level_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '等级名称',
@@ -8246,10 +7639,8 @@ CREATE TABLE `lb_cms_vip_level` (
   PRIMARY KEY (`level_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员等级表';
 
--- ----------------------------
--- Table structure for lb_cms_ward_rounds_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_ward_rounds_record`;
+
+-- Table: lb_cms_ward_rounds_record
 CREATE TABLE `lb_cms_ward_rounds_record` (
   `ward_rounds_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -8277,10 +7668,8 @@ CREATE TABLE `lb_cms_ward_rounds_record` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='远程查房记录表';
 
--- ----------------------------
--- Table structure for lb_cms_warehouse
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_warehouse`;
+
+-- Table: lb_cms_warehouse
 CREATE TABLE `lb_cms_warehouse` (
   `warehouse_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_name` varchar(64) DEFAULT '' COMMENT '仓库名称',
@@ -8297,10 +7686,8 @@ CREATE TABLE `lb_cms_warehouse` (
   PRIMARY KEY (`warehouse_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='仓库表';
 
--- ----------------------------
--- Table structure for lb_cms_warehouse_change_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_warehouse_change_record`;
+
+-- Table: lb_cms_warehouse_change_record
 CREATE TABLE `lb_cms_warehouse_change_record` (
   `warehouse_record_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_type` tinyint(1) DEFAULT '0' COMMENT '物资来源/去向类型',
@@ -8339,10 +7726,8 @@ CREATE TABLE `lb_cms_warehouse_change_record` (
   PRIMARY KEY (`warehouse_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='库存记录变动表';
 
--- ----------------------------
--- Table structure for lb_cms_warehouse_supplies
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_warehouse_supplies`;
+
+-- Table: lb_cms_warehouse_supplies
 CREATE TABLE `lb_cms_warehouse_supplies` (
   `warehouse_supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_id` varchar(32) DEFAULT NULL COMMENT '仓库id',
@@ -8360,10 +7745,8 @@ CREATE TABLE `lb_cms_warehouse_supplies` (
   PRIMARY KEY (`warehouse_supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='库存表';
 
--- ----------------------------
--- Table structure for lb_cms_withdrawal_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_withdrawal_record`;
+
+-- Table: lb_cms_withdrawal_record
 CREATE TABLE `lb_cms_withdrawal_record` (
   `withdrawal_record_id` varchar(32) NOT NULL,
   `account_id` varchar(32) NOT NULL,
@@ -8380,10 +7763,8 @@ CREATE TABLE `lb_cms_withdrawal_record` (
   PRIMARY KEY (`withdrawal_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_cms_work_operation_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_work_operation_log`;
+
+-- Table: lb_cms_work_operation_log
 CREATE TABLE `lb_cms_work_operation_log` (
   `id` varchar(64) NOT NULL DEFAULT '' COMMENT '操作日志主键',
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '用户主键',
@@ -8404,10 +7785,8 @@ CREATE TABLE `lb_cms_work_operation_log` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单维护处理操作日志';
 
--- ----------------------------
--- Table structure for lb_cms_work_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_work_order`;
+
+-- Table: lb_cms_work_order
 CREATE TABLE `lb_cms_work_order` (
   `work_order_id` varchar(32) NOT NULL COMMENT '主键',
   `order_handle_type` tinyint(4) DEFAULT '0' COMMENT '工单处理类型 1 上门救助 2 上门服务 3 120报警 4 测试或误按 5 电话咨询 6 投诉 7 上门关怀 8 电话关怀',
@@ -8476,10 +7855,8 @@ CREATE TABLE `lb_cms_work_order` (
   KEY `order_format_time_IDX` (`order_format_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='社区服务工单表';
 
--- ----------------------------
--- Table structure for lb_cms_work_order_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_work_order_setting`;
+
+-- Table: lb_cms_work_order_setting
 CREATE TABLE `lb_cms_work_order_setting` (
   `work_order_setting_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -8513,10 +7890,8 @@ CREATE TABLE `lb_cms_work_order_setting` (
   PRIMARY KEY (`work_order_setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工单审核设置';
 
--- ----------------------------
--- Table structure for lb_cms_work_order_stat
--- ----------------------------
-DROP TABLE IF EXISTS `lb_cms_work_order_stat`;
+
+-- Table: lb_cms_work_order_stat
 CREATE TABLE `lb_cms_work_order_stat` (
   `work_order_id` varchar(32) NOT NULL COMMENT '工单id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -8558,10 +7933,8 @@ CREATE TABLE `lb_cms_work_order_stat` (
   KEY `lb_cms_work_order_stat_org_id_IDX` (`org_id`,`order_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='全部服务工单详情';
 
--- ----------------------------
--- Table structure for lb_code_generate
--- ----------------------------
-DROP TABLE IF EXISTS `lb_code_generate`;
+
+-- Table: lb_code_generate
 CREATE TABLE `lb_code_generate` (
   `code_generate_id` varchar(32) NOT NULL COMMENT '主键',
   `code_prefix` varchar(32) DEFAULT '' COMMENT '前缀',
@@ -8575,10 +7948,8 @@ CREATE TABLE `lb_code_generate` (
   PRIMARY KEY (`code_generate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_comm_center_dynamic
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_dynamic`;
+
+-- Table: lb_comm_center_dynamic
 CREATE TABLE `lb_comm_center_dynamic` (
   `dynamic_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '',
@@ -8595,10 +7966,8 @@ CREATE TABLE `lb_comm_center_dynamic` (
   PRIMARY KEY (`dynamic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通讯中心动态表';
 
--- ----------------------------
--- Table structure for lb_comm_center_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_info`;
+
+-- Table: lb_comm_center_info
 CREATE TABLE `lb_comm_center_info` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `balance` int(10) NOT NULL DEFAULT '0' COMMENT '余额(短信剩余条数/智能语音剩余分钟)',
@@ -8614,10 +7983,8 @@ CREATE TABLE `lb_comm_center_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通讯中心信息表';
 
--- ----------------------------
--- Table structure for lb_comm_center_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_order`;
+
+-- Table: lb_comm_center_order
 CREATE TABLE `lb_comm_center_order` (
   `order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '短信充值订单主键',
   `pay_way` tinyint(1) NOT NULL DEFAULT '0' COMMENT '支付方式  1支付宝、2微信',
@@ -8638,10 +8005,8 @@ CREATE TABLE `lb_comm_center_order` (
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通信中心充值订单';
 
--- ----------------------------
--- Table structure for lb_comm_center_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_template`;
+
+-- Table: lb_comm_center_template
 CREATE TABLE `lb_comm_center_template` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `code_num` varchar(16) NOT NULL DEFAULT '' COMMENT '模板代号(ali_template)',
@@ -8661,10 +8026,8 @@ CREATE TABLE `lb_comm_center_template` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通讯中心模版信息表';
 
--- ----------------------------
--- Table structure for lb_comm_center_template_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_template_detail`;
+
+-- Table: lb_comm_center_template_detail
 CREATE TABLE `lb_comm_center_template_detail` (
   `code_num` varchar(16) NOT NULL DEFAULT '' COMMENT '模板代号',
   `code_value` varchar(16) NOT NULL DEFAULT '' COMMENT '阿里模板code',
@@ -8675,10 +8038,8 @@ CREATE TABLE `lb_comm_center_template_detail` (
   PRIMARY KEY (`code_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通讯中心模版详情表';
 
--- ----------------------------
--- Table structure for lb_comm_center_template_param
--- ----------------------------
-DROP TABLE IF EXISTS `lb_comm_center_template_param`;
+
+-- Table: lb_comm_center_template_param
 CREATE TABLE `lb_comm_center_template_param` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `key_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'code_num/sms_template_id',
@@ -8691,10 +8052,8 @@ CREATE TABLE `lb_comm_center_template_param` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通讯中心模版参数表';
 
--- ----------------------------
--- Table structure for lb_commdict
--- ----------------------------
-DROP TABLE IF EXISTS `lb_commdict`;
+
+-- Table: lb_commdict
 CREATE TABLE `lb_commdict` (
   `commdict_id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type` varchar(64) DEFAULT '' COMMENT '类型',
@@ -8709,10 +8068,8 @@ CREATE TABLE `lb_commdict` (
   KEY `lb_commdict_type_IDX` (`type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=30440 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_commdict_editable
--- ----------------------------
-DROP TABLE IF EXISTS `lb_commdict_editable`;
+
+-- Table: lb_commdict_editable
 CREATE TABLE `lb_commdict_editable` (
   `commdict_id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type` varchar(32) DEFAULT '' COMMENT '类型',
@@ -8731,12 +8088,10 @@ CREATE TABLE `lb_commdict_editable` (
   PRIMARY KEY (`commdict_id`),
   KEY `org_id` (`org_id`) USING BTREE,
   KEY `type_IDX` (`type`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1003271658 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1003364018 DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_common_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_common_account`;
+
+-- Table: lb_common_account
 CREATE TABLE `lb_common_account` (
   `id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型（1-账号，2-密码）',
@@ -8749,10 +8104,8 @@ CREATE TABLE `lb_common_account` (
   KEY `value` (`value`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=22840 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='常见账号/密码表';
 
--- ----------------------------
--- Table structure for lb_community
--- ----------------------------
-DROP TABLE IF EXISTS `lb_community`;
+
+-- Table: lb_community
 CREATE TABLE `lb_community` (
   `community_id` varchar(32) NOT NULL COMMENT '主键',
   `community_name` varchar(255) DEFAULT '' COMMENT '小区名字',
@@ -8770,10 +8123,8 @@ CREATE TABLE `lb_community` (
   KEY `lb_community_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_construct_inventory
--- ----------------------------
-DROP TABLE IF EXISTS `lb_construct_inventory`;
+
+-- Table: lb_construct_inventory
 CREATE TABLE `lb_construct_inventory` (
   `construct_inventory_id` varchar(32) NOT NULL COMMENT '主键',
   `suit_aged_manage_id` varchar(32) NOT NULL COMMENT '适老改造项目（包）id',
@@ -8800,10 +8151,8 @@ CREATE TABLE `lb_construct_inventory` (
   KEY `suit_aged_manage_id_IDX` (`suit_aged_manage_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造建设清单表';
 
--- ----------------------------
--- Table structure for lb_consumption_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_consumption_record`;
+
+-- Table: lb_consumption_record
 CREATE TABLE `lb_consumption_record` (
   `consumption_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -8836,10 +8185,8 @@ CREATE TABLE `lb_consumption_record` (
   KEY `record_id` (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='消费记录表';
 
--- ----------------------------
--- Table structure for lb_contactinteractive
--- ----------------------------
-DROP TABLE IF EXISTS `lb_contactinteractive`;
+
+-- Table: lb_contactinteractive
 CREATE TABLE `lb_contactinteractive` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `track_id` varchar(64) DEFAULT NULL COMMENT '信息所属记录id',
@@ -8865,10 +8212,8 @@ CREATE TABLE `lb_contactinteractive` (
   KEY `create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='互动信息';
 
--- ----------------------------
--- Table structure for lb_count_number
--- ----------------------------
-DROP TABLE IF EXISTS `lb_count_number`;
+
+-- Table: lb_count_number
 CREATE TABLE `lb_count_number` (
   `id` tinyint(4) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `count_type` varchar(32) NOT NULL DEFAULT '' COMMENT '统计数据类型',
@@ -8881,10 +8226,8 @@ CREATE TABLE `lb_count_number` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='计数统计表';
 
--- ----------------------------
--- Table structure for lb_crutch
--- ----------------------------
-DROP TABLE IF EXISTS `lb_crutch`;
+
+-- Table: lb_crutch
 CREATE TABLE `lb_crutch` (
   `crutch_id` varchar(32) NOT NULL COMMENT '设备id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '绑定长者id',
@@ -8921,10 +8264,8 @@ CREATE TABLE `lb_crutch` (
   PRIMARY KEY (`crutch_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能拐杖';
 
--- ----------------------------
--- Table structure for lb_csr_chat_list
--- ----------------------------
-DROP TABLE IF EXISTS `lb_csr_chat_list`;
+
+-- Table: lb_csr_chat_list
 CREATE TABLE `lb_csr_chat_list` (
   `csr_id` varchar(64) NOT NULL COMMENT '客服Id',
   `chat_list` mediumtext NOT NULL COMMENT '聊天列表',
@@ -8935,10 +8276,8 @@ CREATE TABLE `lb_csr_chat_list` (
   PRIMARY KEY (`csr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客服聊天列表';
 
--- ----------------------------
--- Table structure for lb_csr_phone
--- ----------------------------
-DROP TABLE IF EXISTS `lb_csr_phone`;
+
+-- Table: lb_csr_phone
 CREATE TABLE `lb_csr_phone` (
   `csr_phone_id` varchar(32) NOT NULL COMMENT '主键',
   `csr_name` varchar(32) NOT NULL DEFAULT '' COMMENT '客服名称',
@@ -8952,10 +8291,8 @@ CREATE TABLE `lb_csr_phone` (
   PRIMARY KEY (`csr_phone_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客服电话表';
 
--- ----------------------------
--- Table structure for lb_customer
--- ----------------------------
-DROP TABLE IF EXISTS `lb_customer`;
+
+-- Table: lb_customer
 CREATE TABLE `lb_customer` (
   `customer_id` varchar(32) NOT NULL COMMENT '主键',
   `customer_name` varchar(128) DEFAULT NULL COMMENT '姓名',
@@ -8971,10 +8308,8 @@ CREATE TABLE `lb_customer` (
   KEY `customer_phone` (`customer_phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='咨询客户';
 
--- ----------------------------
--- Table structure for lb_customer_call_history
--- ----------------------------
-DROP TABLE IF EXISTS `lb_customer_call_history`;
+
+-- Table: lb_customer_call_history
 CREATE TABLE `lb_customer_call_history` (
   `call_history_id` varchar(32) NOT NULL COMMENT '主键',
   `phone_num` varchar(32) DEFAULT '' COMMENT '手机号',
@@ -9001,10 +8336,8 @@ CREATE TABLE `lb_customer_call_history` (
   KEY `idx_answer_account_id_seat_type` (`answer_account_id`,`seat_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='客户通话记录表';
 
--- ----------------------------
--- Table structure for lb_customer_remark
--- ----------------------------
-DROP TABLE IF EXISTS `lb_customer_remark`;
+
+-- Table: lb_customer_remark
 CREATE TABLE `lb_customer_remark` (
   `remark_id` varchar(32) NOT NULL COMMENT '主键',
   `customer_phone` varchar(32) DEFAULT '' COMMENT '客服电话',
@@ -9022,10 +8355,8 @@ CREATE TABLE `lb_customer_remark` (
   PRIMARY KEY (`remark_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='客户备注';
 
--- ----------------------------
--- Table structure for lb_customer_service_consult
--- ----------------------------
-DROP TABLE IF EXISTS `lb_customer_service_consult`;
+
+-- Table: lb_customer_service_consult
 CREATE TABLE `lb_customer_service_consult` (
   `customer_service_consult_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_id` varchar(32) DEFAULT NULL COMMENT '所在商品',
@@ -9048,10 +8379,8 @@ CREATE TABLE `lb_customer_service_consult` (
   KEY `csr_account_id` (`csr_account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客服咨询表';
 
--- ----------------------------
--- Table structure for lb_data_server_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_data_server_config`;
+
+-- Table: lb_data_server_config
 CREATE TABLE `lb_data_server_config` (
   `data_server_config_id` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识',
   `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名称',
@@ -9067,10 +8396,8 @@ CREATE TABLE `lb_data_server_config` (
   PRIMARY KEY (`data_server_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据采集服务器配置表';
 
--- ----------------------------
--- Table structure for lb_db_op
--- ----------------------------
-DROP TABLE IF EXISTS `lb_db_op`;
+
+-- Table: lb_db_op
 CREATE TABLE `lb_db_op` (
   `db_op_id` int(11) NOT NULL COMMENT '主键',
   `db_op_name` varchar(16) DEFAULT '' COMMENT 'db操作名称',
@@ -9084,10 +8411,8 @@ CREATE TABLE `lb_db_op` (
   PRIMARY KEY (`db_op_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_debugging_temp_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_debugging_temp_record`;
+
+-- Table: lb_debugging_temp_record
 CREATE TABLE `lb_debugging_temp_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `iot_device_id` varchar(64) DEFAULT NULL COMMENT 'nb设备电信平台id',
@@ -9104,10 +8429,8 @@ CREATE TABLE `lb_debugging_temp_record` (
   KEY `lb_debugging_temp_record_iot_device_id_IDX` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='测温模块调试记录表';
 
--- ----------------------------
--- Table structure for lb_device_activity_track
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_activity_track`;
+
+-- Table: lb_device_activity_track
 CREATE TABLE `lb_device_activity_track` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `record_time` bigint(20) DEFAULT '0' COMMENT '记录时间',
@@ -9134,10 +8457,8 @@ CREATE TABLE `lb_device_activity_track` (
   KEY `record_type` (`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_device_alarm_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_alarm_config`;
+
+-- Table: lb_device_alarm_config
 CREATE TABLE `lb_device_alarm_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
@@ -9162,10 +8483,35 @@ CREATE TABLE `lb_device_alarm_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备报警配置表';
 
--- ----------------------------
--- Table structure for lb_device_alarm_configcs
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_alarm_configcs`;
+
+-- Table: lb_device_alarm_config_copy1
+CREATE TABLE `lb_device_alarm_config_copy1` (
+  `config_id` varchar(32) NOT NULL COMMENT '主键',
+  `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
+  `report_device_type` tinyint(1) NOT NULL COMMENT 'NB上报设备类型',
+  `device_iteration_number` tinyint(1) DEFAULT NULL COMMENT '设备迭代版本号',
+  `device_type_desc` varchar(32) NOT NULL DEFAULT '' COMMENT '设备类型描述',
+  `area_type` tinyint(1) NOT NULL COMMENT '区域类型（0-非公共卫生间，5-公共卫生间）',
+  `area_type_desc` varchar(32) NOT NULL DEFAULT '' COMMENT '区域类型描述',
+  `set_type` tinyint(1) NOT NULL COMMENT '设置类型（1-处警方式，2-报警延迟）',
+  `set_param` tinyint(3) unsigned NOT NULL COMMENT '设置参数（1：0-双向，1-单向；2：分钟）',
+  `support_type` tinyint(1) NOT NULL DEFAULT '3' COMMENT '支持处警方式（1-单向，2-双向，3-单双向）',
+  `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构主键',
+  `create_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标识（0-未删除，1-已删除）',
+  `config_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '配置类型',
+  `device_type_desc_delay` varchar(32) DEFAULT '' COMMENT '设备类型描述（报警延迟）',
+  `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
+  `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
+  PRIMARY KEY (`config_id`),
+  KEY `object_id` (`object_id`) USING BTREE,
+  KEY `report_device_type` (`report_device_type`,`device_iteration_number`) USING BTREE,
+  KEY `org_id` (`org_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备报警配置表';
+
+
+-- Table: lb_device_alarm_configcs
 CREATE TABLE `lb_device_alarm_configcs` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
@@ -9180,10 +8526,8 @@ CREATE TABLE `lb_device_alarm_configcs` (
   KEY `3333` (`area_type`,`set_type`,`report_device_type`,`device_iteration_number`,`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备报警配置表';
 
--- ----------------------------
--- Table structure for lb_device_base_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_base_info`;
+
+-- Table: lb_device_base_info
 CREATE TABLE `lb_device_base_info` (
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备实体主键',
   `device_unique_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备唯一标识(优先级 imei > mac > sn)',
@@ -9216,10 +8560,8 @@ CREATE TABLE `lb_device_base_info` (
   KEY `idx_device_unique_id` (`device_unique_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备基础信息表';
 
--- ----------------------------
--- Table structure for lb_device_care_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_care_config`;
+
+-- Table: lb_device_care_config
 CREATE TABLE `lb_device_care_config` (
   `device_care_config_id` varchar(32) NOT NULL COMMENT '主键',
   `device_id` varchar(32) DEFAULT '' COMMENT '设备id',
@@ -9243,10 +8585,8 @@ CREATE TABLE `lb_device_care_config` (
   PRIMARY KEY (`device_care_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_device_change_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_change_record`;
+
+-- Table: lb_device_change_record
 CREATE TABLE `lb_device_change_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '操作人id',
@@ -9267,10 +8607,8 @@ CREATE TABLE `lb_device_change_record` (
   KEY `idx_mac` (`mac`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备变更记录表';
 
--- ----------------------------
--- Table structure for lb_device_energy
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_energy`;
+
+-- Table: lb_device_energy
 CREATE TABLE `lb_device_energy` (
   `device_energy_id` varchar(32) NOT NULL COMMENT '主键',
   `mac` varchar(32) NOT NULL DEFAULT '' COMMENT '设备mac信息',
@@ -9284,10 +8622,8 @@ CREATE TABLE `lb_device_energy` (
   KEY `mac` (`mac`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='设备电量记录表';
 
--- ----------------------------
--- Table structure for lb_device_energy_monitor_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_energy_monitor_record`;
+
+-- Table: lb_device_energy_monitor_record
 CREATE TABLE `lb_device_energy_monitor_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -9304,10 +8640,8 @@ CREATE TABLE `lb_device_energy_monitor_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备电量监控记录表';
 
--- ----------------------------
--- Table structure for lb_device_entity_binding_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_entity_binding_relation`;
+
+-- Table: lb_device_entity_binding_relation
 CREATE TABLE `lb_device_entity_binding_relation` (
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备主键',
   `entity_id` varchar(64) NOT NULL DEFAULT '' COMMENT '实体主键',
@@ -9326,10 +8660,8 @@ CREATE TABLE `lb_device_entity_binding_relation` (
   PRIMARY KEY (`device_id`,`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备-实体绑定关系表';
 
--- ----------------------------
--- Table structure for lb_device_entity_binding_relation_backup
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_entity_binding_relation_backup`;
+
+-- Table: lb_device_entity_binding_relation_backup
 CREATE TABLE `lb_device_entity_binding_relation_backup` (
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备主键',
   `entity_id` varchar(64) NOT NULL DEFAULT '' COMMENT '实体主键',
@@ -9347,10 +8679,8 @@ CREATE TABLE `lb_device_entity_binding_relation_backup` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备-实体绑定关系表(备份)';
 
--- ----------------------------
--- Table structure for lb_device_entity_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_entity_relation`;
+
+-- Table: lb_device_entity_relation
 CREATE TABLE `lb_device_entity_relation` (
   `device_entity_relation_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备-实体关系主键',
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备主键',
@@ -9371,10 +8701,8 @@ CREATE TABLE `lb_device_entity_relation` (
   PRIMARY KEY (`device_entity_relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备-实体关系表';
 
--- ----------------------------
--- Table structure for lb_device_find_monitor_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_find_monitor_record`;
+
+-- Table: lb_device_find_monitor_record
 CREATE TABLE `lb_device_find_monitor_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) NOT NULL DEFAULT '' COMMENT '设备编号',
@@ -9391,10 +8719,8 @@ CREATE TABLE `lb_device_find_monitor_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备查找监控记录表';
 
--- ----------------------------
--- Table structure for lb_device_flag
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_flag`;
+
+-- Table: lb_device_flag
 CREATE TABLE `lb_device_flag` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `iot_device_id` varchar(32) NOT NULL,
@@ -9407,10 +8733,8 @@ CREATE TABLE `lb_device_flag` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备标识';
 
--- ----------------------------
--- Table structure for lb_device_heart_track
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_heart_track`;
+
+-- Table: lb_device_heart_track
 CREATE TABLE `lb_device_heart_track` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -9480,10 +8804,8 @@ CREATE TABLE `lb_device_heart_track` (
   KEY `record_type` (`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_device_install_photo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_install_photo`;
+
+-- Table: lb_device_install_photo
 CREATE TABLE `lb_device_install_photo` (
   `install_photo_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -9509,10 +8831,8 @@ CREATE TABLE `lb_device_install_photo` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备安装拍照信息';
 
--- ----------------------------
--- Table structure for lb_device_location_track
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_location_track`;
+
+-- Table: lb_device_location_track
 CREATE TABLE `lb_device_location_track` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -9582,10 +8902,8 @@ CREATE TABLE `lb_device_location_track` (
   KEY `record_type` (`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_device_model
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_model`;
+
+-- Table: lb_device_model
 CREATE TABLE `lb_device_model` (
   `device_model_id` varchar(32) NOT NULL COMMENT '主键',
   `device_type` tinyint(1) NOT NULL COMMENT '设备类型',
@@ -9601,10 +8919,8 @@ CREATE TABLE `lb_device_model` (
   PRIMARY KEY (`device_model_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备型号表';
 
--- ----------------------------
--- Table structure for lb_device_msg_push_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_msg_push_record`;
+
+-- Table: lb_device_msg_push_record
 CREATE TABLE `lb_device_msg_push_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `content` mediumtext COMMENT '消息内容 jsonString',
@@ -9628,10 +8944,8 @@ CREATE TABLE `lb_device_msg_push_record` (
   KEY `is_receive` (`is_receive`,`push_times`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备信息推送记录表';
 
--- ----------------------------
--- Table structure for lb_device_position
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_position`;
+
+-- Table: lb_device_position
 CREATE TABLE `lb_device_position` (
   `device_position_id` varchar(64) NOT NULL DEFAULT '' COMMENT '位置id',
   `mac` varchar(32) NOT NULL DEFAULT '' COMMENT 'mac',
@@ -9648,10 +8962,8 @@ CREATE TABLE `lb_device_position` (
   PRIMARY KEY (`device_position_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备位置信息表';
 
--- ----------------------------
--- Table structure for lb_device_pre_entry
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_pre_entry`;
+
+-- Table: lb_device_pre_entry
 CREATE TABLE `lb_device_pre_entry` (
   `device_pre_entry_id` varchar(32) NOT NULL COMMENT '主键',
   `device_category` smallint(6) NOT NULL DEFAULT '-1' COMMENT '设备种类',
@@ -9674,10 +8986,8 @@ CREATE TABLE `lb_device_pre_entry` (
   KEY `idx_sn` (`sn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备预录入信息表';
 
--- ----------------------------
--- Table structure for lb_device_public
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_public`;
+
+-- Table: lb_device_public
 CREATE TABLE `lb_device_public` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备业务id',
@@ -9698,10 +9008,8 @@ CREATE TABLE `lb_device_public` (
   KEY `idx_device_id` (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备通用属性表';
 
--- ----------------------------
--- Table structure for lb_device_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_report`;
+
+-- Table: lb_device_report
 CREATE TABLE `lb_device_report` (
   `iot_device_id` varchar(64) NOT NULL COMMENT '设备id（电信云平台注册返回）',
   `report_type` varchar(32) NOT NULL DEFAULT '' COMMENT '上报消息类型',
@@ -9715,10 +9023,8 @@ CREATE TABLE `lb_device_report` (
   PRIMARY KEY (`iot_device_id`,`report_type`,`send_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备上报时间表';
 
--- ----------------------------
--- Table structure for lb_device_send_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_send_record`;
+
+-- Table: lb_device_send_record
 CREATE TABLE `lb_device_send_record` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -9788,10 +9094,8 @@ CREATE TABLE `lb_device_send_record` (
   KEY `record_type` (`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_device_server_version
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_server_version`;
+
+-- Table: lb_device_server_version
 CREATE TABLE `lb_device_server_version` (
   `version_id` varchar(64) NOT NULL COMMENT '主键',
   `version_code` varchar(255) DEFAULT '' COMMENT '版本号',
@@ -9815,10 +9119,8 @@ CREATE TABLE `lb_device_server_version` (
   KEY `lb_device_server_version_version_name_index` (`version_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='NB设备软件版本记录表';
 
--- ----------------------------
--- Table structure for lb_device_sign_contact
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_sign_contact`;
+
+-- Table: lb_device_sign_contact
 CREATE TABLE `lb_device_sign_contact` (
   `contact_id` varchar(32) NOT NULL COMMENT '主键',
   `device_sign` varchar(32) NOT NULL DEFAULT '' COMMENT '设备标识',
@@ -9835,10 +9137,8 @@ CREATE TABLE `lb_device_sign_contact` (
   PRIMARY KEY (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备标识记录表';
 
--- ----------------------------
--- Table structure for lb_device_third_party_app
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_third_party_app`;
+
+-- Table: lb_device_third_party_app
 CREATE TABLE `lb_device_third_party_app` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `device_category` smallint(6) NOT NULL DEFAULT '-1' COMMENT '设备种类',
@@ -9858,10 +9158,8 @@ CREATE TABLE `lb_device_third_party_app` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备第三方应用管理表';
 
--- ----------------------------
--- Table structure for lb_device_type_desc
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_type_desc`;
+
+-- Table: lb_device_type_desc
 CREATE TABLE `lb_device_type_desc` (
   `device_type` tinyint(1) NOT NULL COMMENT '设备类型',
   `device_iteration_number` smallint(6) NOT NULL COMMENT '设备迭代版本号',
@@ -9875,10 +9173,8 @@ CREATE TABLE `lb_device_type_desc` (
   PRIMARY KEY (`device_type`,`device_iteration_number`,`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备类型描述配置表（已废弃，参见`lb_device_type_enum`表）';
 
--- ----------------------------
--- Table structure for lb_device_type_enum
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_type_enum`;
+
+-- Table: lb_device_type_enum
 CREATE TABLE `lb_device_type_enum` (
   `device_type_enum_id` varchar(32) NOT NULL DEFAULT '',
   `device_type` smallint(1) NOT NULL COMMENT '设备类型',
@@ -9931,10 +9227,8 @@ CREATE TABLE `lb_device_type_enum` (
   KEY `device_type_desc` (`device_type_desc`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备类型枚举表';
 
--- ----------------------------
--- Table structure for lb_device_vending_machine_ext
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_vending_machine_ext`;
+
+-- Table: lb_device_vending_machine_ext
 CREATE TABLE `lb_device_vending_machine_ext` (
   `device_vending_machine_ext_id` varchar(64) NOT NULL COMMENT '设备扩展信息主键',
   `device_id` varchar(64) NOT NULL COMMENT '设备主键',
@@ -9947,10 +9241,8 @@ CREATE TABLE `lb_device_vending_machine_ext` (
   PRIMARY KEY (`device_vending_machine_ext_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自动售卖机设备扩展信息表';
 
--- ----------------------------
--- Table structure for lb_device_white_list_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_white_list_record`;
+
+-- Table: lb_device_white_list_record
 CREATE TABLE `lb_device_white_list_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `msisdn` varchar(64) NOT NULL DEFAULT '' COMMENT '卡号',
@@ -9976,10 +9268,8 @@ CREATE TABLE `lb_device_white_list_record` (
   KEY `is_operable` (`is_operable`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备白名单变更记录表';
 
--- ----------------------------
--- Table structure for lb_device_white_sms_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_white_sms_record`;
+
+-- Table: lb_device_white_sms_record
 CREATE TABLE `lb_device_white_sms_record` (
   `sms_record_id` varchar(32) NOT NULL COMMENT '主键',
   `terminal_phone` varchar(32) NOT NULL DEFAULT '' COMMENT '主机sim卡号码',
@@ -9995,10 +9285,8 @@ CREATE TABLE `lb_device_white_sms_record` (
   KEY `terminal_phone` (`terminal_phone`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备白名单验证码短信记录';
 
--- ----------------------------
--- Table structure for lb_device_whitelist_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_device_whitelist_config`;
+
+-- Table: lb_device_whitelist_config
 CREATE TABLE `lb_device_whitelist_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键ID',
   `config_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '配置类型，见枚举文档WhiteConfigTypeEnum',
@@ -10020,10 +9308,8 @@ CREATE TABLE `lb_device_whitelist_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备白名单初始化配置表';
 
--- ----------------------------
--- Table structure for lb_disease
--- ----------------------------
-DROP TABLE IF EXISTS `lb_disease`;
+
+-- Table: lb_disease
 CREATE TABLE `lb_disease` (
   `disease_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `disease_enumerate` varchar(32) DEFAULT '' COMMENT '枚举值',
@@ -10038,10 +9324,8 @@ CREATE TABLE `lb_disease` (
   PRIMARY KEY (`disease_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='疾病字典表';
 
--- ----------------------------
--- Table structure for lb_dispose_alarm_mode
--- ----------------------------
-DROP TABLE IF EXISTS `lb_dispose_alarm_mode`;
+
+-- Table: lb_dispose_alarm_mode
 CREATE TABLE `lb_dispose_alarm_mode` (
   `dispose_alarm_mode_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -10055,10 +9339,8 @@ CREATE TABLE `lb_dispose_alarm_mode` (
   PRIMARY KEY (`dispose_alarm_mode_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='主机处理报警模式';
 
--- ----------------------------
--- Table structure for lb_docking_platform
--- ----------------------------
-DROP TABLE IF EXISTS `lb_docking_platform`;
+
+-- Table: lb_docking_platform
 CREATE TABLE `lb_docking_platform` (
   `docking_platform_id` varchar(32) NOT NULL COMMENT '主键',
   `docking_manufacturers_name` varchar(64) NOT NULL COMMENT '对接厂商',
@@ -10086,10 +9368,8 @@ CREATE TABLE `lb_docking_platform` (
   PRIMARY KEY (`docking_platform_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管对接平台表';
 
--- ----------------------------
--- Table structure for lb_doctor
--- ----------------------------
-DROP TABLE IF EXISTS `lb_doctor`;
+
+-- Table: lb_doctor
 CREATE TABLE `lb_doctor` (
   `doctor_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -10113,10 +9393,8 @@ CREATE TABLE `lb_doctor` (
   KEY `lb_doctor_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_doctor_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_doctor_care_object`;
+
+-- Table: lb_doctor_care_object
 CREATE TABLE `lb_doctor_care_object` (
   `doctor_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `doctor_name` varchar(32) DEFAULT NULL COMMENT '医生姓名',
@@ -10132,10 +9410,8 @@ CREATE TABLE `lb_doctor_care_object` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_drug_frequency
--- ----------------------------
-DROP TABLE IF EXISTS `lb_drug_frequency`;
+
+-- Table: lb_drug_frequency
 CREATE TABLE `lb_drug_frequency` (
   `drug_frequency_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用药频次id',
   `frequency_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用药频次名称',
@@ -10152,10 +9428,8 @@ CREATE TABLE `lb_drug_frequency` (
   PRIMARY KEY (`drug_frequency_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用药频次表';
 
--- ----------------------------
--- Table structure for lb_dueros
--- ----------------------------
-DROP TABLE IF EXISTS `lb_dueros`;
+
+-- Table: lb_dueros
 CREATE TABLE `lb_dueros` (
   `dueros_id` varchar(32) NOT NULL COMMENT '主键',
   `sn_number` varchar(32) NOT NULL COMMENT 'sn号',
@@ -10178,10 +9452,8 @@ CREATE TABLE `lb_dueros` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小度智能屏设备';
 
--- ----------------------------
--- Table structure for lb_elder_subsidy_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_elder_subsidy_type`;
+
+-- Table: lb_elder_subsidy_type
 CREATE TABLE `lb_elder_subsidy_type` (
   `elder_subsidy_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -10203,10 +9475,8 @@ CREATE TABLE `lb_elder_subsidy_type` (
   KEY `subsidy_type_setting_id_IDX` (`subsidy_type_setting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='民政长者助餐补贴类型';
 
--- ----------------------------
--- Table structure for lb_elderly_care_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_elderly_care_config`;
+
+-- Table: lb_elderly_care_config
 CREATE TABLE `lb_elderly_care_config` (
   `elderly_care_config_id` varchar(32) NOT NULL COMMENT '主键',
   `elderly_id` varchar(32) DEFAULT '' COMMENT '老人id',
@@ -10222,10 +9492,8 @@ CREATE TABLE `lb_elderly_care_config` (
   PRIMARY KEY (`elderly_care_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_electrocardiogram_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_electrocardiogram_record_statistics`;
+
+-- Table: lb_electrocardiogram_record_statistics
 CREATE TABLE `lb_electrocardiogram_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -10245,10 +9513,8 @@ CREATE TABLE `lb_electrocardiogram_record_statistics` (
   KEY `lb_electrocardiogram_record_statistics_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='心电记录统计表';
 
--- ----------------------------
--- Table structure for lb_electrocardiogram_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_electrocardiogram_report`;
+
+-- Table: lb_electrocardiogram_report
 CREATE TABLE `lb_electrocardiogram_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -10272,10 +9538,8 @@ CREATE TABLE `lb_electrocardiogram_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='心电报表';
 
--- ----------------------------
--- Table structure for lb_electronic_fence
--- ----------------------------
-DROP TABLE IF EXISTS `lb_electronic_fence`;
+
+-- Table: lb_electronic_fence
 CREATE TABLE `lb_electronic_fence` (
   `fence_id` varchar(32) NOT NULL COMMENT '主键',
   `fence_name` varchar(255) DEFAULT '' COMMENT '围栏名称',
@@ -10299,10 +9563,8 @@ CREATE TABLE `lb_electronic_fence` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='电子围栏表';
 
--- ----------------------------
--- Table structure for lb_electronic_fence_delay_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_electronic_fence_delay_record`;
+
+-- Table: lb_electronic_fence_delay_record
 CREATE TABLE `lb_electronic_fence_delay_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -10318,10 +9580,8 @@ CREATE TABLE `lb_electronic_fence_delay_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='电子围栏触发延时记录';
 
--- ----------------------------
--- Table structure for lb_emergency_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_emergency_contacts`;
+
+-- Table: lb_emergency_contacts
 CREATE TABLE `lb_emergency_contacts` (
   `emergency_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `family_id` varchar(32) DEFAULT '' COMMENT '家庭id',
@@ -10352,10 +9612,8 @@ CREATE TABLE `lb_emergency_contacts` (
   KEY `idx_contacts_phone` (`contacts_phone`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_empty_number_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_empty_number_record`;
+
+-- Table: lb_empty_number_record
 CREATE TABLE `lb_empty_number_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -10376,10 +9634,8 @@ CREATE TABLE `lb_empty_number_record` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='空号记录表';
 
--- ----------------------------
--- Table structure for lb_event_additional_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_event_additional_info`;
+
+-- Table: lb_event_additional_info
 CREATE TABLE `lb_event_additional_info` (
   `alarm_id` varchar(32) NOT NULL COMMENT '事件标识',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构标识',
@@ -10397,10 +9653,8 @@ CREATE TABLE `lb_event_additional_info` (
   KEY `session_id` (`session_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='事件附加信息表';
 
--- ----------------------------
--- Table structure for lb_event_category_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_event_category_config`;
+
+-- Table: lb_event_category_config
 CREATE TABLE `lb_event_category_config` (
   `event_category` smallint(6) NOT NULL COMMENT '事件类别',
   `event_type` smallint(6) NOT NULL COMMENT '事件类型',
@@ -10411,10 +9665,8 @@ CREATE TABLE `lb_event_category_config` (
   PRIMARY KEY (`event_category`,`event_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='事件类别配置表';
 
--- ----------------------------
--- Table structure for lb_event_code_system
--- ----------------------------
-DROP TABLE IF EXISTS `lb_event_code_system`;
+
+-- Table: lb_event_code_system
 CREATE TABLE `lb_event_code_system` (
   `code_system` tinyint(1) NOT NULL COMMENT '编码系统（1-对讲）',
   `event_code` int(11) NOT NULL COMMENT '事件编码',
@@ -10430,10 +9682,8 @@ CREATE TABLE `lb_event_code_system` (
   KEY `event_type` (`event_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='事件编码系统（已弃用旧表，新表：lb_event_convert_config）';
 
--- ----------------------------
--- Table structure for lb_event_convert_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_event_convert_config`;
+
+-- Table: lb_event_convert_config
 CREATE TABLE `lb_event_convert_config` (
   `source_event_system` tinyint(1) NOT NULL COMMENT '源事件系统（详见枚举文档）',
   `source_event_type` int(11) NOT NULL COMMENT '源事件类型',
@@ -10452,10 +9702,8 @@ CREATE TABLE `lb_event_convert_config` (
   PRIMARY KEY (`source_event_system`,`source_event_type`,`source_event_status`,`target_event_system`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='事件转换配置表';
 
--- ----------------------------
--- Table structure for lb_event_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_event_record`;
+
+-- Table: lb_event_record
 CREATE TABLE `lb_event_record` (
   `event_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -10503,10 +9751,8 @@ CREATE TABLE `lb_event_record` (
   KEY `session_id` (`session_id`(191)) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='事件记录表';
 
--- ----------------------------
--- Table structure for lb_export_history
--- ----------------------------
-DROP TABLE IF EXISTS `lb_export_history`;
+
+-- Table: lb_export_history
 CREATE TABLE `lb_export_history` (
   `export_history_id` varchar(32) NOT NULL COMMENT '主键',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '路径',
@@ -10519,10 +9765,8 @@ CREATE TABLE `lb_export_history` (
   KEY `idx_url` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='记录导出历史表';
 
--- ----------------------------
--- Table structure for lb_face_charge_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_face_charge_device`;
+
+-- Table: lb_face_charge_device
 CREATE TABLE `lb_face_charge_device` (
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `device_name` varchar(32) NOT NULL DEFAULT '' COMMENT '设备名称',
@@ -10547,10 +9791,8 @@ CREATE TABLE `lb_face_charge_device` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员面部识别扣费设备';
 
--- ----------------------------
--- Table structure for lb_factory_band
--- ----------------------------
-DROP TABLE IF EXISTS `lb_factory_band`;
+
+-- Table: lb_factory_band
 CREATE TABLE `lb_factory_band` (
   `band_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT 'imei号',
@@ -10563,10 +9805,8 @@ CREATE TABLE `lb_factory_band` (
   PRIMARY KEY (`band_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='静态资源表';
 
--- ----------------------------
--- Table structure for lb_factory_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_factory_device`;
+
+-- Table: lb_factory_device
 CREATE TABLE `lb_factory_device` (
   `factory_device_id` varchar(64) NOT NULL COMMENT '工厂测试设备主键',
   `mac` varchar(32) DEFAULT '',
@@ -10586,10 +9826,8 @@ CREATE TABLE `lb_factory_device` (
   PRIMARY KEY (`factory_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工厂测试设备表';
 
--- ----------------------------
--- Table structure for lb_failed_request_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_failed_request_record`;
+
+-- Table: lb_failed_request_record
 CREATE TABLE `lb_failed_request_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `business` varchar(64) NOT NULL DEFAULT '' COMMENT '所属业务标示/方法名',
@@ -10608,10 +9846,8 @@ CREATE TABLE `lb_failed_request_record` (
   KEY `lb_failed_request_record_business_IDX` (`business`,`is_enabled`,`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='业务请求失败需重试记录表';
 
--- ----------------------------
--- Table structure for lb_fall_alarm_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fall_alarm_data`;
+
+-- Table: lb_fall_alarm_data
 CREATE TABLE `lb_fall_alarm_data` (
   `data_id` varchar(32) NOT NULL COMMENT '主键',
   `svm_down_time` int(3) DEFAULT NULL COMMENT 'SVM下降次数',
@@ -10628,10 +9864,8 @@ CREATE TABLE `lb_fall_alarm_data` (
   PRIMARY KEY (`data_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='跌倒报警数据记录表（仅调试使用）';
 
--- ----------------------------
--- Table structure for lb_family
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family`;
+
+-- Table: lb_family
 CREATE TABLE `lb_family` (
   `family_id` varchar(64) NOT NULL COMMENT '主键',
   `family_name` varchar(128) DEFAULT NULL COMMENT '家庭名字',
@@ -10655,10 +9889,8 @@ CREATE TABLE `lb_family` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_family_account_push_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_account_push_record`;
+
+-- Table: lb_family_account_push_record
 CREATE TABLE `lb_family_account_push_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `record_content` mediumtext COMMENT '推送信息内容',
@@ -10674,10 +9906,8 @@ CREATE TABLE `lb_family_account_push_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_family_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_contacts`;
+
+-- Table: lb_family_contacts
 CREATE TABLE `lb_family_contacts` (
   `family_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `phone_num` varchar(11) DEFAULT '' COMMENT '电话号码',
@@ -10696,10 +9926,8 @@ CREATE TABLE `lb_family_contacts` (
   KEY `family_id` (`family_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='关注人列表';
 
--- ----------------------------
--- Table structure for lb_family_contacts_apply_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_contacts_apply_record`;
+
+-- Table: lb_family_contacts_apply_record
 CREATE TABLE `lb_family_contacts_apply_record` (
   `apply_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '老人id',
@@ -10724,10 +9952,8 @@ CREATE TABLE `lb_family_contacts_apply_record` (
   PRIMARY KEY (`apply_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='家庭圈成员申请记录表;';
 
--- ----------------------------
--- Table structure for lb_family_feedback
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_feedback`;
+
+-- Table: lb_family_feedback
 CREATE TABLE `lb_family_feedback` (
   `feedback_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `opinion` mediumtext COMMENT '意见内容',
@@ -10751,12 +9977,10 @@ CREATE TABLE `lb_family_feedback` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`feedback_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2306 DEFAULT CHARSET=utf8mb4 COMMENT='子女app意见反馈表';
+) ENGINE=InnoDB AUTO_INCREMENT=2352 DEFAULT CHARSET=utf8mb4 COMMENT='子女app意见反馈表';
 
--- ----------------------------
--- Table structure for lb_family_member
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_member`;
+
+-- Table: lb_family_member
 CREATE TABLE `lb_family_member` (
   `member_id` varchar(32) NOT NULL COMMENT '主键',
   `username` varchar(32) DEFAULT '' COMMENT 'APP账号',
@@ -10773,10 +9997,8 @@ CREATE TABLE `lb_family_member` (
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='手环用户家属信息';
 
--- ----------------------------
--- Table structure for lb_family_member_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_member_relation`;
+
+-- Table: lb_family_member_relation
 CREATE TABLE `lb_family_member_relation` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `member_username` varchar(32) DEFAULT '' COMMENT '家属id',
@@ -10791,10 +10013,8 @@ CREATE TABLE `lb_family_member_relation` (
   PRIMARY KEY (`relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='家属关系表';
 
--- ----------------------------
--- Table structure for lb_family_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_family_relation`;
+
+-- Table: lb_family_relation
 CREATE TABLE `lb_family_relation` (
   `family_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '老人id',
@@ -10814,10 +10034,8 @@ CREATE TABLE `lb_family_relation` (
   KEY `lb_family_relation_family_id_index` (`family_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_faq
--- ----------------------------
-DROP TABLE IF EXISTS `lb_faq`;
+
+-- Table: lb_faq
 CREATE TABLE `lb_faq` (
   `faq_id` varchar(32) NOT NULL COMMENT '主键',
   `question` varchar(32) DEFAULT '' COMMENT '问题',
@@ -10829,10 +10047,8 @@ CREATE TABLE `lb_faq` (
   PRIMARY KEY (`faq_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_fee_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account`;
+
+-- Table: lb_fee_account
 CREATE TABLE `lb_fee_account` (
   `account_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用户主键',
@@ -10853,10 +10069,8 @@ CREATE TABLE `lb_fee_account` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户表';
 
--- ----------------------------
--- Table structure for lb_fee_account_consume_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_consume_record`;
+
+-- Table: lb_fee_account_consume_record
 CREATE TABLE `lb_fee_account_consume_record` (
   `account_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `check_in_num` varchar(32) NOT NULL DEFAULT '' COMMENT '老人入住编号',
@@ -10892,10 +10106,8 @@ CREATE TABLE `lb_fee_account_consume_record` (
   KEY `fee_account_id_index` (`fee_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户消费流水记录表';
 
--- ----------------------------
--- Table structure for lb_fee_account_consume_record9
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_consume_record9`;
+
+-- Table: lb_fee_account_consume_record9
 CREATE TABLE `lb_fee_account_consume_record9` (
   `account_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `check_in_num` varchar(32) NOT NULL DEFAULT '' COMMENT '老人入住编号',
@@ -10925,10 +10137,8 @@ CREATE TABLE `lb_fee_account_consume_record9` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户消费流水记录表';
 
--- ----------------------------
--- Table structure for lb_fee_account_discount
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_discount`;
+
+-- Table: lb_fee_account_discount
 CREATE TABLE `lb_fee_account_discount` (
   `account_discount_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `account_id` varchar(32) NOT NULL DEFAULT '' COMMENT '账户主键',
@@ -10947,10 +10157,8 @@ CREATE TABLE `lb_fee_account_discount` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户优惠表';
 
--- ----------------------------
--- Table structure for lb_fee_account_kingdee_sync_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_kingdee_sync_record`;
+
+-- Table: lb_fee_account_kingdee_sync_record
 CREATE TABLE `lb_fee_account_kingdee_sync_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用户主键',
@@ -10972,10 +10180,8 @@ CREATE TABLE `lb_fee_account_kingdee_sync_record` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户同步对接金蝶记录';
 
--- ----------------------------
--- Table structure for lb_fee_account_recharge_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_recharge_record`;
+
+-- Table: lb_fee_account_recharge_record
 CREATE TABLE `lb_fee_account_recharge_record` (
   `account_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户类型：0 长者 1 员工 2 其他',
@@ -11009,10 +10215,8 @@ CREATE TABLE `lb_fee_account_recharge_record` (
   KEY `fee_account_id_index` (`fee_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户充值流水记录表';
 
--- ----------------------------
--- Table structure for lb_fee_account_refund_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_account_refund_record`;
+
+-- Table: lb_fee_account_refund_record
 CREATE TABLE `lb_fee_account_refund_record` (
   `account_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `check_in_num` varchar(32) NOT NULL DEFAULT '' COMMENT '入住编号',
@@ -11043,10 +10247,8 @@ CREATE TABLE `lb_fee_account_refund_record` (
   KEY `fee_account_id_index` (`fee_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用账户退费流水记录表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_generate
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_generate`;
+
+-- Table: lb_fee_bill_generate
 CREATE TABLE `lb_fee_bill_generate` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者、员工',
@@ -11071,10 +10273,8 @@ CREATE TABLE `lb_fee_bill_generate` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='月度账单生成记录表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_pay_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_pay_record`;
+
+-- Table: lb_fee_bill_pay_record
 CREATE TABLE `lb_fee_bill_pay_record` (
   `pay_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `group_id` varchar(32) NOT NULL DEFAULT '' COMMENT '分组主键',
@@ -11104,10 +10304,8 @@ CREATE TABLE `lb_fee_bill_pay_record` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单缴费记录表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_pay_refund_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_pay_refund_record`;
+
+-- Table: lb_fee_bill_pay_refund_record
 CREATE TABLE `lb_fee_bill_pay_refund_record` (
   `refund_record_id` varchar(32) NOT NULL COMMENT '主键',
   `group_id` varchar(32) NOT NULL DEFAULT '' COMMENT '分组主键',
@@ -11132,10 +10330,8 @@ CREATE TABLE `lb_fee_bill_pay_refund_record` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单缴费退费记录表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_pay_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_pay_relation`;
+
+-- Table: lb_fee_bill_pay_relation
 CREATE TABLE `lb_fee_bill_pay_relation` (
   `relation_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者、员工',
@@ -11160,10 +10356,8 @@ CREATE TABLE `lb_fee_bill_pay_relation` (
   KEY `bill_record_id_index` (`bill_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单缴费、退费记录关联表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_record`;
+
+-- Table: lb_fee_bill_record
 CREATE TABLE `lb_fee_bill_record` (
   `bill_record_id` varchar(32) NOT NULL DEFAULT '0.00' COMMENT '主键',
   `object_id` varchar(32) NOT NULL COMMENT '用户主键',
@@ -11200,13 +10394,12 @@ CREATE TABLE `lb_fee_bill_record` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`bill_record_id`),
   KEY `org_id_index` (`org_id`),
-  KEY `object_id_index` (`object_id`)
+  KEY `object_id_index` (`object_id`),
+  KEY `relation_id` (`relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单记录表';
 
--- ----------------------------
--- Table structure for lb_fee_bill_record_discount
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_bill_record_discount`;
+
+-- Table: lb_fee_bill_record_discount
 CREATE TABLE `lb_fee_bill_record_discount` (
   `record_discount_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `bill_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '账单主键',
@@ -11227,10 +10420,8 @@ CREATE TABLE `lb_fee_bill_record_discount` (
   KEY `object_id_index` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单优惠记录表';
 
--- ----------------------------
--- Table structure for lb_fee_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_item`;
+
+-- Table: lb_fee_item
 CREATE TABLE `lb_fee_item` (
   `expense_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `expense_name` varchar(32) NOT NULL DEFAULT '' COMMENT '费用名称',
@@ -11257,10 +10448,8 @@ CREATE TABLE `lb_fee_item` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用项目表';
 
--- ----------------------------
--- Table structure for lb_fee_item_kingdee
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_item_kingdee`;
+
+-- Table: lb_fee_item_kingdee
 CREATE TABLE `lb_fee_item_kingdee` (
   `item_kingdee_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `item_kingdee_name` varchar(32) NOT NULL DEFAULT '' COMMENT '设置费用项目',
@@ -11274,10 +10463,8 @@ CREATE TABLE `lb_fee_item_kingdee` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用项目金蝶编码表';
 
--- ----------------------------
--- Table structure for lb_fee_object_discount
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_object_discount`;
+
+-- Table: lb_fee_object_discount
 CREATE TABLE `lb_fee_object_discount` (
   `object_discount_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `object_expense_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用户费用项目主键',
@@ -11304,10 +10491,8 @@ CREATE TABLE `lb_fee_object_discount` (
   KEY `expense_id_index` (`expense_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户费用项目优惠记录表';
 
--- ----------------------------
--- Table structure for lb_fee_object_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_object_relation`;
+
+-- Table: lb_fee_object_relation
 CREATE TABLE `lb_fee_object_relation` (
   `object_expense_id` varchar(32) NOT NULL COMMENT '主键',
   `expense_id` varchar(32) NOT NULL COMMENT '费用项目主键',
@@ -11335,10 +10520,8 @@ CREATE TABLE `lb_fee_object_relation` (
   KEY `expense_id_index` (`expense_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户关联费用项目表';
 
--- ----------------------------
--- Table structure for lb_fee_scale
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_scale`;
+
+-- Table: lb_fee_scale
 CREATE TABLE `lb_fee_scale` (
   `scale_id` varchar(32) NOT NULL COMMENT '主键',
   `device_type` tinyint(1) DEFAULT '0' COMMENT '设备类型',
@@ -11350,10 +10533,8 @@ CREATE TABLE `lb_fee_scale` (
   PRIMARY KEY (`scale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_fee_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_fee_setting`;
+
+-- Table: lb_fee_setting
 CREATE TABLE `lb_fee_setting` (
   `setting_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `setting_item_desc` varchar(32) NOT NULL DEFAULT '',
@@ -11369,10 +10550,8 @@ CREATE TABLE `lb_fee_setting` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用相关设置表';
 
--- ----------------------------
--- Table structure for lb_feedback
--- ----------------------------
-DROP TABLE IF EXISTS `lb_feedback`;
+
+-- Table: lb_feedback
 CREATE TABLE `lb_feedback` (
   `feedback_id` varchar(32) NOT NULL DEFAULT '',
   `source_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '反馈来源类型(参见枚举ACCOUNT_TYPE )',
@@ -11387,10 +10566,8 @@ CREATE TABLE `lb_feedback` (
   KEY `lb_feedback_org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='反馈表';
 
--- ----------------------------
--- Table structure for lb_feedback_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_feedback_info`;
+
+-- Table: lb_feedback_info
 CREATE TABLE `lb_feedback_info` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `feedback_id` varchar(32) NOT NULL DEFAULT '' COMMENT '反馈表id',
@@ -11409,10 +10586,8 @@ CREATE TABLE `lb_feedback_info` (
   KEY `feedback_id_index` (`feedback_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='反馈信息表';
 
--- ----------------------------
--- Table structure for lb_feedback_info_annex
--- ----------------------------
-DROP TABLE IF EXISTS `lb_feedback_info_annex`;
+
+-- Table: lb_feedback_info_annex
 CREATE TABLE `lb_feedback_info_annex` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `feedback_info_id` varchar(32) NOT NULL DEFAULT '' COMMENT '反馈信息id',
@@ -11428,10 +10603,8 @@ CREATE TABLE `lb_feedback_info_annex` (
   KEY `feedback_info_id_index` (`feedback_info_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='反馈信息附件表';
 
--- ----------------------------
--- Table structure for lb_feedback_reply
--- ----------------------------
-DROP TABLE IF EXISTS `lb_feedback_reply`;
+
+-- Table: lb_feedback_reply
 CREATE TABLE `lb_feedback_reply` (
   `reply_id` varchar(64) NOT NULL COMMENT '回复记录id',
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '账号主键',
@@ -11447,10 +10620,8 @@ CREATE TABLE `lb_feedback_reply` (
   PRIMARY KEY (`reply_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='反馈回复记录表';
 
--- ----------------------------
--- Table structure for lb_file_library
--- ----------------------------
-DROP TABLE IF EXISTS `lb_file_library`;
+
+-- Table: lb_file_library
 CREATE TABLE `lb_file_library` (
   `file_id` varchar(32) NOT NULL COMMENT '主键',
   `file_name` varchar(64) NOT NULL DEFAULT '' COMMENT '文件名称',
@@ -11467,10 +10638,8 @@ CREATE TABLE `lb_file_library` (
   PRIMARY KEY (`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件库表';
 
--- ----------------------------
--- Table structure for lb_floor
--- ----------------------------
-DROP TABLE IF EXISTS `lb_floor`;
+
+-- Table: lb_floor
 CREATE TABLE `lb_floor` (
   `floor_id` varchar(32) NOT NULL COMMENT '主键',
   `building_id` varchar(32) DEFAULT '' COMMENT '所属楼栋',
@@ -11496,10 +10665,8 @@ CREATE TABLE `lb_floor` (
   KEY `building_id_IDX` (`building_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='楼层 未使用';
 
--- ----------------------------
--- Table structure for lb_func_opor
--- ----------------------------
-DROP TABLE IF EXISTS `lb_func_opor`;
+
+-- Table: lb_func_opor
 CREATE TABLE `lb_func_opor` (
   `func_op_id` varchar(32) NOT NULL COMMENT '功能模块操作唯一id',
   `func_id` varchar(32) DEFAULT '' COMMENT '权限标识',
@@ -11514,10 +10681,8 @@ CREATE TABLE `lb_func_opor` (
   KEY `lb_func_opor_func_id_IDX` (`func_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_function
--- ----------------------------
-DROP TABLE IF EXISTS `lb_function`;
+
+-- Table: lb_function
 CREATE TABLE `lb_function` (
   `func_id` varchar(64) NOT NULL COMMENT '权限标识',
   `type` tinyint(4) DEFAULT '0' COMMENT '权限类型(来邦权限1/机构权限2/等)',
@@ -11545,10 +10710,8 @@ CREATE TABLE `lb_function` (
   KEY `lb_function_func_code_IDX` (`func_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='权限菜单表';
 
--- ----------------------------
--- Table structure for lb_gas_detector
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gas_detector`;
+
+-- Table: lb_gas_detector
 CREATE TABLE `lb_gas_detector` (
   `gas_detector_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `imei` varchar(32) DEFAULT '' COMMENT 'imei',
@@ -11589,10 +10752,8 @@ CREATE TABLE `lb_gas_detector` (
   KEY `iot_device_id` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='气体探测器表';
 
--- ----------------------------
--- Table structure for lb_gate_magnet
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gate_magnet`;
+
+-- Table: lb_gate_magnet
 CREATE TABLE `lb_gate_magnet` (
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `imei` varchar(32) DEFAULT '' COMMENT 'imei',
@@ -11641,10 +10802,8 @@ CREATE TABLE `lb_gate_magnet` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门磁设备表';
 
--- ----------------------------
--- Table structure for lb_gate_magnet_open_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gate_magnet_open_record`;
+
+-- Table: lb_gate_magnet_open_record
 CREATE TABLE `lb_gate_magnet_open_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -11664,10 +10823,8 @@ CREATE TABLE `lb_gate_magnet_open_record` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门磁开关门记录表';
 
--- ----------------------------
--- Table structure for lb_gate_magnet_password
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gate_magnet_password`;
+
+-- Table: lb_gate_magnet_password
 CREATE TABLE `lb_gate_magnet_password` (
   `gate_magnet_password_id` varchar(32) NOT NULL DEFAULT '',
   `gate_magnet_id` varchar(32) NOT NULL DEFAULT '' COMMENT '门磁设备id',
@@ -11690,10 +10847,8 @@ CREATE TABLE `lb_gate_magnet_password` (
   PRIMARY KEY (`gate_magnet_password_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门磁设备密码表';
 
--- ----------------------------
--- Table structure for lb_gateway_device_contact
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gateway_device_contact`;
+
+-- Table: lb_gateway_device_contact
 CREATE TABLE `lb_gateway_device_contact` (
   `gateway_device_contact_id` varchar(32) NOT NULL COMMENT '主键',
   `gateway_device_id` varchar(32) DEFAULT '' COMMENT '网关设备id',
@@ -11710,10 +10865,8 @@ CREATE TABLE `lb_gateway_device_contact` (
   PRIMARY KEY (`gateway_device_contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='网关设备关联表';
 
--- ----------------------------
--- Table structure for lb_gms_purview_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gms_purview_setting`;
+
+-- Table: lb_gms_purview_setting
 CREATE TABLE `lb_gms_purview_setting` (
   `purview_setting_id` varchar(32) NOT NULL COMMENT '主键',
   `type` tinyint(1) DEFAULT NULL COMMENT '权限设置类型 1 财务管理权限 2 服务项目权限',
@@ -11729,10 +10882,8 @@ CREATE TABLE `lb_gms_purview_setting` (
   PRIMARY KEY (`purview_setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='民政监管及服务商平台权限设置';
 
--- ----------------------------
--- Table structure for lb_goods
--- ----------------------------
-DROP TABLE IF EXISTS `lb_goods`;
+
+-- Table: lb_goods
 CREATE TABLE `lb_goods` (
   `goods_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_title` varchar(64) DEFAULT '' COMMENT '商品',
@@ -11757,10 +10908,8 @@ CREATE TABLE `lb_goods` (
   PRIMARY KEY (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_goods_attribute
--- ----------------------------
-DROP TABLE IF EXISTS `lb_goods_attribute`;
+
+-- Table: lb_goods_attribute
 CREATE TABLE `lb_goods_attribute` (
   `goods_attribute_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_id` varchar(32) NOT NULL COMMENT '商品',
@@ -11776,10 +10925,8 @@ CREATE TABLE `lb_goods_attribute` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性表';
 
--- ----------------------------
--- Table structure for lb_goods_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_goods_order`;
+
+-- Table: lb_goods_order
 CREATE TABLE `lb_goods_order` (
   `goods_order_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户',
@@ -11815,10 +10962,8 @@ CREATE TABLE `lb_goods_order` (
   KEY `pay_id` (`pay_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 
--- ----------------------------
--- Table structure for lb_goods_photo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_goods_photo`;
+
+-- Table: lb_goods_photo
 CREATE TABLE `lb_goods_photo` (
   `goods_photo_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_id` varchar(32) NOT NULL DEFAULT '' COMMENT '商品Id',
@@ -11834,10 +10979,8 @@ CREATE TABLE `lb_goods_photo` (
   PRIMARY KEY (`goods_photo_id`,`goods_id`,`goods_attribute_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品图片表';
 
--- ----------------------------
--- Table structure for lb_goods_return
--- ----------------------------
-DROP TABLE IF EXISTS `lb_goods_return`;
+
+-- Table: lb_goods_return
 CREATE TABLE `lb_goods_return` (
   `goods_return_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -11865,10 +11008,8 @@ CREATE TABLE `lb_goods_return` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品退货表';
 
--- ----------------------------
--- Table structure for lb_gps_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gps_record`;
+
+-- Table: lb_gps_record
 CREATE TABLE `lb_gps_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `iot_device_id` varchar(64) DEFAULT NULL COMMENT '电信设备id',
@@ -11886,10 +11027,8 @@ CREATE TABLE `lb_gps_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备gps定位记录表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_experience_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_experience_coupon`;
+
+-- Table: lb_guardian_service_experience_coupon
 CREATE TABLE `lb_guardian_service_experience_coupon` (
   `guardian_service_experience_coupon_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `coupon_id` varchar(64) NOT NULL DEFAULT '' COMMENT '优惠卷id',
@@ -11911,10 +11050,8 @@ CREATE TABLE `lb_guardian_service_experience_coupon` (
   PRIMARY KEY (`guardian_service_experience_coupon_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务体验劵表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_price_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_price_config`;
+
+-- Table: lb_guardian_service_price_config
 CREATE TABLE `lb_guardian_service_price_config` (
   `guardian_service_price_config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `service_type` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '服务类型(1:守护服务 2:救护服务(基础版) 3:救护服务(救助版版))',
@@ -11936,10 +11073,8 @@ CREATE TABLE `lb_guardian_service_price_config` (
   PRIMARY KEY (`guardian_service_price_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务价目配置表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_subscription
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_subscription`;
+
+-- Table: lb_guardian_service_subscription
 CREATE TABLE `lb_guardian_service_subscription` (
   `guardian_service_subscription_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `subscription_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '订阅者id',
@@ -11965,10 +11100,8 @@ CREATE TABLE `lb_guardian_service_subscription` (
   KEY `lb_guardian_service_subscription_subscription_object_id_index` (`subscription_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务订阅记录表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_subscription_change_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_subscription_change_record`;
+
+-- Table: lb_guardian_service_subscription_change_record
 CREATE TABLE `lb_guardian_service_subscription_change_record` (
   `guardian_service_subscription_change_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `subscription_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '订阅者id',
@@ -12002,10 +11135,8 @@ CREATE TABLE `lb_guardian_service_subscription_change_record` (
   KEY `subscription_object_id_index` (`subscription_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务订阅变动记录表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_withdrawal_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_withdrawal_record`;
+
+-- Table: lb_guardian_service_withdrawal_record
 CREATE TABLE `lb_guardian_service_withdrawal_record` (
   `guardian_service_withdrawal_record_id` varchar(32) NOT NULL DEFAULT '',
   `title_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抬头类型 (0企业/1个人)',
@@ -12027,10 +11158,8 @@ CREATE TABLE `lb_guardian_service_withdrawal_record` (
   PRIMARY KEY (`guardian_service_withdrawal_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务提现设置表';
 
--- ----------------------------
--- Table structure for lb_guardian_service_withdrawal_settings
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardian_service_withdrawal_settings`;
+
+-- Table: lb_guardian_service_withdrawal_settings
 CREATE TABLE `lb_guardian_service_withdrawal_settings` (
   `guardian_service_withdrawal_settings_id` varchar(32) NOT NULL DEFAULT '',
   `title_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抬头类型 (0企业/1个人)',
@@ -12049,10 +11178,8 @@ CREATE TABLE `lb_guardian_service_withdrawal_settings` (
   PRIMARY KEY (`guardian_service_withdrawal_settings_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护服务提现设置表';
 
--- ----------------------------
--- Table structure for lb_guardianship_center
--- ----------------------------
-DROP TABLE IF EXISTS `lb_guardianship_center`;
+
+-- Table: lb_guardianship_center
 CREATE TABLE `lb_guardianship_center` (
   `guardianship_center_id` varchar(32) NOT NULL DEFAULT '' COMMENT '守护中心主键',
   `guardianship_center_name` varchar(64) DEFAULT '' COMMENT '守护中心名称',
@@ -12070,10 +11197,8 @@ CREATE TABLE `lb_guardianship_center` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='守护中心表';
 
--- ----------------------------
--- Table structure for lb_gw_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_gw_config`;
+
+-- Table: lb_gw_config
 CREATE TABLE `lb_gw_config` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `kind` smallint(1) NOT NULL DEFAULT '0' COMMENT '路由预言类型：0-path,1-header,2-qeruy',
@@ -12086,10 +11211,8 @@ CREATE TABLE `lb_gw_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='动态网关配置表';
 
--- ----------------------------
--- Table structure for lb_hb_auth_client_details
--- ----------------------------
-DROP TABLE IF EXISTS `lb_hb_auth_client_details`;
+
+-- Table: lb_hb_auth_client_details
 CREATE TABLE `lb_hb_auth_client_details` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `app_id` varchar(128) NOT NULL DEFAULT '' COMMENT '接入的客户端唯一标识',
@@ -12109,10 +11232,8 @@ CREATE TABLE `lb_hb_auth_client_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接入的客户端信息表';
 
--- ----------------------------
--- Table structure for lb_hb_auth_refresh_token
--- ----------------------------
-DROP TABLE IF EXISTS `lb_hb_auth_refresh_token`;
+
+-- Table: lb_hb_auth_refresh_token
 CREATE TABLE `lb_hb_auth_refresh_token` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `token_id` varchar(32) NOT NULL DEFAULT '' COMMENT '表auth_access_token对应的主键',
@@ -12126,10 +11247,8 @@ CREATE TABLE `lb_hb_auth_refresh_token` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Refresh Token信息表';
 
--- ----------------------------
--- Table structure for lb_health_machine
--- ----------------------------
-DROP TABLE IF EXISTS `lb_health_machine`;
+
+-- Table: lb_health_machine
 CREATE TABLE `lb_health_machine` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `code` varchar(32) NOT NULL DEFAULT '' COMMENT '设备编码',
@@ -12142,10 +11261,8 @@ CREATE TABLE `lb_health_machine` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康一体机';
 
--- ----------------------------
--- Table structure for lb_heart_rate_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_heart_rate_report`;
+
+-- Table: lb_heart_rate_report
 CREATE TABLE `lb_heart_rate_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -12169,10 +11286,8 @@ CREATE TABLE `lb_heart_rate_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='心率报表';
 
--- ----------------------------
--- Table structure for lb_heartbeat_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_heartbeat_record`;
+
+-- Table: lb_heartbeat_record
 CREATE TABLE `lb_heartbeat_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -12191,10 +11306,8 @@ CREATE TABLE `lb_heartbeat_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='心率记录';
 
--- ----------------------------
--- Table structure for lb_heartbeat_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_heartbeat_record_statistics`;
+
+-- Table: lb_heartbeat_record_statistics
 CREATE TABLE `lb_heartbeat_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '看护对象',
@@ -12221,10 +11334,8 @@ CREATE TABLE `lb_heartbeat_record_statistics` (
   KEY `iot_device_id_index` (`iot_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='心率记录统计';
 
--- ----------------------------
--- Table structure for lb_hm_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_hm_device`;
+
+-- Table: lb_hm_device
 CREATE TABLE `lb_hm_device` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `device_name` varchar(32) NOT NULL DEFAULT '' COMMENT '设备名称',
@@ -12240,10 +11351,8 @@ CREATE TABLE `lb_hm_device` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='海曼设备表';
 
--- ----------------------------
--- Table structure for lb_home_account_org_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_home_account_org_relation`;
+
+-- Table: lb_home_account_org_relation
 CREATE TABLE `lb_home_account_org_relation` (
   `account_org_re_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '用户id',
@@ -12257,10 +11366,8 @@ CREATE TABLE `lb_home_account_org_relation` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='子女账号项目关联表';
 
--- ----------------------------
--- Table structure for lb_home_installation_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_home_installation_account`;
+
+-- Table: lb_home_installation_account
 CREATE TABLE `lb_home_installation_account` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `phone` varchar(64) DEFAULT '' COMMENT '注册手机号',
@@ -12274,10 +11381,8 @@ CREATE TABLE `lb_home_installation_account` (
   PRIMARY KEY (`relation_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='上门安装账号关联表';
 
--- ----------------------------
--- Table structure for lb_home_installation_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_home_installation_care_object`;
+
+-- Table: lb_home_installation_care_object
 CREATE TABLE `lb_home_installation_care_object` (
   `care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `identity` varchar(32) DEFAULT '' COMMENT '身份证',
@@ -12301,10 +11406,8 @@ CREATE TABLE `lb_home_installation_care_object` (
   PRIMARY KEY (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='上门安装长者信息';
 
--- ----------------------------
--- Table structure for lb_home_installation_emergency_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_home_installation_emergency_contacts`;
+
+-- Table: lb_home_installation_emergency_contacts
 CREATE TABLE `lb_home_installation_emergency_contacts` (
   `emergency_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '老人id',
@@ -12320,10 +11423,8 @@ CREATE TABLE `lb_home_installation_emergency_contacts` (
   PRIMARY KEY (`emergency_contacts_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='上门安装紧急联系人信息';
 
--- ----------------------------
--- Table structure for lb_home_installation_org_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_home_installation_org_contacts`;
+
+-- Table: lb_home_installation_org_contacts
 CREATE TABLE `lb_home_installation_org_contacts` (
   `org_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12339,10 +11440,8 @@ CREATE TABLE `lb_home_installation_org_contacts` (
   PRIMARY KEY (`org_contacts_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_hospital_device_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_hospital_device_relation`;
+
+-- Table: lb_hospital_device_relation
 CREATE TABLE `lb_hospital_device_relation` (
   `id` varchar(32) NOT NULL,
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -12363,10 +11462,8 @@ CREATE TABLE `lb_hospital_device_relation` (
   KEY `idx_orgid` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医院设备关联表';
 
--- ----------------------------
--- Table structure for lb_iap_order_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iap_order_record`;
+
+-- Table: lb_iap_order_record
 CREATE TABLE `lb_iap_order_record` (
   `iap_order_record_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'id',
   `transaction_id` varchar(64) DEFAULT '' COMMENT '苹果交易号',
@@ -12378,10 +11475,8 @@ CREATE TABLE `lb_iap_order_record` (
   PRIMARY KEY (`iap_order_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_import_data_call_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_import_data_call_device`;
+
+-- Table: lb_import_data_call_device
 CREATE TABLE `lb_import_data_call_device` (
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `company_name` varchar(32) NOT NULL DEFAULT '' COMMENT '厂商名称',
@@ -12398,10 +11493,8 @@ CREATE TABLE `lb_import_data_call_device` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导入流量通话设备表';
 
--- ----------------------------
--- Table structure for lb_ims_accident_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_accident_record`;
+
+-- Table: lb_ims_accident_record
 CREATE TABLE `lb_ims_accident_record` (
   `accident_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者唯一标识',
@@ -12430,10 +11523,8 @@ CREATE TABLE `lb_ims_accident_record` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='综合管理平台事故记录信息';
 
--- ----------------------------
--- Table structure for lb_ims_accident_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_accident_type`;
+
+-- Table: lb_ims_accident_type
 CREATE TABLE `lb_ims_accident_type` (
   `accident_type_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12454,10 +11545,8 @@ CREATE TABLE `lb_ims_accident_type` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='事故类型表';
 
--- ----------------------------
--- Table structure for lb_ims_accompany_medical
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_accompany_medical`;
+
+-- Table: lb_ims_accompany_medical
 CREATE TABLE `lb_ims_accompany_medical` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `care_object_id` varchar(32) NOT NULL DEFAULT '',
@@ -12490,10 +11579,8 @@ CREATE TABLE `lb_ims_accompany_medical` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪同就医';
 
--- ----------------------------
--- Table structure for lb_ims_account_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_account_relation`;
+
+-- Table: lb_ims_account_relation
 CREATE TABLE `lb_ims_account_relation` (
   `ims_account_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(64) DEFAULT '' COMMENT '用户id',
@@ -12511,10 +11598,8 @@ CREATE TABLE `lb_ims_account_relation` (
   KEY `object_id` (`object_id`,`account_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户关联信息表';
 
--- ----------------------------
--- Table structure for lb_ims_activity_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_activity_care_object`;
+
+-- Table: lb_ims_activity_care_object
 CREATE TABLE `lb_ims_activity_care_object` (
   `activity_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12529,10 +11614,8 @@ CREATE TABLE `lb_ims_activity_care_object` (
   KEY `idx_activity_record_id` (`activity_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='活动参与老人关系表';
 
--- ----------------------------
--- Table structure for lb_ims_activity_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_activity_record`;
+
+-- Table: lb_ims_activity_record
 CREATE TABLE `lb_ims_activity_record` (
   `activity_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12554,10 +11637,8 @@ CREATE TABLE `lb_ims_activity_record` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动记录表';
 
--- ----------------------------
--- Table structure for lb_ims_area_bed_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_area_bed_type`;
+
+-- Table: lb_ims_area_bed_type
 CREATE TABLE `lb_ims_area_bed_type` (
   `area_bed_type_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `area_bed_type_name` varchar(32) DEFAULT '' COMMENT '类型名称',
@@ -12575,10 +11656,8 @@ CREATE TABLE `lb_ims_area_bed_type` (
   PRIMARY KEY (`area_bed_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='床位类型表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_care_level
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_care_level`;
+
+-- Table: lb_ims_assessment_care_level
 CREATE TABLE `lb_ims_assessment_care_level` (
   `assessment_care_level_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -12594,10 +11673,8 @@ CREATE TABLE `lb_ims_assessment_care_level` (
   PRIMARY KEY (`assessment_care_level_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评估结果与护理等级关系';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_custom_template_attendance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_custom_template_attendance`;
+
+-- Table: lb_ims_assessment_custom_template_attendance
 CREATE TABLE `lb_ims_assessment_custom_template_attendance` (
   `template_attendance_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键id',
   `custom_template_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '模板id',
@@ -12618,10 +11695,8 @@ CREATE TABLE `lb_ims_assessment_custom_template_attendance` (
   KEY `custom_template_type_id_index` (`custom_template_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评估模板照护等级设置表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_custom_template_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_custom_template_change`;
+
+-- Table: lb_ims_assessment_custom_template_change
 CREATE TABLE `lb_ims_assessment_custom_template_change` (
   `custom_template_change_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键id',
   `setting_template_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '组合模板id',
@@ -12635,10 +11710,8 @@ CREATE TABLE `lb_ims_assessment_custom_template_change` (
   PRIMARY KEY (`custom_template_change_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='等级变更条款设置表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_custom_template_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_custom_template_config`;
+
+-- Table: lb_ims_assessment_custom_template_config
 CREATE TABLE `lb_ims_assessment_custom_template_config` (
   `template_config_id` varchar(32) NOT NULL COMMENT '主键id',
   `custom_template_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '模板id',
@@ -12660,10 +11733,8 @@ CREATE TABLE `lb_ims_assessment_custom_template_config` (
   PRIMARY KEY (`template_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='自定义评估模板标准表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_custom_template_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_custom_template_setting`;
+
+-- Table: lb_ims_assessment_custom_template_setting
 CREATE TABLE `lb_ims_assessment_custom_template_setting` (
   `custom_template_setting_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键id',
   `setting_template_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '组合模板id',
@@ -12681,10 +11752,8 @@ CREATE TABLE `lb_ims_assessment_custom_template_setting` (
   PRIMARY KEY (`custom_template_setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自定义组合评估模板设置表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_custom_template_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_custom_template_type`;
+
+-- Table: lb_ims_assessment_custom_template_type
 CREATE TABLE `lb_ims_assessment_custom_template_type` (
   `custom_template_type_id` varchar(32) NOT NULL COMMENT '主键id',
   `template_type_name` varchar(32) NOT NULL DEFAULT '' COMMENT '模板名称',
@@ -12700,10 +11769,8 @@ CREATE TABLE `lb_ims_assessment_custom_template_type` (
   PRIMARY KEY (`custom_template_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='自定义评估模板类型表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_health_drug
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_health_drug`;
+
+-- Table: lb_ims_assessment_health_drug
 CREATE TABLE `lb_ims_assessment_health_drug` (
   `assessment_health_drug_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -12722,10 +11789,8 @@ CREATE TABLE `lb_ims_assessment_health_drug` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='能力评估健康信息用药情况表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_health_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_health_info`;
+
+-- Table: lb_ims_assessment_health_info
 CREATE TABLE `lb_ims_assessment_health_info` (
   `assessment_health_info_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -12769,10 +11834,8 @@ CREATE TABLE `lb_ims_assessment_health_info` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='能力评估健康信息附属表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_record`;
+
+-- Table: lb_ims_assessment_record
 CREATE TABLE `lb_ims_assessment_record` (
   `assessment_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12838,10 +11901,8 @@ CREATE TABLE `lb_ims_assessment_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='评估记录表';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_topic
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_topic`;
+
+-- Table: lb_ims_assessment_topic
 CREATE TABLE `lb_ims_assessment_topic` (
   `assessment_topic_id` varchar(64) NOT NULL DEFAULT '' COMMENT '自然主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -12860,10 +11921,8 @@ CREATE TABLE `lb_ims_assessment_topic` (
   KEY `lb_ims_assessment_topic_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康评估题目';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_topic_option
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_topic_option`;
+
+-- Table: lb_ims_assessment_topic_option
 CREATE TABLE `lb_ims_assessment_topic_option` (
   `assessment_topic_option_id` varchar(64) NOT NULL COMMENT '自然主键',
   `org_id` varchar(64) NOT NULL DEFAULT 'lonbonims' COMMENT '机构id',
@@ -12879,10 +11938,8 @@ CREATE TABLE `lb_ims_assessment_topic_option` (
   KEY `lb_ims_assessment_topic_option_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康评估题目选项';
 
--- ----------------------------
--- Table structure for lb_ims_assessment_topic_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_assessment_topic_type`;
+
+-- Table: lb_ims_assessment_topic_type
 CREATE TABLE `lb_ims_assessment_topic_type` (
   `assessment_topic_type_id` varchar(64) NOT NULL COMMENT '自然主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -12904,10 +11961,8 @@ CREATE TABLE `lb_ims_assessment_topic_type` (
   KEY `lb_ims_assessment_type_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康评估题目类型';
 
--- ----------------------------
--- Table structure for lb_ims_attachment
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attachment`;
+
+-- Table: lb_ims_attachment
 CREATE TABLE `lb_ims_attachment` (
   `attachment_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -12927,10 +11982,8 @@ CREATE TABLE `lb_ims_attachment` (
   KEY `idx_file_relation_id` (`file_relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='附件管理表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance`;
+
+-- Table: lb_ims_attendance
 CREATE TABLE `lb_ims_attendance` (
   `attendance_id` varchar(32) NOT NULL COMMENT '护理项目id',
   `attendance_item_id` varchar(32) NOT NULL COMMENT '项目模板id',
@@ -12954,16 +12007,16 @@ CREATE TABLE `lb_ims_attendance` (
   `health_plan_id` varchar(32) DEFAULT NULL COMMENT '健康管理计划主键',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
+  `demand_cycle_total_times` int(3) NOT NULL DEFAULT '-1' COMMENT '按需任务周期内执行总次数，-1无限制',
+  `demand_cycle_remaining_times` int(3) NOT NULL DEFAULT '-1' COMMENT '按需任务周期内执行剩余次数，-1无限制',
   PRIMARY KEY (`attendance_id`) USING BTREE,
   KEY `attendance_item_id` (`attendance_item_id`) USING BTREE,
   KEY `care_object_id` (`care_object_id`) USING BTREE,
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理项目表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_item`;
+
+-- Table: lb_ims_attendance_item
 CREATE TABLE `lb_ims_attendance_item` (
   `attendance_item_id` varchar(32) NOT NULL COMMENT '护理项目模板id',
   `name` varchar(32) NOT NULL COMMENT '项目名称',
@@ -12994,10 +12047,8 @@ CREATE TABLE `lb_ims_attendance_item` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理项目模板表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_level
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_level`;
+
+-- Table: lb_ims_attendance_level
 CREATE TABLE `lb_ims_attendance_level` (
   `attendance_level_id` varchar(32) NOT NULL,
   `attendance_type_id` varchar(32) NOT NULL COMMENT '项目类型',
@@ -13013,10 +12064,8 @@ CREATE TABLE `lb_ims_attendance_level` (
   PRIMARY KEY (`attendance_level_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='护理项目级别表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_model
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_model`;
+
+-- Table: lb_ims_attendance_model
 CREATE TABLE `lb_ims_attendance_model` (
   `attendance_model_id` varchar(32) NOT NULL COMMENT '护理项目id',
   `attendance_level_id` varchar(32) NOT NULL COMMENT '护理项目级别id',
@@ -13041,10 +12090,8 @@ CREATE TABLE `lb_ims_attendance_model` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理模型表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_order`;
+
+-- Table: lb_ims_attendance_order
 CREATE TABLE `lb_ims_attendance_order` (
   `attendance_order_id` varchar(32) NOT NULL COMMENT '预约记录id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -13085,10 +12132,8 @@ CREATE TABLE `lb_ims_attendance_order` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='护理项目预约表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_record`;
+
+-- Table: lb_ims_attendance_record
 CREATE TABLE `lb_ims_attendance_record` (
   `attendance_record_id` varchar(32) NOT NULL COMMENT '护理记录id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -13125,10 +12170,8 @@ CREATE TABLE `lb_ims_attendance_record` (
   KEY `idx_nurse_id` (`nurse_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理项目记录表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_record_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_record_info`;
+
+-- Table: lb_ims_attendance_record_info
 CREATE TABLE `lb_ims_attendance_record_info` (
   `record_info_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -13144,10 +12187,8 @@ CREATE TABLE `lb_ims_attendance_record_info` (
   PRIMARY KEY (`record_info_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='按需护理表单表';
 
--- ----------------------------
--- Table structure for lb_ims_attendance_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_attendance_type`;
+
+-- Table: lb_ims_attendance_type
 CREATE TABLE `lb_ims_attendance_type` (
   `attendance_type_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '名称',
@@ -13162,10 +12203,8 @@ CREATE TABLE `lb_ims_attendance_type` (
   PRIMARY KEY (`attendance_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理项目类型表';
 
--- ----------------------------
--- Table structure for lb_ims_balance
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_balance`;
+
+-- Table: lb_ims_balance
 CREATE TABLE `lb_ims_balance` (
   `balance_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13185,10 +12224,8 @@ CREATE TABLE `lb_ims_balance` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='余额表';
 
--- ----------------------------
--- Table structure for lb_ims_balance_20250331
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_balance_20250331`;
+
+-- Table: lb_ims_balance_20250331
 CREATE TABLE `lb_ims_balance_20250331` (
   `balance_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13204,10 +12241,8 @@ CREATE TABLE `lb_ims_balance_20250331` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ims_banner
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_banner`;
+
+-- Table: lb_ims_banner
 CREATE TABLE `lb_ims_banner` (
   `banner_id` varchar(32) NOT NULL COMMENT '横幅主键',
   `img_url` varchar(255) NOT NULL DEFAULT '' COMMENT '图片地址',
@@ -13221,10 +12256,8 @@ CREATE TABLE `lb_ims_banner` (
   PRIMARY KEY (`banner_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='banner表';
 
--- ----------------------------
--- Table structure for lb_ims_butler_registration
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_butler_registration`;
+
+-- Table: lb_ims_butler_registration
 CREATE TABLE `lb_ims_butler_registration` (
   `butler_registration_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者主键',
@@ -13246,10 +12279,8 @@ CREATE TABLE `lb_ims_butler_registration` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管家拜访表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_bed_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_bed_change`;
+
+-- Table: lb_ims_care_object_bed_change
 CREATE TABLE `lb_ims_care_object_bed_change` (
   `bed_change_id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -13267,12 +12298,10 @@ CREATE TABLE `lb_ims_care_object_bed_change` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`bed_change_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28440 DEFAULT CHARSET=utf8mb4 COMMENT='长者床更换床位记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=29808 DEFAULT CHARSET=utf8mb4 COMMENT='长者床更换床位记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_bill_push
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_bill_push`;
+
+-- Table: lb_ims_care_object_bill_push
 CREATE TABLE `lb_ims_care_object_bill_push` (
   `bill_push_id` varchar(20) NOT NULL,
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -13285,10 +12314,8 @@ CREATE TABLE `lb_ims_care_object_bill_push` (
   PRIMARY KEY (`bill_push_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账单推送长者';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_demand
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_demand`;
+
+-- Table: lb_ims_care_object_demand
 CREATE TABLE `lb_ims_care_object_demand` (
   `care_object_demand_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'object主键',
@@ -13308,10 +12335,8 @@ CREATE TABLE `lb_ims_care_object_demand` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象需求表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense`;
+
+-- Table: lb_ims_care_object_expense
 CREATE TABLE `lb_ims_care_object_expense` (
   `care_object_expense_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13335,10 +12360,8 @@ CREATE TABLE `lb_ims_care_object_expense` (
   KEY `expense_id` (`expense_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者费用表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense_change`;
+
+-- Table: lb_ims_care_object_expense_change
 CREATE TABLE `lb_ims_care_object_expense_change` (
   `expense_change_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -13365,10 +12388,8 @@ CREATE TABLE `lb_ims_care_object_expense_change` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者费用调整表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense_discount
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense_discount`;
+
+-- Table: lb_ims_care_object_expense_discount
 CREATE TABLE `lb_ims_care_object_expense_discount` (
   `expense_discount_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -13387,10 +12408,8 @@ CREATE TABLE `lb_ims_care_object_expense_discount` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者入住缴费优惠折扣表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense_settle
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense_settle`;
+
+-- Table: lb_ims_care_object_expense_settle
 CREATE TABLE `lb_ims_care_object_expense_settle` (
   `expense_settle_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -13415,10 +12434,8 @@ CREATE TABLE `lb_ims_care_object_expense_settle` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者月度结算费用记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense_settle_month
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense_settle_month`;
+
+-- Table: lb_ims_care_object_expense_settle_month
 CREATE TABLE `lb_ims_care_object_expense_settle_month` (
   `care_object_expense_month_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -13437,10 +12454,8 @@ CREATE TABLE `lb_ims_care_object_expense_settle_month` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者月缴金额记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_expense_settle_month_pay
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_expense_settle_month_pay`;
+
+-- Table: lb_ims_care_object_expense_settle_month_pay
 CREATE TABLE `lb_ims_care_object_expense_settle_month_pay` (
   `expense_month_pay_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13467,10 +12482,8 @@ CREATE TABLE `lb_ims_care_object_expense_settle_month_pay` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者月结账单缴费记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_illness_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_illness_record`;
+
+-- Table: lb_ims_care_object_illness_record
 CREATE TABLE `lb_ims_care_object_illness_record` (
   `care_object_illness_record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'object主键',
@@ -13488,10 +12501,8 @@ CREATE TABLE `lb_ims_care_object_illness_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象病情记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_service
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_service`;
+
+-- Table: lb_ims_care_object_service
 CREATE TABLE `lb_ims_care_object_service` (
   `care_object_service_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -13507,10 +12518,8 @@ CREATE TABLE `lb_ims_care_object_service` (
   PRIMARY KEY (`care_object_service_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象服务表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_service_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_service_record`;
+
+-- Table: lb_ims_care_object_service_record
 CREATE TABLE `lb_ims_care_object_service_record` (
   `care_object_service_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构主键',
@@ -13529,10 +12538,8 @@ CREATE TABLE `lb_ims_care_object_service_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象服务执行记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_service_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_service_relation`;
+
+-- Table: lb_ims_care_object_service_relation
 CREATE TABLE `lb_ims_care_object_service_relation` (
   `care_object_service_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构主键',
@@ -13555,10 +12562,8 @@ CREATE TABLE `lb_ims_care_object_service_relation` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看护对象和服务关联表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_settle_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_settle_record`;
+
+-- Table: lb_ims_care_object_settle_record
 CREATE TABLE `lb_ims_care_object_settle_record` (
   `settle_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13579,10 +12584,8 @@ CREATE TABLE `lb_ims_care_object_settle_record` (
   KEY `settle_month` (`settle_month`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者月度结算记录表';
 
--- ----------------------------
--- Table structure for lb_ims_care_object_treaty
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_care_object_treaty`;
+
+-- Table: lb_ims_care_object_treaty
 CREATE TABLE `lb_ims_care_object_treaty` (
   `care_object_treaty_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT 'object主键',
@@ -13615,10 +12618,8 @@ CREATE TABLE `lb_ims_care_object_treaty` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='协议表';
 
--- ----------------------------
--- Table structure for lb_ims_case_service_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_case_service_record`;
+
+-- Table: lb_ims_case_service_record
 CREATE TABLE `lb_ims_case_service_record` (
   `case_service_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '服务长者id',
@@ -13643,10 +12644,8 @@ CREATE TABLE `lb_ims_case_service_record` (
   PRIMARY KEY (`case_service_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='个案服务记录表';
 
--- ----------------------------
--- Table structure for lb_ims_certificate
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_certificate`;
+
+-- Table: lb_ims_certificate
 CREATE TABLE `lb_ims_certificate` (
   `certificate_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13667,10 +12666,8 @@ CREATE TABLE `lb_ims_certificate` (
   KEY `staff_id` (`staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='员工证书表';
 
--- ----------------------------
--- Table structure for lb_ims_check_out_building
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_check_out_building`;
+
+-- Table: lb_ims_check_out_building
 CREATE TABLE `lb_ims_check_out_building` (
   `check_out_building_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '长者ID',
@@ -13688,10 +12685,8 @@ CREATE TABLE `lb_ims_check_out_building` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='已退住老人机构房间绑定关系表';
 
--- ----------------------------
--- Table structure for lb_ims_check_out_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_check_out_record`;
+
+-- Table: lb_ims_check_out_record
 CREATE TABLE `lb_ims_check_out_record` (
   `check_out_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT ' ' COMMENT '长者',
@@ -13715,10 +12710,8 @@ CREATE TABLE `lb_ims_check_out_record` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='退住登记信息';
 
--- ----------------------------
--- Table structure for lb_ims_clean_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_clean_record`;
+
+-- Table: lb_ims_clean_record
 CREATE TABLE `lb_ims_clean_record` (
   `clean_record_id` varchar(32) NOT NULL,
   `area_id` varchar(32) NOT NULL COMMENT '保洁房间id',
@@ -13747,10 +12740,8 @@ CREATE TABLE `lb_ims_clean_record` (
   PRIMARY KEY (`clean_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构保洁记录表';
 
--- ----------------------------
--- Table structure for lb_ims_complaint_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_complaint_record`;
+
+-- Table: lb_ims_complaint_record
 CREATE TABLE `lb_ims_complaint_record` (
   `complaint_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -13784,10 +12775,8 @@ CREATE TABLE `lb_ims_complaint_record` (
   PRIMARY KEY (`complaint_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='投诉记录表';
 
--- ----------------------------
--- Table structure for lb_ims_consult_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_consult_record`;
+
+-- Table: lb_ims_consult_record
 CREATE TABLE `lb_ims_consult_record` (
   `consult_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -13832,10 +12821,8 @@ CREATE TABLE `lb_ims_consult_record` (
   PRIMARY KEY (`consult_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='咨询登记记录表';
 
--- ----------------------------
--- Table structure for lb_ims_consumer_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_consumer_device`;
+
+-- Table: lb_ims_consumer_device
 CREATE TABLE `lb_ims_consumer_device` (
   `device_id` varchar(32) NOT NULL COMMENT '设备id',
   `num` varchar(32) DEFAULT NULL COMMENT '编号',
@@ -13860,10 +12847,8 @@ CREATE TABLE `lb_ims_consumer_device` (
   PRIMARY KEY (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='消费机';
 
--- ----------------------------
--- Table structure for lb_ims_consumption_adjust
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_consumption_adjust`;
+
+-- Table: lb_ims_consumption_adjust
 CREATE TABLE `lb_ims_consumption_adjust` (
   `consumption_adjust_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13889,10 +12874,8 @@ CREATE TABLE `lb_ims_consumption_adjust` (
   KEY `care_object_id_index` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消费变更记录表';
 
--- ----------------------------
--- Table structure for lb_ims_consumption_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_consumption_record`;
+
+-- Table: lb_ims_consumption_record
 CREATE TABLE `lb_ims_consumption_record` (
   `consumption_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13938,10 +12921,8 @@ CREATE TABLE `lb_ims_consumption_record` (
   KEY `expense_nature` (`expense_nature`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消费记录表';
 
--- ----------------------------
--- Table structure for lb_ims_dementia_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_dementia_config`;
+
+-- Table: lb_ims_dementia_config
 CREATE TABLE `lb_ims_dementia_config` (
   `dementia_config_id` varchar(64) NOT NULL COMMENT '主键',
   `educational` varchar(32) DEFAULT NULL COMMENT '学历情况',
@@ -13960,10 +12941,8 @@ CREATE TABLE `lb_ims_dementia_config` (
   PRIMARY KEY (`dementia_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='失智评估标准配置';
 
--- ----------------------------
--- Table structure for lb_ims_department
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_department`;
+
+-- Table: lb_ims_department
 CREATE TABLE `lb_ims_department` (
   `department_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -13984,10 +12963,8 @@ CREATE TABLE `lb_ims_department` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='部门表';
 
--- ----------------------------
--- Table structure for lb_ims_department_framework
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_department_framework`;
+
+-- Table: lb_ims_department_framework
 CREATE TABLE `lb_ims_department_framework` (
   `department_id` varchar(32) NOT NULL COMMENT '主键',
   `department_name` varchar(32) NOT NULL DEFAULT '' COMMENT '部门名称',
@@ -14001,10 +12978,8 @@ CREATE TABLE `lb_ims_department_framework` (
   PRIMARY KEY (`department_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='部门下级组织表';
 
--- ----------------------------
--- Table structure for lb_ims_deposit_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_deposit_record`;
+
+-- Table: lb_ims_deposit_record
 CREATE TABLE `lb_ims_deposit_record` (
   `deposit_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14038,10 +13013,8 @@ CREATE TABLE `lb_ims_deposit_record` (
   KEY `registrant` (`registrant`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='押金记录表';
 
--- ----------------------------
--- Table structure for lb_ims_dept_approval
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_dept_approval`;
+
+-- Table: lb_ims_dept_approval
 CREATE TABLE `lb_ims_dept_approval` (
   `dept_approval_id` varchar(32) NOT NULL COMMENT '审批主健',
   `dept_id` varchar(32) NOT NULL DEFAULT '1' COMMENT '部门id 或员工id',
@@ -14057,10 +13030,8 @@ CREATE TABLE `lb_ims_dept_approval` (
   PRIMARY KEY (`dept_approval_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门审批表';
 
--- ----------------------------
--- Table structure for lb_ims_device_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_device_type`;
+
+-- Table: lb_ims_device_type
 CREATE TABLE `lb_ims_device_type` (
   `device_type_id` varchar(32) NOT NULL COMMENT '主键',
   `device_name` varchar(32) DEFAULT '' COMMENT '设备名称',
@@ -14075,10 +13046,8 @@ CREATE TABLE `lb_ims_device_type` (
   PRIMARY KEY (`device_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备型号表';
 
--- ----------------------------
--- Table structure for lb_ims_disease_course
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_disease_course`;
+
+-- Table: lb_ims_disease_course
 CREATE TABLE `lb_ims_disease_course` (
   `disease_course_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -14097,10 +13066,8 @@ CREATE TABLE `lb_ims_disease_course` (
   PRIMARY KEY (`disease_course_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='病程表';
 
--- ----------------------------
--- Table structure for lb_ims_disease_course_first
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_disease_course_first`;
+
+-- Table: lb_ims_disease_course_first
 CREATE TABLE `lb_ims_disease_course_first` (
   `disease_course_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -14119,10 +13086,8 @@ CREATE TABLE `lb_ims_disease_course_first` (
   PRIMARY KEY (`disease_course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='首次病程表';
 
--- ----------------------------
--- Table structure for lb_ims_drug
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug`;
+
+-- Table: lb_ims_drug
 CREATE TABLE `lb_ims_drug` (
   `drug_id` varchar(32) NOT NULL COMMENT '药物id',
   `code` varchar(32) NOT NULL COMMENT '编码',
@@ -14140,10 +13105,8 @@ CREATE TABLE `lb_ims_drug` (
   PRIMARY KEY (`drug_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='药物表';
 
--- ----------------------------
--- Table structure for lb_ims_drug_apply_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug_apply_record`;
+
+-- Table: lb_ims_drug_apply_record
 CREATE TABLE `lb_ims_drug_apply_record` (
   `drug_apply_record_id` varchar(32) NOT NULL COMMENT '用药记录id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -14170,10 +13133,8 @@ CREATE TABLE `lb_ims_drug_apply_record` (
   KEY `idx_is_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用药记录表';
 
--- ----------------------------
--- Table structure for lb_ims_drug_apply_remark
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug_apply_remark`;
+
+-- Table: lb_ims_drug_apply_remark
 CREATE TABLE `lb_ims_drug_apply_remark` (
   `drug_apply_remark_id` varchar(32) NOT NULL COMMENT '用药登记备注id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -14188,10 +13149,8 @@ CREATE TABLE `lb_ims_drug_apply_remark` (
   PRIMARY KEY (`drug_apply_remark_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用药登记备注表';
 
--- ----------------------------
--- Table structure for lb_ims_drug_apply_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug_apply_setting`;
+
+-- Table: lb_ims_drug_apply_setting
 CREATE TABLE `lb_ims_drug_apply_setting` (
   `drug_apply_setting_id` varchar(32) NOT NULL COMMENT '用药设置id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -14223,10 +13182,8 @@ CREATE TABLE `lb_ims_drug_apply_setting` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用药设置表';
 
--- ----------------------------
--- Table structure for lb_ims_drug_storage
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug_storage`;
+
+-- Table: lb_ims_drug_storage
 CREATE TABLE `lb_ims_drug_storage` (
   `drug_storage_id` varchar(32) NOT NULL COMMENT '缴存药品id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -14249,10 +13206,8 @@ CREATE TABLE `lb_ims_drug_storage` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='缴存药品表';
 
--- ----------------------------
--- Table structure for lb_ims_drug_storage_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_drug_storage_record`;
+
+-- Table: lb_ims_drug_storage_record
 CREATE TABLE `lb_ims_drug_storage_record` (
   `drug_storage_recorｄ_id` varchar(32) NOT NULL COMMENT '缴存记录id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -14278,10 +13233,8 @@ CREATE TABLE `lb_ims_drug_storage_record` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='缴存记录表';
 
--- ----------------------------
--- Table structure for lb_ims_electronic_medical_history
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_electronic_medical_history`;
+
+-- Table: lb_ims_electronic_medical_history
 CREATE TABLE `lb_ims_electronic_medical_history` (
   `electronic_medical_history_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -14332,10 +13285,8 @@ CREATE TABLE `lb_ims_electronic_medical_history` (
   PRIMARY KEY (`electronic_medical_history_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='电力病历表';
 
--- ----------------------------
--- Table structure for lb_ims_evaluate
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_evaluate`;
+
+-- Table: lb_ims_evaluate
 CREATE TABLE `lb_ims_evaluate` (
   `id` varchar(32) NOT NULL,
   `star_rating` tinyint(4) NOT NULL DEFAULT '0' COMMENT '星级',
@@ -14351,10 +13302,8 @@ CREATE TABLE `lb_ims_evaluate` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评价表';
 
--- ----------------------------
--- Table structure for lb_ims_expense
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_expense`;
+
+-- Table: lb_ims_expense
 CREATE TABLE `lb_ims_expense` (
   `expense_id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14381,10 +13330,8 @@ CREATE TABLE `lb_ims_expense` (
   KEY `create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用表';
 
--- ----------------------------
--- Table structure for lb_ims_expense_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_expense_setting`;
+
+-- Table: lb_ims_expense_setting
 CREATE TABLE `lb_ims_expense_setting` (
   `setting_id` varchar(20) NOT NULL,
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -14407,10 +13354,8 @@ CREATE TABLE `lb_ims_expense_setting` (
   PRIMARY KEY (`setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用管理设置';
 
--- ----------------------------
--- Table structure for lb_ims_expense_setting_out
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_expense_setting_out`;
+
+-- Table: lb_ims_expense_setting_out
 CREATE TABLE `lb_ims_expense_setting_out` (
   `setting_id` varchar(20) NOT NULL,
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构',
@@ -14424,10 +13369,8 @@ CREATE TABLE `lb_ims_expense_setting_out` (
   PRIMARY KEY (`setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='请假外出设置历史记录';
 
--- ----------------------------
--- Table structure for lb_ims_fire_fighting_activity
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_fire_fighting_activity`;
+
+-- Table: lb_ims_fire_fighting_activity
 CREATE TABLE `lb_ims_fire_fighting_activity` (
   `activity_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14455,10 +13398,8 @@ CREATE TABLE `lb_ims_fire_fighting_activity` (
   KEY `registrant_id` (`registrant_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消防活动记录表';
 
--- ----------------------------
--- Table structure for lb_ims_fire_fighting_inspect
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_fire_fighting_inspect`;
+
+-- Table: lb_ims_fire_fighting_inspect
 CREATE TABLE `lb_ims_fire_fighting_inspect` (
   `inspect_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14486,10 +13427,8 @@ CREATE TABLE `lb_ims_fire_fighting_inspect` (
   KEY `inspector_id` (`inspector_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消防检查记录表';
 
--- ----------------------------
--- Table structure for lb_ims_follow_up_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_follow_up_record`;
+
+-- Table: lb_ims_follow_up_record
 CREATE TABLE `lb_ims_follow_up_record` (
   `follow_up_record_id` varchar(32) NOT NULL COMMENT '主键',
   `marketing_customer_id` varchar(32) NOT NULL COMMENT '客户记录id',
@@ -14511,10 +13450,8 @@ CREATE TABLE `lb_ims_follow_up_record` (
   KEY `index_marketing_customer_id` (`marketing_customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='跟进记录表';
 
--- ----------------------------
--- Table structure for lb_ims_food
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food`;
+
+-- Table: lb_ims_food
 CREATE TABLE `lb_ims_food` (
   `food_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14547,10 +13484,8 @@ CREATE TABLE `lb_ims_food` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食物表';
 
--- ----------------------------
--- Table structure for lb_ims_food_export
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_export`;
+
+-- Table: lb_ims_food_export
 CREATE TABLE `lb_ims_food_export` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型(0:未知 1:点餐订单 2:线上订单 3:食谱订单)',
@@ -14567,10 +13502,8 @@ CREATE TABLE `lb_ims_food_export` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='点餐导出';
 
--- ----------------------------
--- Table structure for lb_ims_food_meal
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_meal`;
+
+-- Table: lb_ims_food_meal
 CREATE TABLE `lb_ims_food_meal` (
   `food_meal_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14593,10 +13526,8 @@ CREATE TABLE `lb_ims_food_meal` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='餐次表';
 
--- ----------------------------
--- Table structure for lb_ims_food_meal_daily
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_meal_daily`;
+
+-- Table: lb_ims_food_meal_daily
 CREATE TABLE `lb_ims_food_meal_daily` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键id',
   `food_meal_id` varchar(32) NOT NULL DEFAULT '' COMMENT '餐次id',
@@ -14609,10 +13540,8 @@ CREATE TABLE `lb_ims_food_meal_daily` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='今日菜品:餐次-食物';
 
--- ----------------------------
--- Table structure for lb_ims_food_meal_daily_photo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_meal_daily_photo`;
+
+-- Table: lb_ims_food_meal_daily_photo
 CREATE TABLE `lb_ims_food_meal_daily_photo` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `meal_id` varchar(32) NOT NULL DEFAULT '' COMMENT '餐次id',
@@ -14622,10 +13551,8 @@ CREATE TABLE `lb_ims_food_meal_daily_photo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='今日菜品一览表-大屏显示图片信息';
 
--- ----------------------------
--- Table structure for lb_ims_food_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_order`;
+
+-- Table: lb_ims_food_order
 CREATE TABLE `lb_ims_food_order` (
   `food_order_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14676,10 +13603,8 @@ CREATE TABLE `lb_ims_food_order` (
   KEY `fee_account_id_index` (`fee_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订餐记录表';
 
--- ----------------------------
--- Table structure for lb_ims_food_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_order_detail`;
+
+-- Table: lb_ims_food_order_detail
 CREATE TABLE `lb_ims_food_order_detail` (
   `food_order_detail_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14708,10 +13633,8 @@ CREATE TABLE `lb_ims_food_order_detail` (
   KEY `food_id` (`food_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订餐明细表';
 
--- ----------------------------
--- Table structure for lb_ims_food_order_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_order_setting`;
+
+-- Table: lb_ims_food_order_setting
 CREATE TABLE `lb_ims_food_order_setting` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `settle_method` varchar(16) NOT NULL DEFAULT '0,1,2' COMMENT '点餐支付方式设置(type=1:0-账户余额，1-一卡通余额， 2-现金支付，3-微信支付，4-支付宝支付，type=2:1-一卡通余额，2-账户余额，3-现金支付，4-微信，5-支付宝)',
@@ -14724,10 +13647,8 @@ CREATE TABLE `lb_ims_food_order_setting` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='点餐流程设置';
 
--- ----------------------------
--- Table structure for lb_ims_food_purchase
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_purchase`;
+
+-- Table: lb_ims_food_purchase
 CREATE TABLE `lb_ims_food_purchase` (
   `food_purchase_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14749,10 +13670,8 @@ CREATE TABLE `lb_ims_food_purchase` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食材采购记录表';
 
--- ----------------------------
--- Table structure for lb_ims_food_shop
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_shop`;
+
+-- Table: lb_ims_food_shop
 CREATE TABLE `lb_ims_food_shop` (
   `food_shop_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14772,10 +13691,8 @@ CREATE TABLE `lb_ims_food_shop` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='餐饮店铺表';
 
--- ----------------------------
--- Table structure for lb_ims_food_shop_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_shop_account`;
+
+-- Table: lb_ims_food_shop_account
 CREATE TABLE `lb_ims_food_shop_account` (
   `food_shop_account_id` varchar(32) NOT NULL COMMENT '主键',
   `food_shop_id` varchar(32) NOT NULL DEFAULT '' COMMENT '餐饮店铺主键',
@@ -14790,10 +13707,8 @@ CREATE TABLE `lb_ims_food_shop_account` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='餐饮店铺用户关联表';
 
--- ----------------------------
--- Table structure for lb_ims_food_sort
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_food_sort`;
+
+-- Table: lb_ims_food_sort
 CREATE TABLE `lb_ims_food_sort` (
   `food_sort_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -14810,10 +13725,8 @@ CREATE TABLE `lb_ims_food_sort` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食物类别表';
 
--- ----------------------------
--- Table structure for lb_ims_go_to_doctor_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_go_to_doctor_record`;
+
+-- Table: lb_ims_go_to_doctor_record
 CREATE TABLE `lb_ims_go_to_doctor_record` (
   `go_to_doctor_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -14836,10 +13749,8 @@ CREATE TABLE `lb_ims_go_to_doctor_record` (
   PRIMARY KEY (`go_to_doctor_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='就医记录表';
 
--- ----------------------------
--- Table structure for lb_ims_good_borrow
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_good_borrow`;
+
+-- Table: lb_ims_good_borrow
 CREATE TABLE `lb_ims_good_borrow` (
   `good_borrow_id` varchar(32) NOT NULL COMMENT '主键',
   `good_id` varchar(32) NOT NULL COMMENT '物品id',
@@ -14861,10 +13772,8 @@ CREATE TABLE `lb_ims_good_borrow` (
   PRIMARY KEY (`good_borrow_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='公共物品借用';
 
--- ----------------------------
--- Table structure for lb_ims_goods
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods`;
+
+-- Table: lb_ims_goods
 CREATE TABLE `lb_ims_goods` (
   `goods_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_title` varchar(64) DEFAULT '' COMMENT '商品',
@@ -14900,10 +13809,8 @@ CREATE TABLE `lb_ims_goods` (
   KEY `is_delete` (`is_delete`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_barcode
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_barcode`;
+
+-- Table: lb_ims_goods_barcode
 CREATE TABLE `lb_ims_goods_barcode` (
   `goods_barcode_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_id` varchar(32) NOT NULL DEFAULT '' COMMENT '商品id',
@@ -14917,10 +13824,8 @@ CREATE TABLE `lb_ims_goods_barcode` (
   PRIMARY KEY (`goods_barcode_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品条码表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_cart
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_cart`;
+
+-- Table: lb_ims_goods_cart
 CREATE TABLE `lb_ims_goods_cart` (
   `goods_cart_id` varchar(20) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户Id',
@@ -14934,10 +13839,8 @@ CREATE TABLE `lb_ims_goods_cart` (
   KEY `account_index` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_file
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_file`;
+
+-- Table: lb_ims_goods_file
 CREATE TABLE `lb_ims_goods_file` (
   `goods_file_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_id` varchar(32) NOT NULL DEFAULT '' COMMENT '商品Id',
@@ -14956,10 +13859,8 @@ CREATE TABLE `lb_ims_goods_file` (
   KEY `good_id_index` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品文件表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_inventory_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_inventory_change`;
+
+-- Table: lb_ims_goods_inventory_change
 CREATE TABLE `lb_ims_goods_inventory_change` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `batch` varchar(32) NOT NULL COMMENT '批次',
@@ -14989,10 +13890,8 @@ CREATE TABLE `lb_ims_goods_inventory_change` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品库存变动记录表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_inventory_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_inventory_check`;
+
+-- Table: lb_ims_goods_inventory_check
 CREATE TABLE `lb_ims_goods_inventory_check` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -15018,10 +13917,8 @@ CREATE TABLE `lb_ims_goods_inventory_check` (
   KEY `goods_shop_id` (`goods_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='商品库存盘点记录表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_order`;
+
+-- Table: lb_ims_goods_order
 CREATE TABLE `lb_ims_goods_order` (
   `goods_order_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '用户',
@@ -15058,10 +13955,8 @@ CREATE TABLE `lb_ims_goods_order` (
   KEY `fee_account_id_index` (`fee_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_order_detail`;
+
+-- Table: lb_ims_goods_order_detail
 CREATE TABLE `lb_ims_goods_order_detail` (
   `goods_order_detail_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_order_id` varchar(32) NOT NULL COMMENT '订单号',
@@ -15086,10 +13981,8 @@ CREATE TABLE `lb_ims_goods_order_detail` (
   KEY `goods_id` (`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单详细表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_shop
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_shop`;
+
+-- Table: lb_ims_goods_shop
 CREATE TABLE `lb_ims_goods_shop` (
   `goods_shop_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -15108,10 +14001,8 @@ CREATE TABLE `lb_ims_goods_shop` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商家店铺表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_shop_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_shop_account`;
+
+-- Table: lb_ims_goods_shop_account
 CREATE TABLE `lb_ims_goods_shop_account` (
   `goods_shop_account_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_shop_id` varchar(32) NOT NULL DEFAULT '' COMMENT '商家店铺主键',
@@ -15126,10 +14017,8 @@ CREATE TABLE `lb_ims_goods_shop_account` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商家店铺用户关联表';
 
--- ----------------------------
--- Table structure for lb_ims_goods_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_goods_type`;
+
+-- Table: lb_ims_goods_type
 CREATE TABLE `lb_ims_goods_type` (
   `goods_type_id` varchar(32) NOT NULL COMMENT '商品类型主键',
   `name` varchar(32) NOT NULL COMMENT '类别名称',
@@ -15147,10 +14036,8 @@ CREATE TABLE `lb_ims_goods_type` (
   KEY `goods_shop_id` (`goods_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型表';
 
--- ----------------------------
--- Table structure for lb_ims_group_activities
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_group_activities`;
+
+-- Table: lb_ims_group_activities
 CREATE TABLE `lb_ims_group_activities` (
   `group_activities_id` varchar(32) NOT NULL COMMENT '小组活动id',
   `group_name` varchar(32) NOT NULL DEFAULT '' COMMENT '小组名称',
@@ -15172,10 +14059,8 @@ CREATE TABLE `lb_ims_group_activities` (
   PRIMARY KEY (`group_activities_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='小组活动表';
 
--- ----------------------------
--- Table structure for lb_ims_group_activities_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_group_activities_record`;
+
+-- Table: lb_ims_group_activities_record
 CREATE TABLE `lb_ims_group_activities_record` (
   `group_activities_record_id` varchar(32) NOT NULL COMMENT '活动情况记录id',
   `group_activities_id` varchar(32) NOT NULL COMMENT '小组活动id',
@@ -15191,10 +14076,8 @@ CREATE TABLE `lb_ims_group_activities_record` (
   PRIMARY KEY (`group_activities_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='小组活动-活动情况表';
 
--- ----------------------------
--- Table structure for lb_ims_health_assessment_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_assessment_object`;
+
+-- Table: lb_ims_health_assessment_object
 CREATE TABLE `lb_ims_health_assessment_object` (
   `care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -15271,10 +14154,8 @@ CREATE TABLE `lb_ims_health_assessment_object` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='入住前健康评估';
 
--- ----------------------------
--- Table structure for lb_ims_health_collect_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_collect_data`;
+
+-- Table: lb_ims_health_collect_data
 CREATE TABLE `lb_ims_health_collect_data` (
   `health_collect_data_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(100) DEFAULT NULL COMMENT '长者id',
@@ -15299,10 +14180,8 @@ CREATE TABLE `lb_ims_health_collect_data` (
   PRIMARY KEY (`health_collect_data_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康采集数据';
 
--- ----------------------------
--- Table structure for lb_ims_health_guide
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_guide`;
+
+-- Table: lb_ims_health_guide
 CREATE TABLE `lb_ims_health_guide` (
   `health_guide_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -15319,10 +14198,8 @@ CREATE TABLE `lb_ims_health_guide` (
   PRIMARY KEY (`health_guide_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='健康指导项目表';
 
--- ----------------------------
--- Table structure for lb_ims_health_guide_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_guide_type`;
+
+-- Table: lb_ims_health_guide_type
 CREATE TABLE `lb_ims_health_guide_type` (
   `health_guide_type_id` varchar(32) NOT NULL COMMENT '主键',
   `health_guide_type_name` varchar(255) NOT NULL DEFAULT '' COMMENT '类型名称',
@@ -15335,10 +14212,8 @@ CREATE TABLE `lb_ims_health_guide_type` (
   PRIMARY KEY (`health_guide_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='健康指导类型';
 
--- ----------------------------
--- Table structure for lb_ims_health_index
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_index`;
+
+-- Table: lb_ims_health_index
 CREATE TABLE `lb_ims_health_index` (
   `health_index_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `index_type` varchar(32) NOT NULL COMMENT '指标类型',
@@ -15359,10 +14234,8 @@ CREATE TABLE `lb_ims_health_index` (
   PRIMARY KEY (`health_index_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COMMENT='健康数据范围';
 
--- ----------------------------
--- Table structure for lb_ims_health_plan
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_plan`;
+
+-- Table: lb_ims_health_plan
 CREATE TABLE `lb_ims_health_plan` (
   `health_plan_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(100) DEFAULT NULL COMMENT '长者id',
@@ -15390,10 +14263,8 @@ CREATE TABLE `lb_ims_health_plan` (
   KEY `lb_ism_health_plan_org_id_IDX` (`org_id`,`type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康管理计划';
 
--- ----------------------------
--- Table structure for lb_ims_health_plan_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_plan_data`;
+
+-- Table: lb_ims_health_plan_data
 CREATE TABLE `lb_ims_health_plan_data` (
   `health_plan_data_id` varchar(32) NOT NULL COMMENT '主键',
   `health_plan_id` varchar(32) NOT NULL COMMENT '健康管理计划主键',
@@ -15410,10 +14281,8 @@ CREATE TABLE `lb_ims_health_plan_data` (
   KEY `health_plan_id_org_id_IDX` (`org_id`,`health_plan_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康体征数据';
 
--- ----------------------------
--- Table structure for lb_ims_health_plan_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_plan_type`;
+
+-- Table: lb_ims_health_plan_type
 CREATE TABLE `lb_ims_health_plan_type` (
   `health_plan_type_id` varchar(32) NOT NULL COMMENT '主键',
   `type_name` varchar(32) DEFAULT NULL COMMENT '类别名称',
@@ -15428,10 +14297,8 @@ CREATE TABLE `lb_ims_health_plan_type` (
   PRIMARY KEY (`health_plan_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康管理类别';
 
--- ----------------------------
--- Table structure for lb_ims_health_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_record`;
+
+-- Table: lb_ims_health_record
 CREATE TABLE `lb_ims_health_record` (
   `health_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -15458,10 +14325,8 @@ CREATE TABLE `lb_ims_health_record` (
   KEY `lb_ims_health_record_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='健康档案表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service`;
+
+-- Table: lb_ims_health_service
 CREATE TABLE `lb_ims_health_service` (
   `health_service_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15480,10 +14345,8 @@ CREATE TABLE `lb_ims_health_service` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康服务项目表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_care_object`;
+
+-- Table: lb_ims_health_service_care_object
 CREATE TABLE `lb_ims_health_service_care_object` (
   `service_object_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15503,10 +14366,8 @@ CREATE TABLE `lb_ims_health_service_care_object` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者健康服务表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_config`;
+
+-- Table: lb_ims_health_service_config
 CREATE TABLE `lb_ims_health_service_config` (
   `service_config_id` varchar(64) COLLATE utf8mb4_estonian_ci NOT NULL,
   `org_id` varchar(64) COLLATE utf8mb4_estonian_ci DEFAULT NULL,
@@ -15520,10 +14381,8 @@ CREATE TABLE `lb_ims_health_service_config` (
   PRIMARY KEY (`service_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_estonian_ci;
 
--- ----------------------------
--- Table structure for lb_ims_health_service_item_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_item_record`;
+
+-- Table: lb_ims_health_service_item_record
 CREATE TABLE `lb_ims_health_service_item_record` (
   `service_item_record_id` varchar(32) NOT NULL COMMENT '主键',
   `service_record_id` varchar(32) NOT NULL COMMENT '关联主键',
@@ -15543,10 +14402,8 @@ CREATE TABLE `lb_ims_health_service_item_record` (
   KEY `service_record_id` (`service_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者服务预约登记项目表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_other_personnel
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_other_personnel`;
+
+-- Table: lb_ims_health_service_other_personnel
 CREATE TABLE `lb_ims_health_service_other_personnel` (
   `service_other_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15560,10 +14417,8 @@ CREATE TABLE `lb_ims_health_service_other_personnel` (
   PRIMARY KEY (`service_other_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康服务其他人员管理表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_record`;
+
+-- Table: lb_ims_health_service_record
 CREATE TABLE `lb_ims_health_service_record` (
   `service_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15589,10 +14444,8 @@ CREATE TABLE `lb_ims_health_service_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者服务预约登记表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_voucher
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_voucher`;
+
+-- Table: lb_ims_health_service_voucher
 CREATE TABLE `lb_ims_health_service_voucher` (
   `service_voucher_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15610,10 +14463,8 @@ CREATE TABLE `lb_ims_health_service_voucher` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者健康服务体验券表';
 
--- ----------------------------
--- Table structure for lb_ims_health_service_voucher_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_service_voucher_config`;
+
+-- Table: lb_ims_health_service_voucher_config
 CREATE TABLE `lb_ims_health_service_voucher_config` (
   `service_config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -15629,10 +14480,8 @@ CREATE TABLE `lb_ims_health_service_voucher_config` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康服务体验券设置表';
 
--- ----------------------------
--- Table structure for lb_ims_health_warning
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_health_warning`;
+
+-- Table: lb_ims_health_warning
 CREATE TABLE `lb_ims_health_warning` (
   `health_warning_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '老人id',
@@ -15649,10 +14498,8 @@ CREATE TABLE `lb_ims_health_warning` (
   PRIMARY KEY (`health_warning_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康预警处理';
 
--- ----------------------------
--- Table structure for lb_ims_ic_card
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_card`;
+
+-- Table: lb_ims_ic_card
 CREATE TABLE `lb_ims_ic_card` (
   `card_id` varchar(32) NOT NULL COMMENT '卡id',
   `card_num` varchar(128) NOT NULL COMMENT '卡号',
@@ -15682,10 +14529,8 @@ CREATE TABLE `lb_ims_ic_card` (
   KEY `card_type_index` (`card_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='IC卡信息表';
 
--- ----------------------------
--- Table structure for lb_ims_ic_card_20250331
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_card_20250331`;
+
+-- Table: lb_ims_ic_card_20250331
 CREATE TABLE `lb_ims_ic_card_20250331` (
   `card_id` varchar(32) NOT NULL COMMENT '卡id',
   `card_num` varchar(128) NOT NULL COMMENT '卡号',
@@ -15708,10 +14553,8 @@ CREATE TABLE `lb_ims_ic_card_20250331` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ims_ic_card_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_card_type`;
+
+-- Table: lb_ims_ic_card_type
 CREATE TABLE `lb_ims_ic_card_type` (
   `card_type_id` varchar(32) NOT NULL COMMENT '卡类型id',
   `name` varchar(32) NOT NULL COMMENT '卡类型名称',
@@ -15727,10 +14570,8 @@ CREATE TABLE `lb_ims_ic_card_type` (
   KEY `card_type_index` (`card_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='IC卡类型表';
 
--- ----------------------------
--- Table structure for lb_ims_ic_operate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_operate_record`;
+
+-- Table: lb_ims_ic_operate_record
 CREATE TABLE `lb_ims_ic_operate_record` (
   `operate_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `operate_type` tinyint(1) DEFAULT NULL COMMENT '操作类型：0激活，1冻结，2注销',
@@ -15750,10 +14591,8 @@ CREATE TABLE `lb_ims_ic_operate_record` (
   PRIMARY KEY (`operate_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='卡操作记录';
 
--- ----------------------------
--- Table structure for lb_ims_ic_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_setting`;
+
+-- Table: lb_ims_ic_setting
 CREATE TABLE `lb_ims_ic_setting` (
   `setting_id` varchar(32) NOT NULL COMMENT '设置id',
   `meal_name` varchar(32) DEFAULT NULL COMMENT '餐次名称',
@@ -15771,10 +14610,8 @@ CREATE TABLE `lb_ims_ic_setting` (
   PRIMARY KEY (`setting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_ims_ic_setting_staff
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_ic_setting_staff`;
+
+-- Table: lb_ims_ic_setting_staff
 CREATE TABLE `lb_ims_ic_setting_staff` (
   `setting_id` varchar(32) NOT NULL COMMENT '设置id',
   `department_id` varchar(32) DEFAULT NULL COMMENT '餐次名称',
@@ -15791,10 +14628,8 @@ CREATE TABLE `lb_ims_ic_setting_staff` (
   PRIMARY KEY (`setting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_ims_import_export_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_import_export_task`;
+
+-- Table: lb_ims_import_export_task
 CREATE TABLE `lb_ims_import_export_task` (
   `task_id` varchar(32) NOT NULL DEFAULT '' COMMENT '任务id',
   `task_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
@@ -15823,10 +14658,8 @@ CREATE TABLE `lb_ims_import_export_task` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='异步导入导出任务表';
 
--- ----------------------------
--- Table structure for lb_ims_import_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_import_record`;
+
+-- Table: lb_ims_import_record
 CREATE TABLE `lb_ims_import_record` (
   `import_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -15846,10 +14679,8 @@ CREATE TABLE `lb_ims_import_record` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导入长者任务记录表';
 
--- ----------------------------
--- Table structure for lb_ims_information_exchange
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_information_exchange`;
+
+-- Table: lb_ims_information_exchange
 CREATE TABLE `lb_ims_information_exchange` (
   `information_exchange_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -15874,10 +14705,8 @@ CREATE TABLE `lb_ims_information_exchange` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='信息交流互动表';
 
--- ----------------------------
--- Table structure for lb_ims_inspection_health_guide
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_inspection_health_guide`;
+
+-- Table: lb_ims_inspection_health_guide
 CREATE TABLE `lb_ims_inspection_health_guide` (
   `inspection_health_guide_id` varchar(32) NOT NULL COMMENT '主键',
   `inspection_id` varchar(32) NOT NULL COMMENT '巡诊记录主键',
@@ -15891,10 +14720,8 @@ CREATE TABLE `lb_ims_inspection_health_guide` (
   PRIMARY KEY (`inspection_health_guide_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='巡诊记录健康指导关系';
 
--- ----------------------------
--- Table structure for lb_ims_inspection_leave_summary
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_inspection_leave_summary`;
+
+-- Table: lb_ims_inspection_leave_summary
 CREATE TABLE `lb_ims_inspection_leave_summary` (
   `inspection_leave_summary_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -15920,10 +14747,8 @@ CREATE TABLE `lb_ims_inspection_leave_summary` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡诊记录-出院小结';
 
--- ----------------------------
--- Table structure for lb_ims_inspection_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_inspection_record`;
+
+-- Table: lb_ims_inspection_record
 CREATE TABLE `lb_ims_inspection_record` (
   `inspection_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -15955,10 +14780,8 @@ CREATE TABLE `lb_ims_inspection_record` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='巡诊记录';
 
--- ----------------------------
--- Table structure for lb_ims_inspection_summary
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_inspection_summary`;
+
+-- Table: lb_ims_inspection_summary
 CREATE TABLE `lb_ims_inspection_summary` (
   `inspection_summary_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -15989,10 +14812,8 @@ CREATE TABLE `lb_ims_inspection_summary` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡诊记录、巡诊小结';
 
--- ----------------------------
--- Table structure for lb_ims_intention_level
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_intention_level`;
+
+-- Table: lb_ims_intention_level
 CREATE TABLE `lb_ims_intention_level` (
   `intention_level_id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -16007,10 +14828,8 @@ CREATE TABLE `lb_ims_intention_level` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='意向等级设置表';
 
--- ----------------------------
--- Table structure for lb_ims_interactive_registration
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_interactive_registration`;
+
+-- Table: lb_ims_interactive_registration
 CREATE TABLE `lb_ims_interactive_registration` (
   `interactive_registration_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者主键',
@@ -16032,10 +14851,8 @@ CREATE TABLE `lb_ims_interactive_registration` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='亲属互动登记表';
 
--- ----------------------------
--- Table structure for lb_ims_interview_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_interview_record`;
+
+-- Table: lb_ims_interview_record
 CREATE TABLE `lb_ims_interview_record` (
   `interview_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -16056,10 +14873,8 @@ CREATE TABLE `lb_ims_interview_record` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='面谈记录表';
 
--- ----------------------------
--- Table structure for lb_ims_inventory_supplies
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_inventory_supplies`;
+
+-- Table: lb_ims_inventory_supplies
 CREATE TABLE `lb_ims_inventory_supplies` (
   `inventory_supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_id` varchar(32) DEFAULT '' COMMENT '仓库id',
@@ -16076,10 +14891,8 @@ CREATE TABLE `lb_ims_inventory_supplies` (
   PRIMARY KEY (`inventory_supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='盘点物资信息表';
 
--- ----------------------------
--- Table structure for lb_ims_invoice_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_invoice_record`;
+
+-- Table: lb_ims_invoice_record
 CREATE TABLE `lb_ims_invoice_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '',
   `title_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '抬头类型 (0企业/1个人)',
@@ -16104,10 +14917,8 @@ CREATE TABLE `lb_ims_invoice_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='发票申请记录';
 
--- ----------------------------
--- Table structure for lb_ims_kingdee_bank
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_kingdee_bank`;
+
+-- Table: lb_ims_kingdee_bank
 CREATE TABLE `lb_ims_kingdee_bank` (
   `bank_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `bank_name` varchar(32) NOT NULL DEFAULT '' COMMENT '银行卡名称',
@@ -16123,10 +14934,8 @@ CREATE TABLE `lb_ims_kingdee_bank` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='金蝶银行账号设置表';
 
--- ----------------------------
--- Table structure for lb_ims_kingdee_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_kingdee_care_object`;
+
+-- Table: lb_ims_kingdee_care_object
 CREATE TABLE `lb_ims_kingdee_care_object` (
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
   `care_object_name` varchar(32) NOT NULL DEFAULT '' COMMENT '长者名称',
@@ -16146,10 +14955,8 @@ CREATE TABLE `lb_ims_kingdee_care_object` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='金蝶关联客户表';
 
--- ----------------------------
--- Table structure for lb_ims_kingdee_sync
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_kingdee_sync`;
+
+-- Table: lb_ims_kingdee_sync
 CREATE TABLE `lb_ims_kingdee_sync` (
   `kingdee_sync_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -16167,10 +14974,8 @@ CREATE TABLE `lb_ims_kingdee_sync` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='金蝶同步记录表';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_building
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_building`;
+
+-- Table: lb_ims_marketing_building
 CREATE TABLE `lb_ims_marketing_building` (
   `building_id` varchar(32) NOT NULL DEFAULT '' COMMENT '楼栋id',
   `building_name` varchar(32) NOT NULL DEFAULT '' COMMENT '楼栋名称id',
@@ -16183,10 +14988,8 @@ CREATE TABLE `lb_ims_marketing_building` (
   PRIMARY KEY (`building_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房源管理';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_buy_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_buy_record`;
+
+-- Table: lb_ims_marketing_buy_record
 CREATE TABLE `lb_ims_marketing_buy_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '',
   `room_id` varchar(32) NOT NULL DEFAULT '' COMMENT '房间id',
@@ -16215,10 +15018,8 @@ CREATE TABLE `lb_ims_marketing_buy_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购房成单记录';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_customer_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_customer_record`;
+
+-- Table: lb_ims_marketing_customer_record
 CREATE TABLE `lb_ims_marketing_customer_record` (
   `marketing_customer_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(128) DEFAULT NULL COMMENT '名字',
@@ -16269,10 +15070,8 @@ CREATE TABLE `lb_ims_marketing_customer_record` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销客户记录表';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_customer_recycle
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_customer_recycle`;
+
+-- Table: lb_ims_marketing_customer_recycle
 CREATE TABLE `lb_ims_marketing_customer_recycle` (
   `customer_recycle_id` varchar(32) NOT NULL COMMENT '主键',
   `marketing_customer_id` varchar(32) NOT NULL DEFAULT '' COMMENT '客户id',
@@ -16291,10 +15090,8 @@ CREATE TABLE `lb_ims_marketing_customer_recycle` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='回收提醒记录表';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_customer_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_customer_relation`;
+
+-- Table: lb_ims_marketing_customer_relation
 CREATE TABLE `lb_ims_marketing_customer_relation` (
   `customer_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `marketing_customer_id` varchar(32) NOT NULL DEFAULT '' COMMENT '客户A主键',
@@ -16309,10 +15106,8 @@ CREATE TABLE `lb_ims_marketing_customer_relation` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='关联客户关系表';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_plan
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_plan`;
+
+-- Table: lb_ims_marketing_plan
 CREATE TABLE `lb_ims_marketing_plan` (
   `plan_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -16330,10 +15125,8 @@ CREATE TABLE `lb_ims_marketing_plan` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销方案表';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_room
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_room`;
+
+-- Table: lb_ims_marketing_room
 CREATE TABLE `lb_ims_marketing_room` (
   `room_id` varchar(32) NOT NULL DEFAULT '' COMMENT '房间id',
   `building_id` varchar(32) NOT NULL DEFAULT '' COMMENT '所属楼栋id',
@@ -16356,10 +15149,8 @@ CREATE TABLE `lb_ims_marketing_room` (
   PRIMARY KEY (`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房源房间信息';
 
--- ----------------------------
--- Table structure for lb_ims_marketing_room_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_marketing_room_type`;
+
+-- Table: lb_ims_marketing_room_type
 CREATE TABLE `lb_ims_marketing_room_type` (
   `room_type_id` varchar(32) NOT NULL DEFAULT '' COMMENT '户型id',
   `room_type_name` varchar(16) NOT NULL DEFAULT '' COMMENT '户型名称',
@@ -16373,10 +15164,8 @@ CREATE TABLE `lb_ims_marketing_room_type` (
   PRIMARY KEY (`room_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房源管理-户型';
 
--- ----------------------------
--- Table structure for lb_ims_medical_department
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_medical_department`;
+
+-- Table: lb_ims_medical_department
 CREATE TABLE `lb_ims_medical_department` (
   `medical_department_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -16394,10 +15183,8 @@ CREATE TABLE `lb_ims_medical_department` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='医疗科室表';
 
--- ----------------------------
--- Table structure for lb_ims_medical_department_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_medical_department_account`;
+
+-- Table: lb_ims_medical_department_account
 CREATE TABLE `lb_ims_medical_department_account` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `medical_department_id` varchar(32) NOT NULL DEFAULT '' COMMENT '医疗科室主键',
@@ -16412,10 +15199,8 @@ CREATE TABLE `lb_ims_medical_department_account` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='医疗科用户关联表';
 
--- ----------------------------
--- Table structure for lb_ims_medical_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_medical_record`;
+
+-- Table: lb_ims_medical_record
 CREATE TABLE `lb_ims_medical_record` (
   `medical_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -16458,10 +15243,8 @@ CREATE TABLE `lb_ims_medical_record` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='体检记录表';
 
--- ----------------------------
--- Table structure for lb_ims_meeting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_meeting`;
+
+-- Table: lb_ims_meeting
 CREATE TABLE `lb_ims_meeting` (
   `meeting_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -16486,10 +15269,8 @@ CREATE TABLE `lb_ims_meeting` (
   KEY `idx_meeting_id` (`meeting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会议信息表';
 
--- ----------------------------
--- Table structure for lb_ims_meeting_staff
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_meeting_staff`;
+
+-- Table: lb_ims_meeting_staff
 CREATE TABLE `lb_ims_meeting_staff` (
   `meeting_staff_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -16504,10 +15285,8 @@ CREATE TABLE `lb_ims_meeting_staff` (
   KEY `idx_meeting_id` (`meeting_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会议参与员工关系表';
 
--- ----------------------------
--- Table structure for lb_ims_month_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_month_check`;
+
+-- Table: lb_ims_month_check
 CREATE TABLE `lb_ims_month_check` (
   `month_check_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_id` varchar(32) DEFAULT '' COMMENT '仓库id',
@@ -16526,10 +15305,8 @@ CREATE TABLE `lb_ims_month_check` (
   PRIMARY KEY (`month_check_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='月度盘点表';
 
--- ----------------------------
--- Table structure for lb_ims_notification_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_notification_record`;
+
+-- Table: lb_ims_notification_record
 CREATE TABLE `lb_ims_notification_record` (
   `notification_record_id` varchar(32) NOT NULL COMMENT '记录id',
   `account_id` varchar(32) DEFAULT NULL COMMENT '用户id',
@@ -16551,10 +15328,8 @@ CREATE TABLE `lb_ims_notification_record` (
   PRIMARY KEY (`notification_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_ims_notification_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_notification_relation`;
+
+-- Table: lb_ims_notification_relation
 CREATE TABLE `lb_ims_notification_relation` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '通知记录id',
@@ -16566,10 +15341,8 @@ CREATE TABLE `lb_ims_notification_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通知公告通知范围';
 
--- ----------------------------
--- Table structure for lb_ims_object_relation_recipe
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_object_relation_recipe`;
+
+-- Table: lb_ims_object_relation_recipe
 CREATE TABLE `lb_ims_object_relation_recipe` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -16580,10 +15353,8 @@ CREATE TABLE `lb_ims_object_relation_recipe` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者与点餐信息映射表';
 
--- ----------------------------
--- Table structure for lb_ims_out_registration
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_out_registration`;
+
+-- Table: lb_ims_out_registration
 CREATE TABLE `lb_ims_out_registration` (
   `out_registration_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT ' ' COMMENT '长者id',
@@ -16619,10 +15390,8 @@ CREATE TABLE `lb_ims_out_registration` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='外出登记信息';
 
--- ----------------------------
--- Table structure for lb_ims_outpatient_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_outpatient_info`;
+
+-- Table: lb_ims_outpatient_info
 CREATE TABLE `lb_ims_outpatient_info` (
   `outpatient_info_id` varchar(32) NOT NULL COMMENT '主键',
   `outpatient_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '患者类型 0普通病人 1护理楼长者 2 公寓楼长者 3 社区居家长者',
@@ -16655,10 +15424,8 @@ CREATE TABLE `lb_ims_outpatient_info` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='就诊长者信息表';
 
--- ----------------------------
--- Table structure for lb_ims_overview_map
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_overview_map`;
+
+-- Table: lb_ims_overview_map
 CREATE TABLE `lb_ims_overview_map` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `org_id` varchar(32) NOT NULL DEFAULT '',
@@ -16669,10 +15436,8 @@ CREATE TABLE `lb_ims_overview_map` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运维管理-院内地图设置-总览地图';
 
--- ----------------------------
--- Table structure for lb_ims_overview_map_public
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_overview_map_public`;
+
+-- Table: lb_ims_overview_map_public
 CREATE TABLE `lb_ims_overview_map_public` (
   `public_id` varchar(32) NOT NULL DEFAULT '',
   `public_name` varchar(16) NOT NULL COMMENT '公区名称',
@@ -16687,10 +15452,8 @@ CREATE TABLE `lb_ims_overview_map_public` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运维管理-院内地图设置-总览地图-公区信息';
 
--- ----------------------------
--- Table structure for lb_ims_overview_map_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_overview_map_setting`;
+
+-- Table: lb_ims_overview_map_setting
 CREATE TABLE `lb_ims_overview_map_setting` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `area_id` varchar(32) NOT NULL DEFAULT '' COMMENT '区域id(building_id/map_id/.)',
@@ -16707,10 +15470,8 @@ CREATE TABLE `lb_ims_overview_map_setting` (
   KEY `area_id` (`area_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运维管理-院内地图设置-总览地图-设置楼栋信息';
 
--- ----------------------------
--- Table structure for lb_ims_patrol
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol`;
+
+-- Table: lb_ims_patrol
 CREATE TABLE `lb_ims_patrol` (
   `patrol_id` varchar(32) NOT NULL COMMENT '巡查主键',
   `name` varchar(32) NOT NULL COMMENT '巡查名称',
@@ -16738,10 +15499,8 @@ CREATE TABLE `lb_ims_patrol` (
   PRIMARY KEY (`patrol_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查计划表';
 
--- ----------------------------
--- Table structure for lb_ims_patrol_line
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol_line`;
+
+-- Table: lb_ims_patrol_line
 CREATE TABLE `lb_ims_patrol_line` (
   `patrol_line_id` varchar(32) NOT NULL COMMENT '巡查线路主键',
   `line_name` varchar(32) NOT NULL COMMENT '名称',
@@ -16758,10 +15517,8 @@ CREATE TABLE `lb_ims_patrol_line` (
   PRIMARY KEY (`patrol_line_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查路线表';
 
--- ----------------------------
--- Table structure for lb_ims_patrol_line_point
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol_line_point`;
+
+-- Table: lb_ims_patrol_line_point
 CREATE TABLE `lb_ims_patrol_line_point` (
   `patrol_line_point_id` varchar(32) NOT NULL COMMENT '巡查点主键',
   `patrol_line_id` varchar(32) NOT NULL COMMENT '巡查线路主键',
@@ -16779,10 +15536,8 @@ CREATE TABLE `lb_ims_patrol_line_point` (
   PRIMARY KEY (`patrol_line_point_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查点表';
 
--- ----------------------------
--- Table structure for lb_ims_patrol_point_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol_point_record`;
+
+-- Table: lb_ims_patrol_point_record
 CREATE TABLE `lb_ims_patrol_point_record` (
   `patrol_point_record_id` varchar(32) NOT NULL COMMENT '巡查任务点主键',
   `patrol_task_id` varchar(32) NOT NULL COMMENT '巡查任务id',
@@ -16808,10 +15563,8 @@ CREATE TABLE `lb_ims_patrol_point_record` (
   KEY `order_num` (`order_num`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查任务点表';
 
--- ----------------------------
--- Table structure for lb_ims_patrol_record_relation_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol_record_relation_object`;
+
+-- Table: lb_ims_patrol_record_relation_object
 CREATE TABLE `lb_ims_patrol_record_relation_object` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `patrol_point_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '巡查任务点记录主键',
@@ -16822,10 +15575,8 @@ CREATE TABLE `lb_ims_patrol_record_relation_object` (
   KEY `care_object_id_index` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查记录与长者关联信息';
 
--- ----------------------------
--- Table structure for lb_ims_patrol_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_patrol_task`;
+
+-- Table: lb_ims_patrol_task
 CREATE TABLE `lb_ims_patrol_task` (
   `patrol_task_id` varchar(32) NOT NULL COMMENT '巡查任务主键',
   `patrol_id` varchar(32) NOT NULL COMMENT '巡查主键',
@@ -16851,10 +15602,8 @@ CREATE TABLE `lb_ims_patrol_task` (
   KEY `idx_optimize_covering` (`org_id`,`patrol_account_id`,`status`,`is_delete`,`patrol_day`,`patrol_end_time`,`patrol_start_time`,`patrol_task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='巡查任务表';
 
--- ----------------------------
--- Table structure for lb_ims_photo
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_photo`;
+
+-- Table: lb_ims_photo
 CREATE TABLE `lb_ims_photo` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `relation_id` varchar(32) NOT NULL DEFAULT '' COMMENT '关联记录id',
@@ -16869,10 +15618,8 @@ CREATE TABLE `lb_ims_photo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图片表';
 
--- ----------------------------
--- Table structure for lb_ims_photo_album
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_photo_album`;
+
+-- Table: lb_ims_photo_album
 CREATE TABLE `lb_ims_photo_album` (
   `photo_album_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -16889,10 +15636,8 @@ CREATE TABLE `lb_ims_photo_album` (
   KEY `care_object_id_index` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='相册管理表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe`;
+
+-- Table: lb_ims_prescribe
 CREATE TABLE `lb_ims_prescribe` (
   `prescribe_id` varchar(32) NOT NULL COMMENT '医嘱id',
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
@@ -16937,10 +15682,8 @@ CREATE TABLE `lb_ims_prescribe` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='长者医嘱记录表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_info`;
+
+-- Table: lb_ims_prescribe_info
 CREATE TABLE `lb_ims_prescribe_info` (
   `prescribe_id` varchar(32) NOT NULL COMMENT '医嘱id',
   `type` tinyint(1) DEFAULT '1' COMMENT '1 门诊医嘱 2: 住院医嘱 ',
@@ -16975,10 +15718,8 @@ CREATE TABLE `lb_ims_prescribe_info` (
   KEY `idx_drug_frequency_id` (`drug_frequency_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者医嘱记录表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_item
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_item`;
+
+-- Table: lb_ims_prescribe_item
 CREATE TABLE `lb_ims_prescribe_item` (
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
   `prescribe_type_id` varchar(32) NOT NULL COMMENT '所属模板',
@@ -17002,10 +15743,8 @@ CREATE TABLE `lb_ims_prescribe_item` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='医嘱项目表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_item_check
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_item_check`;
+
+-- Table: lb_ims_prescribe_item_check
 CREATE TABLE `lb_ims_prescribe_item_check` (
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
   `code` varchar(32) DEFAULT NULL COMMENT '医嘱编号',
@@ -17026,10 +15765,8 @@ CREATE TABLE `lb_ims_prescribe_item_check` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医嘱项目表-检查';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_item_dispose
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_item_dispose`;
+
+-- Table: lb_ims_prescribe_item_dispose
 CREATE TABLE `lb_ims_prescribe_item_dispose` (
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
   `code` varchar(32) DEFAULT NULL COMMENT '医嘱编号',
@@ -17050,10 +15787,8 @@ CREATE TABLE `lb_ims_prescribe_item_dispose` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医嘱项目表-处置';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_item_inspection
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_item_inspection`;
+
+-- Table: lb_ims_prescribe_item_inspection
 CREATE TABLE `lb_ims_prescribe_item_inspection` (
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
   `code` varchar(32) DEFAULT NULL COMMENT '医嘱编号',
@@ -17078,10 +15813,8 @@ CREATE TABLE `lb_ims_prescribe_item_inspection` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医嘱项目表-检验';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_item_prescription
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_item_prescription`;
+
+-- Table: lb_ims_prescribe_item_prescription
 CREATE TABLE `lb_ims_prescribe_item_prescription` (
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
   `type` varchar(32) NOT NULL COMMENT '类型 1－中药、２－西药',
@@ -17100,10 +15833,8 @@ CREATE TABLE `lb_ims_prescribe_item_prescription` (
   KEY `org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医嘱项目表-中、西药处方项目';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_record`;
+
+-- Table: lb_ims_prescribe_record
 CREATE TABLE `lb_ims_prescribe_record` (
   `prescribe_record_id` varchar(32) NOT NULL COMMENT '医嘱执行记录id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -17127,10 +15858,8 @@ CREATE TABLE `lb_ims_prescribe_record` (
   KEY `end_execute_time` (`end_execute_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='长者医嘱执行记录表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_template`;
+
+-- Table: lb_ims_prescribe_template
 CREATE TABLE `lb_ims_prescribe_template` (
   `prescribe_template_id` varchar(32) NOT NULL COMMENT '医嘱id',
   `prescribe_item_id` varchar(32) NOT NULL COMMENT '医嘱项目id',
@@ -17154,10 +15883,8 @@ CREATE TABLE `lb_ims_prescribe_template` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='医嘱模型表';
 
--- ----------------------------
--- Table structure for lb_ims_prescribe_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_prescribe_type`;
+
+-- Table: lb_ims_prescribe_type
 CREATE TABLE `lb_ims_prescribe_type` (
   `prescribe_type_id` varchar(32) NOT NULL COMMENT '医嘱模板id',
   `name` varchar(32) DEFAULT NULL COMMENT '模板名称',
@@ -17170,10 +15897,8 @@ CREATE TABLE `lb_ims_prescribe_type` (
   PRIMARY KEY (`prescribe_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='医嘱模板表';
 
--- ----------------------------
--- Table structure for lb_ims_pressure_sores_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_pressure_sores_config`;
+
+-- Table: lb_ims_pressure_sores_config
 CREATE TABLE `lb_ims_pressure_sores_config` (
   `pressure_sores_config_id` varchar(64) NOT NULL COMMENT '主键',
   `start_number` int(10) DEFAULT '0' COMMENT '分数范围开始',
@@ -17190,10 +15915,8 @@ CREATE TABLE `lb_ims_pressure_sores_config` (
   PRIMARY KEY (`pressure_sores_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='压疮评估标准配置';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity`;
+
+-- Table: lb_ims_public_activity
 CREATE TABLE `lb_ims_public_activity` (
   `activity_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT '' COMMENT '活动名称',
@@ -17229,10 +15952,8 @@ CREATE TABLE `lb_ims_public_activity` (
   KEY `applyAccountId` (`apply_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共活动表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_care_object_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_care_object_record`;
+
+-- Table: lb_ims_public_activity_care_object_record
 CREATE TABLE `lb_ims_public_activity_care_object_record` (
   `record_id` varchar(32) NOT NULL COMMENT '报名记录id',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者id',
@@ -17251,10 +15972,8 @@ CREATE TABLE `lb_ims_public_activity_care_object_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共活动报名记录表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_class
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_class`;
+
+-- Table: lb_ims_public_activity_class
 CREATE TABLE `lb_ims_public_activity_class` (
   `class_id` varchar(32) NOT NULL COMMENT '班级主键',
   `name` varchar(32) DEFAULT '' COMMENT '班级名称',
@@ -17275,10 +15994,8 @@ CREATE TABLE `lb_ims_public_activity_class` (
   PRIMARY KEY (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='班级表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_class_care_object_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_class_care_object_record`;
+
+-- Table: lb_ims_public_activity_class_care_object_record
 CREATE TABLE `lb_ims_public_activity_class_care_object_record` (
   `class_record_id` varchar(32) NOT NULL COMMENT '班级报名id',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者id',
@@ -17300,10 +16017,8 @@ CREATE TABLE `lb_ims_public_activity_class_care_object_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报名者和班级记录表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_class_evaluate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_class_evaluate_record`;
+
+-- Table: lb_ims_public_activity_class_evaluate_record
 CREATE TABLE `lb_ims_public_activity_class_evaluate_record` (
   `evaluate_id` varchar(32) NOT NULL COMMENT '评价记录id',
   `activity_curriculum_id` varchar(32) NOT NULL COMMENT '课程id',
@@ -17320,10 +16035,8 @@ CREATE TABLE `lb_ims_public_activity_class_evaluate_record` (
   PRIMARY KEY (`evaluate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共课程评价表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_class_schedule
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_class_schedule`;
+
+-- Table: lb_ims_public_activity_class_schedule
 CREATE TABLE `lb_ims_public_activity_class_schedule` (
   `class_schedule_id` varchar(32) NOT NULL COMMENT '课程表id',
   `activity_curriculum_id` varchar(32) DEFAULT '' COMMENT '课程主键',
@@ -17342,10 +16055,8 @@ CREATE TABLE `lb_ims_public_activity_class_schedule` (
   PRIMARY KEY (`class_schedule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='班级课程表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_class_summary
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_class_summary`;
+
+-- Table: lb_ims_public_activity_class_summary
 CREATE TABLE `lb_ims_public_activity_class_summary` (
   `summary_id` varchar(32) NOT NULL COMMENT '班级总结id',
   `class_id` varchar(32) DEFAULT '' COMMENT '班级id',
@@ -17366,10 +16077,8 @@ CREATE TABLE `lb_ims_public_activity_class_summary` (
   PRIMARY KEY (`summary_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='班级总结表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_curriculum
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_curriculum`;
+
+-- Table: lb_ims_public_activity_curriculum
 CREATE TABLE `lb_ims_public_activity_curriculum` (
   `activity_curriculum_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT '' COMMENT '课程名称',
@@ -17396,10 +16105,8 @@ CREATE TABLE `lb_ims_public_activity_curriculum` (
   KEY `applyAccountId` (`apply_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共课程表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_evaluate_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_evaluate_record`;
+
+-- Table: lb_ims_public_activity_evaluate_record
 CREATE TABLE `lb_ims_public_activity_evaluate_record` (
   `evaluate_id` varchar(32) NOT NULL COMMENT '评价记录id',
   `record_id` varchar(32) NOT NULL COMMENT '报名记录id',
@@ -17414,10 +16121,8 @@ CREATE TABLE `lb_ims_public_activity_evaluate_record` (
   PRIMARY KEY (`evaluate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共活动评价表';
 
--- ----------------------------
--- Table structure for lb_ims_public_activity_field
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_activity_field`;
+
+-- Table: lb_ims_public_activity_field
 CREATE TABLE `lb_ims_public_activity_field` (
   `field_id` varchar(32) NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT '' COMMENT '场地名称',
@@ -17437,10 +16142,8 @@ CREATE TABLE `lb_ims_public_activity_field` (
   KEY `chargeAccountId` (`charge_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='公共活动场地表';
 
--- ----------------------------
--- Table structure for lb_ims_public_good
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_public_good`;
+
+-- Table: lb_ims_public_good
 CREATE TABLE `lb_ims_public_good` (
   `public_good_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `good_type` varchar(32) NOT NULL DEFAULT '' COMMENT '物品类型',
@@ -17459,10 +16162,8 @@ CREATE TABLE `lb_ims_public_good` (
   PRIMARY KEY (`public_good_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='公共物品表';
 
--- ----------------------------
--- Table structure for lb_ims_recipe
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_recipe`;
+
+-- Table: lb_ims_recipe
 CREATE TABLE `lb_ims_recipe` (
   `recipe_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -17490,10 +16191,8 @@ CREATE TABLE `lb_ims_recipe` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食谱表';
 
--- ----------------------------
--- Table structure for lb_ims_recipe_meal
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_recipe_meal`;
+
+-- Table: lb_ims_recipe_meal
 CREATE TABLE `lb_ims_recipe_meal` (
   `recipe_meal_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -17518,10 +16217,8 @@ CREATE TABLE `lb_ims_recipe_meal` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食谱餐次表';
 
--- ----------------------------
--- Table structure for lb_ims_recipe_sort
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_recipe_sort`;
+
+-- Table: lb_ims_recipe_sort
 CREATE TABLE `lb_ims_recipe_sort` (
   `recipe_sort_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -17548,10 +16245,8 @@ CREATE TABLE `lb_ims_recipe_sort` (
   KEY `food_shop_id` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='食谱类别表';
 
--- ----------------------------
--- Table structure for lb_ims_recipe_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_recipe_task`;
+
+-- Table: lb_ims_recipe_task
 CREATE TABLE `lb_ims_recipe_task` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `recipe_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '点餐类型(0:批量点餐，1:帮所有人点)',
@@ -17567,10 +16262,8 @@ CREATE TABLE `lb_ims_recipe_task` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='批量点餐任务表';
 
--- ----------------------------
--- Table structure for lb_ims_repair_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_repair_record`;
+
+-- Table: lb_ims_repair_record
 CREATE TABLE `lb_ims_repair_record` (
   `repair_record_id` varchar(32) NOT NULL,
   `device_name` varchar(64) DEFAULT '' COMMENT '设备名称',
@@ -17606,10 +16299,8 @@ CREATE TABLE `lb_ims_repair_record` (
   PRIMARY KEY (`repair_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='维修记录表';
 
--- ----------------------------
--- Table structure for lb_ims_repast
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_repast`;
+
+-- Table: lb_ims_repast
 CREATE TABLE `lb_ims_repast` (
   `repast_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -17630,10 +16321,8 @@ CREATE TABLE `lb_ims_repast` (
   KEY `care_object_id_index` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老人餐饮关系表';
 
--- ----------------------------
--- Table structure for lb_ims_reservation_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_reservation_record`;
+
+-- Table: lb_ims_reservation_record
 CREATE TABLE `lb_ims_reservation_record` (
   `reservation_record_id` bigint(20) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -17670,10 +16359,8 @@ CREATE TABLE `lb_ims_reservation_record` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT=' 预约登记记录表';
 
--- ----------------------------
--- Table structure for lb_ims_risk_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_risk_config`;
+
+-- Table: lb_ims_risk_config
 CREATE TABLE `lb_ims_risk_config` (
   `risk_config_id` varchar(32) NOT NULL COMMENT '主键',
   `start_number` int(10) DEFAULT NULL COMMENT '分数范围开始',
@@ -17690,10 +16377,8 @@ CREATE TABLE `lb_ims_risk_config` (
   PRIMARY KEY (`risk_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='风险评估标准配置';
 
--- ----------------------------
--- Table structure for lb_ims_rp
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_rp`;
+
+-- Table: lb_ims_rp
 CREATE TABLE `lb_ims_rp` (
   `rp_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -17715,10 +16400,8 @@ CREATE TABLE `lb_ims_rp` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='奖惩信息表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_butler
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_butler`;
+
+-- Table: lb_ims_schedule_butler
 CREATE TABLE `lb_ims_schedule_butler` (
   `schedule_butler_id` varchar(32) NOT NULL COMMENT '主键',
   `type` tinyint(1) NOT NULL COMMENT '1-管家交接班 2-护理员交接班 3-部门交接班',
@@ -17749,10 +16432,8 @@ CREATE TABLE `lb_ims_schedule_butler` (
   PRIMARY KEY (`schedule_butler_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管家工作站交接班记录表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_butler_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_butler_setting`;
+
+-- Table: lb_ims_schedule_butler_setting
 CREATE TABLE `lb_ims_schedule_butler_setting` (
   `butler_setting_id` varchar(32) NOT NULL COMMENT '主键',
   `shift_time` tinyint(2) NOT NULL DEFAULT '7' COMMENT '护理交接班默认开始时间',
@@ -17766,10 +16447,8 @@ CREATE TABLE `lb_ims_schedule_butler_setting` (
   PRIMARY KEY (`butler_setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工作站交接班配置表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_plan
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_plan`;
+
+-- Table: lb_ims_schedule_plan
 CREATE TABLE `lb_ims_schedule_plan` (
   `schedule_plan_id` varchar(32) NOT NULL COMMENT '主键',
   `plan_name` varchar(32) DEFAULT '' COMMENT '方案名称',
@@ -17787,10 +16466,8 @@ CREATE TABLE `lb_ims_schedule_plan` (
   PRIMARY KEY (`schedule_plan_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护工排班方案表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_record`;
+
+-- Table: lb_ims_schedule_record
 CREATE TABLE `lb_ims_schedule_record` (
   `schedule_record_id` varchar(32) NOT NULL COMMENT '主键',
   `schedule_name` varchar(32) DEFAULT NULL COMMENT '排班表名称',
@@ -17824,10 +16501,8 @@ CREATE TABLE `lb_ims_schedule_record` (
   KEY `care_schedule_shift_id` (`schedule_shift_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='排班记录表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_remark
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_remark`;
+
+-- Table: lb_ims_schedule_remark
 CREATE TABLE `lb_ims_schedule_remark` (
   `schedule_remark_id` varchar(32) NOT NULL COMMENT '主键',
   `type` tinyint(1) NOT NULL COMMENT '1-管家交接班 2-护理员交接班 3-部门交接班',
@@ -17841,10 +16516,8 @@ CREATE TABLE `lb_ims_schedule_remark` (
   PRIMARY KEY (`schedule_remark_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工作站交接班备注模板表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_replace
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_replace`;
+
+-- Table: lb_ims_schedule_replace
 CREATE TABLE `lb_ims_schedule_replace` (
   `replace_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -17870,10 +16543,8 @@ CREATE TABLE `lb_ims_schedule_replace` (
   PRIMARY KEY (`replace_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='替班记录表';
 
--- ----------------------------
--- Table structure for lb_ims_schedule_shift
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_schedule_shift`;
+
+-- Table: lb_ims_schedule_shift
 CREATE TABLE `lb_ims_schedule_shift` (
   `schedule_shift_id` varchar(32) NOT NULL COMMENT '主键',
   `schedule_plan_id` varchar(32) NOT NULL COMMENT '排班方案id',
@@ -17889,10 +16560,8 @@ CREATE TABLE `lb_ims_schedule_shift` (
   PRIMARY KEY (`schedule_shift_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='排班方案班次表';
 
--- ----------------------------
--- Table structure for lb_ims_settle_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_settle_record`;
+
+-- Table: lb_ims_settle_record
 CREATE TABLE `lb_ims_settle_record` (
   `settle_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -17920,10 +16589,8 @@ CREATE TABLE `lb_ims_settle_record` (
   KEY `care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='结算记录表';
 
--- ----------------------------
--- Table structure for lb_ims_settle_record_change
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_settle_record_change`;
+
+-- Table: lb_ims_settle_record_change
 CREATE TABLE `lb_ims_settle_record_change` (
   `settle_record_change_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `settle_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '结算记录主键',
@@ -17948,10 +16615,8 @@ CREATE TABLE `lb_ims_settle_record_change` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='结算变更记录表';
 
--- ----------------------------
--- Table structure for lb_ims_sign_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sign_record`;
+
+-- Table: lb_ims_sign_record
 CREATE TABLE `lb_ims_sign_record` (
   `sign_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `relation_id` varchar(32) NOT NULL DEFAULT '' COMMENT '关联记录主键',
@@ -17970,10 +16635,8 @@ CREATE TABLE `lb_ims_sign_record` (
   KEY `idx_org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='签字记录表';
 
--- ----------------------------
--- Table structure for lb_ims_sms
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms`;
+
+-- Table: lb_ims_sms
 CREATE TABLE `lb_ims_sms` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `number` int(10) NOT NULL DEFAULT '0' COMMENT '短信剩余条数',
@@ -17985,10 +16648,8 @@ CREATE TABLE `lb_ims_sms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信服务条数记录';
 
--- ----------------------------
--- Table structure for lb_ims_sms_send_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms_send_record`;
+
+-- Table: lb_ims_sms_send_record
 CREATE TABLE `lb_ims_sms_send_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '记录主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '',
@@ -18000,10 +16661,8 @@ CREATE TABLE `lb_ims_sms_send_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信发送记录';
 
--- ----------------------------
--- Table structure for lb_ims_sms_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms_task`;
+
+-- Table: lb_ims_sms_task
 CREATE TABLE `lb_ims_sms_task` (
   `task_id` varchar(32) NOT NULL DEFAULT '',
   `template_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '模板类型',
@@ -18021,10 +16680,8 @@ CREATE TABLE `lb_ims_sms_task` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信延时发送任务';
 
--- ----------------------------
--- Table structure for lb_ims_sms_task_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms_task_v2`;
+
+-- Table: lb_ims_sms_task_v2
 CREATE TABLE `lb_ims_sms_task_v2` (
   `task_id` varchar(32) NOT NULL DEFAULT '',
   `code_num` varchar(16) NOT NULL DEFAULT '' COMMENT '模板code',
@@ -18041,10 +16698,8 @@ CREATE TABLE `lb_ims_sms_task_v2` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信延时发送任务';
 
--- ----------------------------
--- Table structure for lb_ims_sms_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms_template`;
+
+-- Table: lb_ims_sms_template
 CREATE TABLE `lb_ims_sms_template` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `template_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'lb_ali_template',
@@ -18062,10 +16717,8 @@ CREATE TABLE `lb_ims_sms_template` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户定制模板短信发送内容';
 
--- ----------------------------
--- Table structure for lb_ims_sms_topup_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_sms_topup_order`;
+
+-- Table: lb_ims_sms_topup_order
 CREATE TABLE `lb_ims_sms_topup_order` (
   `order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '短信充值订单主键',
   `pay_way` tinyint(1) DEFAULT '0' COMMENT '支付方式  0微信、1支付宝',
@@ -18084,10 +16737,8 @@ CREATE TABLE `lb_ims_sms_topup_order` (
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信充值订单';
 
--- ----------------------------
--- Table structure for lb_ims_staff
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_staff`;
+
+-- Table: lb_ims_staff
 CREATE TABLE `lb_ims_staff` (
   `staff_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -18146,10 +16797,8 @@ CREATE TABLE `lb_ims_staff` (
   KEY `org_id` (`org_id`,`personnel_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='员工表';
 
--- ----------------------------
--- Table structure for lb_ims_staff_manage_warehouse
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_staff_manage_warehouse`;
+
+-- Table: lb_ims_staff_manage_warehouse
 CREATE TABLE `lb_ims_staff_manage_warehouse` (
   `id` varchar(32) NOT NULL COMMENT 'id',
   `staff_id` varchar(32) NOT NULL DEFAULT '' COMMENT '员工id',
@@ -18167,10 +16816,8 @@ CREATE TABLE `lb_ims_staff_manage_warehouse` (
   KEY `idx_is_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工管理仓库信息表';
 
--- ----------------------------
--- Table structure for lb_ims_statistics_time
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_statistics_time`;
+
+-- Table: lb_ims_statistics_time
 CREATE TABLE `lb_ims_statistics_time` (
   `statistics_time_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -18185,10 +16832,8 @@ CREATE TABLE `lb_ims_statistics_time` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='缴费/退费统计时间段范围';
 
--- ----------------------------
--- Table structure for lb_ims_supplier
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_supplier`;
+
+-- Table: lb_ims_supplier
 CREATE TABLE `lb_ims_supplier` (
   `supplier_id` varchar(32) NOT NULL COMMENT '主键',
   `supplier_name` varchar(64) DEFAULT '' COMMENT '供应商名称',
@@ -18211,10 +16856,8 @@ CREATE TABLE `lb_ims_supplier` (
   PRIMARY KEY (`supplier_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='供应商表';
 
--- ----------------------------
--- Table structure for lb_ims_supplies
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_supplies`;
+
+-- Table: lb_ims_supplies
 CREATE TABLE `lb_ims_supplies` (
   `supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_name` varchar(64) DEFAULT '' COMMENT '物资名称',
@@ -18237,10 +16880,8 @@ CREATE TABLE `lb_ims_supplies` (
   PRIMARY KEY (`supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='物资表';
 
--- ----------------------------
--- Table structure for lb_ims_supplies_category
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_supplies_category`;
+
+-- Table: lb_ims_supplies_category
 CREATE TABLE `lb_ims_supplies_category` (
   `supplies_category_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_category_name` varchar(64) DEFAULT '' COMMENT '类别名称',
@@ -18255,10 +16896,8 @@ CREATE TABLE `lb_ims_supplies_category` (
   PRIMARY KEY (`supplies_category_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='物资类别表';
 
--- ----------------------------
--- Table structure for lb_ims_supplies_drug
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_supplies_drug`;
+
+-- Table: lb_ims_supplies_drug
 CREATE TABLE `lb_ims_supplies_drug` (
   `supplies_drug_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_drug_name` varchar(64) DEFAULT NULL COMMENT '物资药品名称',
@@ -18283,10 +16922,8 @@ CREATE TABLE `lb_ims_supplies_drug` (
   PRIMARY KEY (`supplies_drug_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='物资表(药品)';
 
--- ----------------------------
--- Table structure for lb_ims_system_news
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_system_news`;
+
+-- Table: lb_ims_system_news
 CREATE TABLE `lb_ims_system_news` (
   `system_news_id` varchar(32) NOT NULL DEFAULT '',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者唯一标识',
@@ -18307,10 +16944,8 @@ CREATE TABLE `lb_ims_system_news` (
   KEY `idx_care_object_id` (`care_object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统消息表';
 
--- ----------------------------
--- Table structure for lb_ims_team
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_team`;
+
+-- Table: lb_ims_team
 CREATE TABLE `lb_ims_team` (
   `team_id` varchar(32) NOT NULL COMMENT '主键',
   `team_name` varchar(32) NOT NULL COMMENT '小组名称',
@@ -18326,10 +16961,8 @@ CREATE TABLE `lb_ims_team` (
   PRIMARY KEY (`team_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理小组表';
 
--- ----------------------------
--- Table structure for lb_ims_team_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_team_relation`;
+
+-- Table: lb_ims_team_relation
 CREATE TABLE `lb_ims_team_relation` (
   `team_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `team_id` varchar(32) NOT NULL COMMENT '小组主键',
@@ -18346,10 +16979,8 @@ CREATE TABLE `lb_ims_team_relation` (
   KEY `care_id` (`care_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='护理小组成员关系表';
 
--- ----------------------------
--- Table structure for lb_ims_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_template`;
+
+-- Table: lb_ims_template
 CREATE TABLE `lb_ims_template` (
   `template_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构',
@@ -18366,10 +16997,8 @@ CREATE TABLE `lb_ims_template` (
   PRIMARY KEY (`template_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自定义模板';
 
--- ----------------------------
--- Table structure for lb_ims_template_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_template_data`;
+
+-- Table: lb_ims_template_data
 CREATE TABLE `lb_ims_template_data` (
   `template_data_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构',
@@ -18384,10 +17013,8 @@ CREATE TABLE `lb_ims_template_data` (
   PRIMARY KEY (`template_data_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础数据管理';
 
--- ----------------------------
--- Table structure for lb_ims_template_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_template_object`;
+
+-- Table: lb_ims_template_object
 CREATE TABLE `lb_ims_template_object` (
   `template_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -18408,10 +17035,8 @@ CREATE TABLE `lb_ims_template_object` (
   PRIMARY KEY (`template_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者对应记录表';
 
--- ----------------------------
--- Table structure for lb_ims_train
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_train`;
+
+-- Table: lb_ims_train
 CREATE TABLE `lb_ims_train` (
   `train_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -18434,10 +17059,8 @@ CREATE TABLE `lb_ims_train` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='培训信息表';
 
--- ----------------------------
--- Table structure for lb_ims_train_staff
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_train_staff`;
+
+-- Table: lb_ims_train_staff
 CREATE TABLE `lb_ims_train_staff` (
   `train_staff_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -18453,10 +17076,8 @@ CREATE TABLE `lb_ims_train_staff` (
   KEY `idx_staff_id` (`staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='培训参与员工关系表';
 
--- ----------------------------
--- Table structure for lb_ims_transfer_supplies_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_transfer_supplies_record`;
+
+-- Table: lb_ims_transfer_supplies_record
 CREATE TABLE `lb_ims_transfer_supplies_record` (
   `transfer_supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构唯一标识',
@@ -18475,10 +17096,8 @@ CREATE TABLE `lb_ims_transfer_supplies_record` (
   PRIMARY KEY (`transfer_supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='调拨物资信息表';
 
--- ----------------------------
--- Table structure for lb_ims_tumble_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_tumble_config`;
+
+-- Table: lb_ims_tumble_config
 CREATE TABLE `lb_ims_tumble_config` (
   `tumble_config_id` varchar(64) NOT NULL COMMENT '主键',
   `start_number` int(10) DEFAULT '0' COMMENT '分数范围开始',
@@ -18495,10 +17114,8 @@ CREATE TABLE `lb_ims_tumble_config` (
   PRIMARY KEY (`tumble_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='跌倒评估标准配置';
 
--- ----------------------------
--- Table structure for lb_ims_visit
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_visit`;
+
+-- Table: lb_ims_visit
 CREATE TABLE `lb_ims_visit` (
   `visit_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `visit_name` varchar(128) DEFAULT '' COMMENT '来访人姓名',
@@ -18524,10 +17141,8 @@ CREATE TABLE `lb_ims_visit` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='来访信息';
 
--- ----------------------------
--- Table structure for lb_ims_warehouse
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_warehouse`;
+
+-- Table: lb_ims_warehouse
 CREATE TABLE `lb_ims_warehouse` (
   `warehouse_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_name` varchar(64) DEFAULT '' COMMENT '仓库名称',
@@ -18544,10 +17159,8 @@ CREATE TABLE `lb_ims_warehouse` (
   PRIMARY KEY (`warehouse_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='仓库表';
 
--- ----------------------------
--- Table structure for lb_ims_warehouse_change_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_warehouse_change_record`;
+
+-- Table: lb_ims_warehouse_change_record
 CREATE TABLE `lb_ims_warehouse_change_record` (
   `warehouse_record_id` varchar(32) NOT NULL COMMENT '主键',
   `supplies_type` tinyint(1) DEFAULT '0' COMMENT '物资来源/去向类型',
@@ -18593,10 +17206,8 @@ CREATE TABLE `lb_ims_warehouse_change_record` (
   KEY `idx_warehouse_id` (`warehouse_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='库存记录变动表';
 
--- ----------------------------
--- Table structure for lb_ims_warehouse_supplies
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ims_warehouse_supplies`;
+
+-- Table: lb_ims_warehouse_supplies
 CREATE TABLE `lb_ims_warehouse_supplies` (
   `warehouse_supplies_id` varchar(32) NOT NULL COMMENT '主键',
   `warehouse_id` varchar(32) DEFAULT NULL COMMENT '仓库id',
@@ -18614,10 +17225,8 @@ CREATE TABLE `lb_ims_warehouse_supplies` (
   PRIMARY KEY (`warehouse_supplies_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='库存表';
 
--- ----------------------------
--- Table structure for lb_infusions_alarm_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_infusions_alarm_device`;
+
+-- Table: lb_infusions_alarm_device
 CREATE TABLE `lb_infusions_alarm_device` (
   `infusions_alarm_device_id` varchar(64) NOT NULL COMMENT '主键',
   `master_control_box_id` varchar(64) DEFAULT '' COMMENT 'master_control_box_id',
@@ -18664,10 +17273,8 @@ CREATE TABLE `lb_infusions_alarm_device` (
   KEY `index_bed_id` (`bed_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_infusions_beacon
--- ----------------------------
-DROP TABLE IF EXISTS `lb_infusions_beacon`;
+
+-- Table: lb_infusions_beacon
 CREATE TABLE `lb_infusions_beacon` (
   `beacon_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -18691,10 +17298,8 @@ CREATE TABLE `lb_infusions_beacon` (
   KEY `mac` (`mac`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_infusions_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_infusions_data`;
+
+-- Table: lb_infusions_data
 CREATE TABLE `lb_infusions_data` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `iot_device_id` varchar(64) DEFAULT '' COMMENT '设备id（电信云平台注册返回）',
@@ -18727,10 +17332,8 @@ CREATE TABLE `lb_infusions_data` (
   KEY `lb_infusions_data_iot_device_id_IDX` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_infusions_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_infusions_record`;
+
+-- Table: lb_infusions_record
 CREATE TABLE `lb_infusions_record` (
   `id` int(11) NOT NULL COMMENT '主键',
   `alarm_device_id` varchar(64) DEFAULT '' COMMENT '报警设备id',
@@ -18745,10 +17348,8 @@ CREATE TABLE `lb_infusions_record` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='输液记录';
 
--- ----------------------------
--- Table structure for lb_installtool_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_installtool_account`;
+
+-- Table: lb_installtool_account
 CREATE TABLE `lb_installtool_account` (
   `installtool_account_id` varchar(32) NOT NULL COMMENT '主键',
   `username` varchar(11) DEFAULT '' COMMENT '用户名',
@@ -18760,10 +17361,8 @@ CREATE TABLE `lb_installtool_account` (
   PRIMARY KEY (`installtool_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_iot_app
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_app`;
+
+-- Table: lb_iot_app
 CREATE TABLE `lb_iot_app` (
   `id` int(11) NOT NULL COMMENT '主键',
   `app_id` varchar(256) DEFAULT '' COMMENT '应用唯一标识',
@@ -18783,10 +17382,8 @@ CREATE TABLE `lb_iot_app` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_iot_app_expand
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_app_expand`;
+
+-- Table: lb_iot_app_expand
 CREATE TABLE `lb_iot_app_expand` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `app_id` varchar(256) DEFAULT '' COMMENT '应用唯一标识',
@@ -18807,10 +17404,8 @@ CREATE TABLE `lb_iot_app_expand` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='增加应用扩展表';
 
--- ----------------------------
--- Table structure for lb_iot_app_factory
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_app_factory`;
+
+-- Table: lb_iot_app_factory
 CREATE TABLE `lb_iot_app_factory` (
   `id` int(11) NOT NULL COMMENT '主键',
   `app_id` varchar(256) DEFAULT '' COMMENT '应用唯一标识',
@@ -18830,10 +17425,8 @@ CREATE TABLE `lb_iot_app_factory` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工厂测试NB应用表';
 
--- ----------------------------
--- Table structure for lb_iot_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device`;
+
+-- Table: lb_iot_device
 CREATE TABLE `lb_iot_device` (
   `iot_device_id` varchar(64) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -18859,10 +17452,8 @@ CREATE TABLE `lb_iot_device` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备注册';
 
--- ----------------------------
--- Table structure for lb_iot_device_device_software_version_change_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_device_software_version_change_record`;
+
+-- Table: lb_iot_device_device_software_version_change_record
 CREATE TABLE `lb_iot_device_device_software_version_change_record` (
   `iot_device_device_software_version_change_record_id` varchar(64) NOT NULL DEFAULT '' COMMENT '版本记录id',
   `device_unique_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备唯一标识',
@@ -18879,10 +17470,8 @@ CREATE TABLE `lb_iot_device_device_software_version_change_record` (
   KEY `idx_device_id` (`device_unique_id`,`software_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本变更记录表';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_upgrade_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_upgrade_config`;
+
+-- Table: lb_iot_device_software_upgrade_config
 CREATE TABLE `lb_iot_device_software_upgrade_config` (
   `device_category` smallint(6) NOT NULL DEFAULT '-1' COMMENT '设备种类',
   `device_iteration_number` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '设备迭代号',
@@ -18899,10 +17488,8 @@ CREATE TABLE `lb_iot_device_software_upgrade_config` (
   PRIMARY KEY (`device_category`,`device_iteration_number`,`channel`,`software_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件升级配置表';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_upgrade_flag
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_upgrade_flag`;
+
+-- Table: lb_iot_device_software_upgrade_flag
 CREATE TABLE `lb_iot_device_software_upgrade_flag` (
   `iot_device_software_upgrade_flag_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'id',
   `device_unique_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备唯一标识',
@@ -18918,10 +17505,8 @@ CREATE TABLE `lb_iot_device_software_upgrade_flag` (
   PRIMARY KEY (`iot_device_software_upgrade_flag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_iot_device_software_upgrade_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_upgrade_task`;
+
+-- Table: lb_iot_device_software_upgrade_task
 CREATE TABLE `lb_iot_device_software_upgrade_task` (
   `iot_device_software_upgrade_task_id` varchar(64) NOT NULL DEFAULT '' COMMENT '任务id',
   `org_id` varchar(64) DEFAULT '' COMMENT '项目id',
@@ -18941,10 +17526,8 @@ CREATE TABLE `lb_iot_device_software_upgrade_task` (
   PRIMARY KEY (`iot_device_software_upgrade_task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本升级任务表';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_upgrade_task_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_upgrade_task_detail`;
+
+-- Table: lb_iot_device_software_upgrade_task_detail
 CREATE TABLE `lb_iot_device_software_upgrade_task_detail` (
   `iot_device_software_upgrade_task_detail_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `iot_device_software_upgrade_task_id` varchar(64) NOT NULL DEFAULT '' COMMENT '任务id',
@@ -18968,10 +17551,8 @@ CREATE TABLE `lb_iot_device_software_upgrade_task_detail` (
   KEY `idx_ota_upgrade_task_id` (`iot_device_software_upgrade_task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本升级任务详情表';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_version_file_sharding
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_version_file_sharding`;
+
+-- Table: lb_iot_device_software_version_file_sharding
 CREATE TABLE `lb_iot_device_software_version_file_sharding` (
   `iot_device_software_version_file_sharding_id` varchar(64) NOT NULL DEFAULT '',
   `iot_device_software_version_record_id` varchar(64) NOT NULL DEFAULT '' COMMENT '版本id',
@@ -18986,10 +17567,8 @@ CREATE TABLE `lb_iot_device_software_version_file_sharding` (
   KEY `idx_version_id` (`iot_device_software_version_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本文件分片数据表';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_version_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_version_record`;
+
+-- Table: lb_iot_device_software_version_record
 CREATE TABLE `lb_iot_device_software_version_record` (
   `iot_device_software_version_record_id` varchar(64) NOT NULL COMMENT '版本id',
   `device_category` smallint(6) NOT NULL DEFAULT '-1' COMMENT '设备种类',
@@ -19018,10 +17597,8 @@ CREATE TABLE `lb_iot_device_software_version_record` (
   KEY `idx_version_name` (`version_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本记录表 ';
 
--- ----------------------------
--- Table structure for lb_iot_device_software_version_record_org_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_software_version_record_org_relation`;
+
+-- Table: lb_iot_device_software_version_record_org_relation
 CREATE TABLE `lb_iot_device_software_version_record_org_relation` (
   `relation_id` varchar(64) NOT NULL DEFAULT '' COMMENT '关联id',
   `iot_device_software_version_record_id` varchar(64) NOT NULL DEFAULT '' COMMENT '版本id',
@@ -19037,10 +17614,8 @@ CREATE TABLE `lb_iot_device_software_version_record_org_relation` (
   KEY `idx_org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物联设备的软件版本记录-项目关联表 ';
 
--- ----------------------------
--- Table structure for lb_iot_device_test
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_test`;
+
+-- Table: lb_iot_device_test
 CREATE TABLE `lb_iot_device_test` (
   `iot_device_id` varchar(64) NOT NULL COMMENT '主键',
   `imei` varchar(64) DEFAULT '' COMMENT '设备编号',
@@ -19056,10 +17631,8 @@ CREATE TABLE `lb_iot_device_test` (
   PRIMARY KEY (`iot_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备注册测试';
 
--- ----------------------------
--- Table structure for lb_iot_device_track
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_track`;
+
+-- Table: lb_iot_device_track
 CREATE TABLE `lb_iot_device_track` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -19128,10 +17701,8 @@ CREATE TABLE `lb_iot_device_track` (
   KEY `care_object_id` (`care_object_id`,`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_iot_device_track_part
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_device_track_part`;
+
+-- Table: lb_iot_device_track_part
 CREATE TABLE `lb_iot_device_track_part` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `is_outdoor` tinyint(1) DEFAULT '0' COMMENT '0信标位置,1非信标位置(粗定位,gps,wifi)',
@@ -19202,10 +17773,8 @@ CREATE TABLE `lb_iot_device_track_part` (
   KEY `org_id_update` (`org_id`,`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='存储部分轨迹数据，提供给信息交互服务器查询使用(目前:13,23)';
 
--- ----------------------------
--- Table structure for lb_iot_product
--- ----------------------------
-DROP TABLE IF EXISTS `lb_iot_product`;
+
+-- Table: lb_iot_product
 CREATE TABLE `lb_iot_product` (
   `iot_product_id` varchar(32) NOT NULL COMMENT '主键',
   `device_type` mediumint(9) DEFAULT '0' COMMENT '设备类型',
@@ -19226,10 +17795,8 @@ CREATE TABLE `lb_iot_product` (
   PRIMARY KEY (`iot_product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='自定义产品';
 
--- ----------------------------
--- Table structure for lb_jpush_member_re
--- ----------------------------
-DROP TABLE IF EXISTS `lb_jpush_member_re`;
+
+-- Table: lb_jpush_member_re
 CREATE TABLE `lb_jpush_member_re` (
   `jpush_member_id` varchar(32) NOT NULL COMMENT '主键',
   `tag` varchar(32) DEFAULT NULL COMMENT '推送标签',
@@ -19242,10 +17809,8 @@ CREATE TABLE `lb_jpush_member_re` (
   PRIMARY KEY (`jpush_member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_jpush_msg
--- ----------------------------
-DROP TABLE IF EXISTS `lb_jpush_msg`;
+
+-- Table: lb_jpush_msg
 CREATE TABLE `lb_jpush_msg` (
   `jpush_msg_id` varchar(32) NOT NULL COMMENT '主键',
   `msg_id` bigint(32) DEFAULT NULL COMMENT '消息id',
@@ -19260,10 +17825,8 @@ CREATE TABLE `lb_jpush_msg` (
   PRIMARY KEY (`jpush_msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='推送消息';
 
--- ----------------------------
--- Table structure for lb_jpush_msg_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_jpush_msg_config`;
+
+-- Table: lb_jpush_msg_config
 CREATE TABLE `lb_jpush_msg_config` (
   `msg_type` int(11) NOT NULL COMMENT '消息类型',
   `msg_category` varchar(8) NOT NULL DEFAULT '' COMMENT '消息类别',
@@ -19277,10 +17840,8 @@ CREATE TABLE `lb_jpush_msg_config` (
   PRIMARY KEY (`msg_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='极光推送消息配置表';
 
--- ----------------------------
--- Table structure for lb_jpush_third_party_channel_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_jpush_third_party_channel_config`;
+
+-- Table: lb_jpush_third_party_channel_config
 CREATE TABLE `lb_jpush_third_party_channel_config` (
   `app_type` tinyint(1) NOT NULL COMMENT '应用类型',
   `msg_category` varchar(8) NOT NULL DEFAULT '' COMMENT '消息类别',
@@ -19293,10 +17854,8 @@ CREATE TABLE `lb_jpush_third_party_channel_config` (
   PRIMARY KEY (`app_type`,`msg_category`,`third_party_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='极光推送第三方通道配置表';
 
--- ----------------------------
--- Table structure for lb_lease_bill
--- ----------------------------
-DROP TABLE IF EXISTS `lb_lease_bill`;
+
+-- Table: lb_lease_bill
 CREATE TABLE `lb_lease_bill` (
   `lease_bill_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -19323,10 +17882,8 @@ CREATE TABLE `lb_lease_bill` (
   KEY `idx_payment_status` (`payment_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房屋租赁计费单表';
 
--- ----------------------------
--- Table structure for lb_lease_bill_pay_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_lease_bill_pay_record`;
+
+-- Table: lb_lease_bill_pay_record
 CREATE TABLE `lb_lease_bill_pay_record` (
   `lease_bill_pay_record_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -19348,10 +17905,8 @@ CREATE TABLE `lb_lease_bill_pay_record` (
   KEY `idx_bill_id` (`lease_bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房屋租赁缴费流水表';
 
--- ----------------------------
--- Table structure for lb_lease_registration
--- ----------------------------
-DROP TABLE IF EXISTS `lb_lease_registration`;
+
+-- Table: lb_lease_registration
 CREATE TABLE `lb_lease_registration` (
   `lease_registration_id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -19378,10 +17933,8 @@ CREATE TABLE `lb_lease_registration` (
   KEY `idx_owner_phone` (`owner_phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='租赁登记表';
 
--- ----------------------------
--- Table structure for lb_load_table
--- ----------------------------
-DROP TABLE IF EXISTS `lb_load_table`;
+
+-- Table: lb_load_table
 CREATE TABLE `lb_load_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(32) NOT NULL DEFAULT '' COMMENT '表名',
@@ -19392,10 +17945,8 @@ CREATE TABLE `lb_load_table` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_location_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_location_record`;
+
+-- Table: lb_location_record
 CREATE TABLE `lb_location_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '看护对象',
@@ -19412,10 +17963,8 @@ CREATE TABLE `lb_location_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='位置记录';
 
--- ----------------------------
--- Table structure for lb_log_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_log_record`;
+
+-- Table: lb_log_record
 CREATE TABLE `lb_log_record` (
   `log_record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `software_type` int(11) DEFAULT NULL COMMENT '软件类型',
@@ -19433,10 +17982,8 @@ CREATE TABLE `lb_log_record` (
   PRIMARY KEY (`log_record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='上传日志记录表';
 
--- ----------------------------
--- Table structure for lb_logistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_logistics`;
+
+-- Table: lb_logistics
 CREATE TABLE `lb_logistics` (
   `logistics_id` varchar(32) NOT NULL,
   `goods_order_id` varchar(32) NOT NULL COMMENT '订单',
@@ -19456,10 +18003,8 @@ CREATE TABLE `lb_logistics` (
   KEY `logistics_company_id` (`logistics_company_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物流表';
 
--- ----------------------------
--- Table structure for lb_logistics_company
--- ----------------------------
-DROP TABLE IF EXISTS `lb_logistics_company`;
+
+-- Table: lb_logistics_company
 CREATE TABLE `lb_logistics_company` (
   `logistics_company_id` varchar(32) NOT NULL COMMENT '主键',
   `company_name` varchar(32) NOT NULL COMMENT '公司名称',
@@ -19472,10 +18017,8 @@ CREATE TABLE `lb_logistics_company` (
   PRIMARY KEY (`logistics_company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物流公司表';
 
--- ----------------------------
--- Table structure for lb_mainframe
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mainframe`;
+
+-- Table: lb_mainframe
 CREATE TABLE `lb_mainframe` (
   `mainframe_id` varchar(32) NOT NULL COMMENT '主键',
   `num` varchar(32) DEFAULT '' COMMENT '主机号',
@@ -19492,10 +18035,8 @@ CREATE TABLE `lb_mainframe` (
   KEY `orgid_num` (`org_id`,`num`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_mainframe_area_re
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mainframe_area_re`;
+
+-- Table: lb_mainframe_area_re
 CREATE TABLE `lb_mainframe_area_re` (
   `mainframe_area_re_id` varchar(32) NOT NULL COMMENT '主键',
   `mainframe_id` varchar(32) DEFAULT '' COMMENT '主机主键',
@@ -19518,10 +18059,8 @@ CREATE TABLE `lb_mainframe_area_re` (
   KEY `idx_device_imei` (`device_imei`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_mainframe_extension
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mainframe_extension`;
+
+-- Table: lb_mainframe_extension
 CREATE TABLE `lb_mainframe_extension` (
   `extension_id` varchar(32) NOT NULL COMMENT '主键',
   `extension_num` varchar(32) DEFAULT '' COMMENT '分机号',
@@ -19537,10 +18076,8 @@ CREATE TABLE `lb_mainframe_extension` (
   PRIMARY KEY (`extension_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='云分机表';
 
--- ----------------------------
--- Table structure for lb_mainframe_sn
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mainframe_sn`;
+
+-- Table: lb_mainframe_sn
 CREATE TABLE `lb_mainframe_sn` (
   `mainframe_sn_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT NULL COMMENT '机构id',
@@ -19556,10 +18093,8 @@ CREATE TABLE `lb_mainframe_sn` (
   KEY `lb_mainframe_sn_org_id_IDX` (`org_id`,`mainframe_number`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='主机号绑定序列号关系';
 
--- ----------------------------
--- Table structure for lb_mainframe_subsidiary
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mainframe_subsidiary`;
+
+-- Table: lb_mainframe_subsidiary
 CREATE TABLE `lb_mainframe_subsidiary` (
   `mainframe_subsidiary_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -19575,10 +18110,8 @@ CREATE TABLE `lb_mainframe_subsidiary` (
   PRIMARY KEY (`mainframe_subsidiary_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='主机附加关系及信息';
 
--- ----------------------------
--- Table structure for lb_master_control_box
--- ----------------------------
-DROP TABLE IF EXISTS `lb_master_control_box`;
+
+-- Table: lb_master_control_box
 CREATE TABLE `lb_master_control_box` (
   `master_control_box_id` varchar(64) NOT NULL COMMENT '主键',
   `mac` varchar(32) DEFAULT '' COMMENT 'mac地址',
@@ -19611,10 +18144,8 @@ CREATE TABLE `lb_master_control_box` (
   KEY `orgId` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='主控制盒';
 
--- ----------------------------
--- Table structure for lb_mattress
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress`;
+
+-- Table: lb_mattress
 CREATE TABLE `lb_mattress` (
   `mattress_id` varchar(32) NOT NULL COMMENT '主键',
   `device_type` tinyint(3) DEFAULT '101' COMMENT '101-wifi床垫 103-wifi床带 104-4g床垫 111-蓝牙床垫',
@@ -19656,10 +18187,8 @@ CREATE TABLE `lb_mattress` (
   KEY `deviceType` (`device_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='智能床垫';
 
--- ----------------------------
--- Table structure for lb_mattress_cluster_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_cluster_config`;
+
+-- Table: lb_mattress_cluster_config
 CREATE TABLE `lb_mattress_cluster_config` (
   `id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -19672,10 +18201,8 @@ CREATE TABLE `lb_mattress_cluster_config` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='床垫集群配置表';
 
--- ----------------------------
--- Table structure for lb_mattress_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_config`;
+
+-- Table: lb_mattress_config
 CREATE TABLE `lb_mattress_config` (
   `id` varchar(32) NOT NULL COMMENT '主键ID',
   `device_id` varchar(255) NOT NULL DEFAULT '' COMMENT '床垫设备id',
@@ -19700,10 +18227,8 @@ CREATE TABLE `lb_mattress_config` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='床垫配置表';
 
--- ----------------------------
--- Table structure for lb_mattress_device_yy
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_device_yy`;
+
+-- Table: lb_mattress_device_yy
 CREATE TABLE `lb_mattress_device_yy` (
   `mattress_device_id` varchar(32) NOT NULL COMMENT '设备内部唯一ID',
   `sn` varchar(32) NOT NULL DEFAULT '' COMMENT ' 设备序列号',
@@ -19720,10 +18245,8 @@ CREATE TABLE `lb_mattress_device_yy` (
   PRIMARY KEY (`mattress_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='跃杨床垫-床位绑定关系表';
 
--- ----------------------------
--- Table structure for lb_mattress_docking_config_yy
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_docking_config_yy`;
+
+-- Table: lb_mattress_docking_config_yy
 CREATE TABLE `lb_mattress_docking_config_yy` (
   `config_id` varchar(32) NOT NULL COMMENT '对接设置id',
   `docking_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '对接状态 1开启 0 关闭',
@@ -19741,10 +18264,8 @@ CREATE TABLE `lb_mattress_docking_config_yy` (
   PRIMARY KEY (`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='跃杨床垫对接设置表';
 
--- ----------------------------
--- Table structure for lb_mattress_forward
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_forward`;
+
+-- Table: lb_mattress_forward
 CREATE TABLE `lb_mattress_forward` (
   `id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'orgId',
@@ -19758,10 +18279,8 @@ CREATE TABLE `lb_mattress_forward` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构内网床垫转发表';
 
--- ----------------------------
--- Table structure for lb_mattress_secret
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mattress_secret`;
+
+-- Table: lb_mattress_secret
 CREATE TABLE `lb_mattress_secret` (
   `device_name` varchar(32) NOT NULL COMMENT '床垫名称',
   `device_secret` varchar(32) NOT NULL COMMENT '床垫密文',
@@ -19779,10 +18298,8 @@ CREATE TABLE `lb_mattress_secret` (
   UNIQUE KEY `device_secret_unique` (`device_secret`) USING BTREE COMMENT '床垫密文唯一索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='床垫-密文关联表';
 
--- ----------------------------
--- Table structure for lb_meal_subsidy
--- ----------------------------
-DROP TABLE IF EXISTS `lb_meal_subsidy`;
+
+-- Table: lb_meal_subsidy
 CREATE TABLE `lb_meal_subsidy` (
   `meal_subsidy_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `setting_id` varchar(32) NOT NULL DEFAULT '' COMMENT '补贴设置主键',
@@ -19801,10 +18318,8 @@ CREATE TABLE `lb_meal_subsidy` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='餐次补贴表';
 
--- ----------------------------
--- Table structure for lb_meals_business_hours
--- ----------------------------
-DROP TABLE IF EXISTS `lb_meals_business_hours`;
+
+-- Table: lb_meals_business_hours
 CREATE TABLE `lb_meals_business_hours` (
   `business_hours_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -19825,10 +18340,8 @@ CREATE TABLE `lb_meals_business_hours` (
   KEY `food_shop_id_IDX` (`food_shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='助餐点餐次营业时间设置';
 
--- ----------------------------
--- Table structure for lb_mobile_wifi
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mobile_wifi`;
+
+-- Table: lb_mobile_wifi
 CREATE TABLE `lb_mobile_wifi` (
   `wifi_mac` varchar(32) NOT NULL COMMENT 'wifi地址',
   `content` varchar(64) NOT NULL DEFAULT '' COMMENT 'wifi说明',
@@ -19840,10 +18353,8 @@ CREATE TABLE `lb_mobile_wifi` (
   PRIMARY KEY (`wifi_mac`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='移动WIFI记录表';
 
--- ----------------------------
--- Table structure for lb_mq_fail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_mq_fail`;
+
+-- Table: lb_mq_fail
 CREATE TABLE `lb_mq_fail` (
   `mq_fail_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `type` tinyint(3) DEFAULT '1' COMMENT '类型,1:位置信息',
@@ -19856,10 +18367,8 @@ CREATE TABLE `lb_mq_fail` (
   PRIMARY KEY (`mq_fail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='MQTT失败记录表';
 
--- ----------------------------
--- Table structure for lb_msg_read_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_msg_read_record`;
+
+-- Table: lb_msg_read_record
 CREATE TABLE `lb_msg_read_record` (
   `account_id` varchar(64) NOT NULL COMMENT '用户标识',
   `msg_id` varchar(64) NOT NULL DEFAULT '' COMMENT '消息标识',
@@ -19872,10 +18381,8 @@ CREATE TABLE `lb_msg_read_record` (
   PRIMARY KEY (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='消息已读记录表';
 
--- ----------------------------
--- Table structure for lb_nb_api_result
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_api_result`;
+
+-- Table: lb_nb_api_result
 CREATE TABLE `lb_nb_api_result` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `app_id` varchar(32) DEFAULT NULL COMMENT '应用id',
@@ -19891,10 +18398,8 @@ CREATE TABLE `lb_nb_api_result` (
   KEY `lb_nb_api_result_iot_device_id_IDX` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='电信应用api调用记录表';
 
--- ----------------------------
--- Table structure for lb_nb_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_config`;
+
+-- Table: lb_nb_config
 CREATE TABLE `lb_nb_config` (
   `id` int(11) NOT NULL COMMENT '主键',
   `device_id` varchar(64) DEFAULT NULL COMMENT '设备主键',
@@ -19906,10 +18411,8 @@ CREATE TABLE `lb_nb_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_nb_data
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_data`;
+
+-- Table: lb_nb_data
 CREATE TABLE `lb_nb_data` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `msg_type` varchar(255) DEFAULT '' COMMENT '上报/下发',
@@ -19944,10 +18447,8 @@ CREATE TABLE `lb_nb_data` (
   KEY `device_type` (`device_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_nb_data_infusions
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_data_infusions`;
+
+-- Table: lb_nb_data_infusions
 CREATE TABLE `lb_nb_data_infusions` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `msg_type` varchar(255) DEFAULT '' COMMENT '上报/下发',
@@ -19969,10 +18470,8 @@ CREATE TABLE `lb_nb_data_infusions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_nb_data_private
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_data_private`;
+
+-- Table: lb_nb_data_private
 CREATE TABLE `lb_nb_data_private` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(64) DEFAULT NULL COMMENT '机构id',
@@ -19988,10 +18487,8 @@ CREATE TABLE `lb_nb_data_private` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='私有化服务nb数据异常接收记录';
 
--- ----------------------------
--- Table structure for lb_nb_hardware_version
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_hardware_version`;
+
+-- Table: lb_nb_hardware_version
 CREATE TABLE `lb_nb_hardware_version` (
   `nb_hardware_version_id` varchar(32) NOT NULL COMMENT '主键ID',
   `hardware_version` varchar(32) NOT NULL DEFAULT '' COMMENT '硬件版本号',
@@ -20004,10 +18501,8 @@ CREATE TABLE `lb_nb_hardware_version` (
   PRIMARY KEY (`nb_hardware_version_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='NB设备硬件版本信息表';
 
--- ----------------------------
--- Table structure for lb_nb_test_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nb_test_config`;
+
+-- Table: lb_nb_test_config
 CREATE TABLE `lb_nb_test_config` (
   `id` int(11) NOT NULL COMMENT '主键',
   `type` varchar(255) DEFAULT NULL COMMENT '类型',
@@ -20017,10 +18512,8 @@ CREATE TABLE `lb_nb_test_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_nbdata_export_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nbdata_export_task`;
+
+-- Table: lb_nbdata_export_task
 CREATE TABLE `lb_nbdata_export_task` (
   `task_id` varchar(32) NOT NULL DEFAULT '' COMMENT '任务id',
   `device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设备电信id',
@@ -20039,10 +18532,8 @@ CREATE TABLE `lb_nbdata_export_task` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_night_toilet_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_night_toilet_report`;
+
+-- Table: lb_night_toilet_report
 CREATE TABLE `lb_night_toilet_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -20062,10 +18553,8 @@ CREATE TABLE `lb_night_toilet_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='夜尿报表';
 
--- ----------------------------
--- Table structure for lb_notice
--- ----------------------------
-DROP TABLE IF EXISTS `lb_notice`;
+
+-- Table: lb_notice
 CREATE TABLE `lb_notice` (
   `notice_id` varchar(32) NOT NULL COMMENT '主键',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
@@ -20083,20 +18572,16 @@ CREATE TABLE `lb_notice` (
   PRIMARY KEY (`notice_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
 
--- ----------------------------
--- Table structure for lb_number
--- ----------------------------
-DROP TABLE IF EXISTS `lb_number`;
+
+-- Table: lb_number
 CREATE TABLE `lb_number` (
   `num` smallint(6) NOT NULL COMMENT '主键',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数字表（业务查询使用，不得擅自增删改）';
 
--- ----------------------------
--- Table structure for lb_nurse_app_indicators_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nurse_app_indicators_record`;
+
+-- Table: lb_nurse_app_indicators_record
 CREATE TABLE `lb_nurse_app_indicators_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT NULL COMMENT '看护对象',
@@ -20120,10 +18605,8 @@ CREATE TABLE `lb_nurse_app_indicators_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='护士APP上报指标记录(体温\\血糖\\呼吸)';
 
--- ----------------------------
--- Table structure for lb_nurse_recode
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nurse_recode`;
+
+-- Table: lb_nurse_recode
 CREATE TABLE `lb_nurse_recode` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者id',
@@ -20159,10 +18642,8 @@ CREATE TABLE `lb_nurse_recode` (
   KEY `record_time_index` (`record_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_nursing_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nursing_care_object`;
+
+-- Table: lb_nursing_care_object
 CREATE TABLE `lb_nursing_care_object` (
   `nursing_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `nursing_name` varchar(32) DEFAULT NULL COMMENT '护士姓名',
@@ -20179,10 +18660,8 @@ CREATE TABLE `lb_nursing_care_object` (
   KEY `nursing_worker_id` (`nursing_worker_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_nursing_worker
--- ----------------------------
-DROP TABLE IF EXISTS `lb_nursing_worker`;
+
+-- Table: lb_nursing_worker
 CREATE TABLE `lb_nursing_worker` (
   `nursing_worker_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构',
@@ -20201,14 +18680,14 @@ CREATE TABLE `lb_nursing_worker` (
   `identity` varchar(32) DEFAULT '' COMMENT '身份证',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
+  `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(255) NOT NULL DEFAULT '' COMMENT '密码',
   PRIMARY KEY (`nursing_worker_id`),
   KEY `lb_nursing_worker_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='护工';
 
--- ----------------------------
--- Table structure for lb_onenet_physical_model_mapping
--- ----------------------------
-DROP TABLE IF EXISTS `lb_onenet_physical_model_mapping`;
+
+-- Table: lb_onenet_physical_model_mapping
 CREATE TABLE `lb_onenet_physical_model_mapping` (
   `id` varchar(16) NOT NULL DEFAULT '',
   `pre_id` varchar(16) NOT NULL DEFAULT '' COMMENT '上一级id',
@@ -20228,10 +18707,8 @@ CREATE TABLE `lb_onenet_physical_model_mapping` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='oneNET物模型映射';
 
--- ----------------------------
--- Table structure for lb_operation_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_operation_log`;
+
+-- Table: lb_operation_log
 CREATE TABLE `lb_operation_log` (
   `id` varchar(64) NOT NULL DEFAULT '' COMMENT '操作日志主键',
   `account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '用户主键',
@@ -20252,10 +18729,8 @@ CREATE TABLE `lb_operation_log` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='操作日志';
 
--- ----------------------------
--- Table structure for lb_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order`;
+
+-- Table: lb_order
 CREATE TABLE `lb_order` (
   `order_id` varchar(32) NOT NULL COMMENT '主键',
   `username` varchar(32) DEFAULT '' COMMENT '用户',
@@ -20287,10 +18762,8 @@ CREATE TABLE `lb_order` (
   KEY `lb_order_create_time_IDX` (`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_order_care_object
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order_care_object`;
+
+-- Table: lb_order_care_object
 CREATE TABLE `lb_order_care_object` (
   `order_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `pay_account_id` varchar(64) DEFAULT '' COMMENT '支付用户id',
@@ -20325,10 +18798,8 @@ CREATE TABLE `lb_order_care_object` (
   KEY `lb_order_care_object_identity_IDX` (`identity`,`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者订单表';
 
--- ----------------------------
--- Table structure for lb_order_cart
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order_cart`;
+
+-- Table: lb_order_cart
 CREATE TABLE `lb_order_cart` (
   `order_cart_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户',
@@ -20344,10 +18815,8 @@ CREATE TABLE `lb_order_cart` (
   KEY `goods_attribute_id` (`goods_attribute_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购物车表';
 
--- ----------------------------
--- Table structure for lb_order_details
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order_details`;
+
+-- Table: lb_order_details
 CREATE TABLE `lb_order_details` (
   `order_details_id` varchar(32) NOT NULL COMMENT '主键',
   `goods_order_id` varchar(32) NOT NULL COMMENT '订单',
@@ -20372,10 +18841,8 @@ CREATE TABLE `lb_order_details` (
   KEY `goods_order_id` (`goods_order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单详情表';
 
--- ----------------------------
--- Table structure for lb_order_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order_device`;
+
+-- Table: lb_order_device
 CREATE TABLE `lb_order_device` (
   `order_device_id` varchar(64) NOT NULL COMMENT '主键',
   `order_id` varchar(32) DEFAULT NULL COMMENT '订单主键',
@@ -20388,10 +18855,8 @@ CREATE TABLE `lb_order_device` (
   PRIMARY KEY (`order_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_order_org
--- ----------------------------
-DROP TABLE IF EXISTS `lb_order_org`;
+
+-- Table: lb_order_org
 CREATE TABLE `lb_order_org` (
   `lb_order_org_id` varchar(64) NOT NULL COMMENT '主键',
   `order_id` varchar(64) DEFAULT NULL COMMENT '订单主键',
@@ -20403,10 +18868,8 @@ CREATE TABLE `lb_order_org` (
   PRIMARY KEY (`lb_order_org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_org_account_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_account_relation`;
+
+-- Table: lb_org_account_relation
 CREATE TABLE `lb_org_account_relation` (
   `account_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '平台id',
@@ -20419,10 +18882,8 @@ CREATE TABLE `lb_org_account_relation` (
   PRIMARY KEY (`account_relation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='不同平台用户关联信息表';
 
--- ----------------------------
--- Table structure for lb_org_alarm_delay_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_alarm_delay_config`;
+
+-- Table: lb_org_alarm_delay_config
 CREATE TABLE `lb_org_alarm_delay_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构唯一标识',
@@ -20437,10 +18898,8 @@ CREATE TABLE `lb_org_alarm_delay_config` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='延后处警配置';
 
--- ----------------------------
--- Table structure for lb_org_alarm_push_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_alarm_push_config`;
+
+-- Table: lb_org_alarm_push_config
 CREATE TABLE `lb_org_alarm_push_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20459,10 +18918,8 @@ CREATE TABLE `lb_org_alarm_push_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目报警推送设备表';
 
--- ----------------------------
--- Table structure for lb_org_app_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_app_config`;
+
+-- Table: lb_org_app_config
 CREATE TABLE `lb_org_app_config` (
   `org_app_id` varchar(32) NOT NULL DEFAULT '',
   `org_id` varchar(32) NOT NULL DEFAULT '',
@@ -20479,10 +18936,8 @@ CREATE TABLE `lb_org_app_config` (
   PRIMARY KEY (`org_app_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目-应用配置表';
 
--- ----------------------------
--- Table structure for lb_org_approval_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_approval_record`;
+
+-- Table: lb_org_approval_record
 CREATE TABLE `lb_org_approval_record` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `org_id` varchar(64) DEFAULT '' COMMENT '项目id',
@@ -20564,10 +19019,8 @@ CREATE TABLE `lb_org_approval_record` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批记录表';
 
--- ----------------------------
--- Table structure for lb_org_authorize_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_authorize_relation`;
+
+-- Table: lb_org_authorize_relation
 CREATE TABLE `lb_org_authorize_relation` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(100) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20583,10 +19036,8 @@ CREATE TABLE `lb_org_authorize_relation` (
   KEY `authorize_id_IDX` (`authorize_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构与授权方关联关系表';
 
--- ----------------------------
--- Table structure for lb_org_button_show
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_button_show`;
+
+-- Table: lb_org_button_show
 CREATE TABLE `lb_org_button_show` (
   `org_button_show_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20603,10 +19054,8 @@ CREATE TABLE `lb_org_button_show` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台按钮显示设置';
 
--- ----------------------------
--- Table structure for lb_org_care_attention
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_care_attention`;
+
+-- Table: lb_org_care_attention
 CREATE TABLE `lb_org_care_attention` (
   `care_attention_id` varchar(64) NOT NULL COMMENT '注意事项唯一标识',
   `attention_type` tinyint(1) DEFAULT '1' COMMENT '1注意事项一、2 注意事项二、3 注意事项三、4 注意事项四、5饮食类型、6医保类型、7危重类型、8长者类别',
@@ -20626,10 +19075,8 @@ CREATE TABLE `lb_org_care_attention` (
   PRIMARY KEY (`care_attention_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_org_care_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_care_config`;
+
+-- Table: lb_org_care_config
 CREATE TABLE `lb_org_care_config` (
   `org_care_config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构主键',
@@ -20655,10 +19102,8 @@ CREATE TABLE `lb_org_care_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_org_care_level
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_care_level`;
+
+-- Table: lb_org_care_level
 CREATE TABLE `lb_org_care_level` (
   `care_level_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -20681,10 +19126,8 @@ CREATE TABLE `lb_org_care_level` (
   PRIMARY KEY (`care_level_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_org_contacts
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_contacts`;
+
+-- Table: lb_org_contacts
 CREATE TABLE `lb_org_contacts` (
   `org_contacts_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) DEFAULT '' COMMENT '机构id',
@@ -20703,10 +19146,8 @@ CREATE TABLE `lb_org_contacts` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_org_csr_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_csr_config`;
+
+-- Table: lb_org_csr_config
 CREATE TABLE `lb_org_csr_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20725,10 +19166,8 @@ CREATE TABLE `lb_org_csr_config` (
   PRIMARY KEY (`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目呼叫配置';
 
--- ----------------------------
--- Table structure for lb_org_customer_phone
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_customer_phone`;
+
+-- Table: lb_org_customer_phone
 CREATE TABLE `lb_org_customer_phone` (
   `customer_phone_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20742,10 +19181,8 @@ CREATE TABLE `lb_org_customer_phone` (
   UNIQUE KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目客服电话';
 
--- ----------------------------
--- Table structure for lb_org_device_contact
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_device_contact`;
+
+-- Table: lb_org_device_contact
 CREATE TABLE `lb_org_device_contact` (
   `record_id` varchar(32) NOT NULL COMMENT '记录',
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -20762,10 +19199,8 @@ CREATE TABLE `lb_org_device_contact` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目设备关联表';
 
--- ----------------------------
--- Table structure for lb_org_device_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_device_relation`;
+
+-- Table: lb_org_device_relation
 CREATE TABLE `lb_org_device_relation` (
   `id` varchar(32) NOT NULL,
   `org_id` varchar(32) NOT NULL DEFAULT '',
@@ -20778,10 +19213,8 @@ CREATE TABLE `lb_org_device_relation` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构绑定过的设备记录';
 
--- ----------------------------
--- Table structure for lb_org_device_sign_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_device_sign_config`;
+
+-- Table: lb_org_device_sign_config
 CREATE TABLE `lb_org_device_sign_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -20799,10 +19232,8 @@ CREATE TABLE `lb_org_device_sign_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目设备标识配置表';
 
--- ----------------------------
--- Table structure for lb_org_hierarchical
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_hierarchical`;
+
+-- Table: lb_org_hierarchical
 CREATE TABLE `lb_org_hierarchical` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目id',
@@ -20817,12 +19248,10 @@ CREATE TABLE `lb_org_hierarchical` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `idx_org_id` (`org_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3662 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目层级信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=3774 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目层级信息表';
 
--- ----------------------------
--- Table structure for lb_org_micro_station
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_micro_station`;
+
+-- Table: lb_org_micro_station
 CREATE TABLE `lb_org_micro_station` (
   `micro_station_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目唯一标识',
@@ -20866,10 +19295,8 @@ CREATE TABLE `lb_org_micro_station` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目微站详情表';
 
--- ----------------------------
--- Table structure for lb_org_module_process_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_module_process_config`;
+
+-- Table: lb_org_module_process_config
 CREATE TABLE `lb_org_module_process_config` (
   `config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `config_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '配置类型:1:长者登记设置',
@@ -20886,10 +19313,8 @@ CREATE TABLE `lb_org_module_process_config` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目模块流程配置';
 
--- ----------------------------
--- Table structure for lb_org_payment_account_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_payment_account_config`;
+
+-- Table: lb_org_payment_account_config
 CREATE TABLE `lb_org_payment_account_config` (
   `account_config_id` varchar(32) NOT NULL COMMENT '收款账户配置id主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目唯一标识',
@@ -20905,10 +19330,8 @@ CREATE TABLE `lb_org_payment_account_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目商户支付配置表';
 
--- ----------------------------
--- Table structure for lb_org_position_rule
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_position_rule`;
+
+-- Table: lb_org_position_rule
 CREATE TABLE `lb_org_position_rule` (
   `rule_id` varchar(32) NOT NULL COMMENT '主键',
   `value` varchar(32) NOT NULL DEFAULT '' COMMENT '位置拼接内容',
@@ -20923,10 +19346,8 @@ CREATE TABLE `lb_org_position_rule` (
   KEY `lb_org_position_rule_org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目地址拼接规则设置表';
 
--- ----------------------------
--- Table structure for lb_org_record_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_record_config`;
+
+-- Table: lb_org_record_config
 CREATE TABLE `lb_org_record_config` (
   `record_config_id` varchar(32) NOT NULL COMMENT '主键',
   `config_type` tinyint(1) DEFAULT NULL COMMENT '配置类型',
@@ -20941,10 +19362,8 @@ CREATE TABLE `lb_org_record_config` (
   PRIMARY KEY (`record_config_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据显示设置表';
 
--- ----------------------------
--- Table structure for lb_org_regular_reminder_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_regular_reminder_setting`;
+
+-- Table: lb_org_regular_reminder_setting
 CREATE TABLE `lb_org_regular_reminder_setting` (
   `reminder_setting_id` varchar(64) NOT NULL COMMENT '主键',
   `reminder_type_id` varchar(64) NOT NULL COMMENT '定期提醒类型id',
@@ -20966,10 +19385,8 @@ CREATE TABLE `lb_org_regular_reminder_setting` (
   KEY `idx_reminder_type_id_setting_type` (`reminder_type_id`,`setting_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目定期提醒设置表';
 
--- ----------------------------
--- Table structure for lb_org_regular_reminder_type
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_regular_reminder_type`;
+
+-- Table: lb_org_regular_reminder_type
 CREATE TABLE `lb_org_regular_reminder_type` (
   `reminder_type_id` varchar(64) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '项目id(值为systemType为模版)',
@@ -20984,10 +19401,8 @@ CREATE TABLE `lb_org_regular_reminder_type` (
   KEY `idx_reminder_type` (`reminder_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目定期提醒类型表';
 
--- ----------------------------
--- Table structure for lb_org_renewal_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_renewal_record`;
+
+-- Table: lb_org_renewal_record
 CREATE TABLE `lb_org_renewal_record` (
   `renewal_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -21007,10 +19422,8 @@ CREATE TABLE `lb_org_renewal_record` (
   KEY `index_org` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='项目缴费记录表';
 
--- ----------------------------
--- Table structure for lb_org_sign
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_sign`;
+
+-- Table: lb_org_sign
 CREATE TABLE `lb_org_sign` (
   `sign_id` varchar(32) NOT NULL COMMENT '主键',
   `sign_name` varchar(64) NOT NULL DEFAULT '' COMMENT '标记名称',
@@ -21025,10 +19438,8 @@ CREATE TABLE `lb_org_sign` (
   PRIMARY KEY (`sign_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目标识表';
 
--- ----------------------------
--- Table structure for lb_org_sign_contact
--- ----------------------------
-DROP TABLE IF EXISTS `lb_org_sign_contact`;
+
+-- Table: lb_org_sign_contact
 CREATE TABLE `lb_org_sign_contact` (
   `contact_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目主键',
@@ -21044,10 +19455,8 @@ CREATE TABLE `lb_org_sign_contact` (
   PRIMARY KEY (`contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='项目标识关联表';
 
--- ----------------------------
--- Table structure for lb_organization
--- ----------------------------
-DROP TABLE IF EXISTS `lb_organization`;
+
+-- Table: lb_organization
 CREATE TABLE `lb_organization` (
   `org_id` varchar(64) NOT NULL COMMENT '主键',
   `org_name` varchar(128) DEFAULT '' COMMENT '名称',
@@ -21161,10 +19570,8 @@ CREATE TABLE `lb_organization` (
   KEY `org_type` (`org_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='机构/项目';
 
--- ----------------------------
--- Table structure for lb_organization_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_organization_config`;
+
+-- Table: lb_organization_config
 CREATE TABLE `lb_organization_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -21203,10 +19610,8 @@ CREATE TABLE `lb_organization_config` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目高级配置信息表';
 
--- ----------------------------
--- Table structure for lb_organization_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_organization_relation`;
+
+-- Table: lb_organization_relation
 CREATE TABLE `lb_organization_relation` (
   `org_relation_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '平台id',
@@ -21222,10 +19627,8 @@ CREATE TABLE `lb_organization_relation` (
   KEY `lb_organization_relation_relation_org_id_IDX` (`relation_org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台关联关系表';
 
--- ----------------------------
--- Table structure for lb_ota_file_bag
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ota_file_bag`;
+
+-- Table: lb_ota_file_bag
 CREATE TABLE `lb_ota_file_bag` (
   `file_bag_id` varchar(32) NOT NULL DEFAULT '',
   `version_id` varchar(32) NOT NULL DEFAULT '' COMMENT '版本号id',
@@ -21240,10 +19643,8 @@ CREATE TABLE `lb_ota_file_bag` (
   KEY `idx_version` (`version_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='软件升级包分片数据';
 
--- ----------------------------
--- Table structure for lb_ota_remote_upgrade_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ota_remote_upgrade_task`;
+
+-- Table: lb_ota_remote_upgrade_task
 CREATE TABLE `lb_ota_remote_upgrade_task` (
   `task_id` varchar(64) NOT NULL DEFAULT '' COMMENT '任务id',
   `org_type` tinyint(4) DEFAULT '2' COMMENT '项目类型 1居家项目 2机构项目',
@@ -21267,10 +19668,8 @@ CREATE TABLE `lb_ota_remote_upgrade_task` (
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备远程升级任务';
 
--- ----------------------------
--- Table structure for lb_ota_remote_upgrade_task_detail
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ota_remote_upgrade_task_detail`;
+
+-- Table: lb_ota_remote_upgrade_task_detail
 CREATE TABLE `lb_ota_remote_upgrade_task_detail` (
   `id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `task_id` varchar(64) NOT NULL DEFAULT '' COMMENT '任务id',
@@ -21298,10 +19697,8 @@ CREATE TABLE `lb_ota_remote_upgrade_task_detail` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备远程升级详细';
 
--- ----------------------------
--- Table structure for lb_ota_version
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ota_version`;
+
+-- Table: lb_ota_version
 CREATE TABLE `lb_ota_version` (
   `version_id` varchar(32) NOT NULL,
   `version_code` varchar(64) NOT NULL DEFAULT '' COMMENT '版本号',
@@ -21323,10 +19720,8 @@ CREATE TABLE `lb_ota_version` (
   PRIMARY KEY (`version_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_ota_version_mapping
--- ----------------------------
-DROP TABLE IF EXISTS `lb_ota_version_mapping`;
+
+-- Table: lb_ota_version_mapping
 CREATE TABLE `lb_ota_version_mapping` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `file_name` varchar(64) NOT NULL DEFAULT '' COMMENT '文件名(version_code)',
@@ -21337,10 +19732,8 @@ CREATE TABLE `lb_ota_version_mapping` (
   UNIQUE KEY `file_name` (`file_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='固件版本文件映射表';
 
--- ----------------------------
--- Table structure for lb_out_home_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_out_home_report`;
+
+-- Table: lb_out_home_report
 CREATE TABLE `lb_out_home_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -21360,10 +19753,8 @@ CREATE TABLE `lb_out_home_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='离家报表';
 
--- ----------------------------
--- Table structure for lb_outdoor_map
--- ----------------------------
-DROP TABLE IF EXISTS `lb_outdoor_map`;
+
+-- Table: lb_outdoor_map
 CREATE TABLE `lb_outdoor_map` (
   `map_id` varchar(32) NOT NULL COMMENT '主键',
   `map_name` varchar(32) DEFAULT '' COMMENT '地图名称',
@@ -21379,10 +19770,8 @@ CREATE TABLE `lb_outdoor_map` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='室外地图';
 
--- ----------------------------
--- Table structure for lb_outdoor_map_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_outdoor_map_area`;
+
+-- Table: lb_outdoor_map_area
 CREATE TABLE `lb_outdoor_map_area` (
   `relatin_id` varchar(32) NOT NULL COMMENT '主键',
   `map_id` varchar(32) DEFAULT '' COMMENT '地图id',
@@ -21398,10 +19787,8 @@ CREATE TABLE `lb_outdoor_map_area` (
   KEY `area_id` (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='室外地图房间关系';
 
--- ----------------------------
--- Table structure for lb_pay_jpush_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_pay_jpush_record`;
+
+-- Table: lb_pay_jpush_record
 CREATE TABLE `lb_pay_jpush_record` (
   `pay_jpush_record_id` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识',
   `record_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '46:请求他人支付通知,47:他人支付成功通知,48他人拒绝通知,49:设备升级通知,50:全体系统通知',
@@ -21418,10 +19805,8 @@ CREATE TABLE `lb_pay_jpush_record` (
   KEY `record_type` (`record_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付通知推送记录表';
 
--- ----------------------------
--- Table structure for lb_payment_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_payment_log`;
+
+-- Table: lb_payment_log
 CREATE TABLE `lb_payment_log` (
   `log_id` varchar(32) NOT NULL COMMENT '日志ID',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '项目唯一标识',
@@ -21438,10 +19823,8 @@ CREATE TABLE `lb_payment_log` (
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='支付日志表';
 
--- ----------------------------
--- Table structure for lb_physiological_param_register_template
--- ----------------------------
-DROP TABLE IF EXISTS `lb_physiological_param_register_template`;
+
+-- Table: lb_physiological_param_register_template
 CREATE TABLE `lb_physiological_param_register_template` (
   `template_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `account_id` varchar(32) NOT NULL DEFAULT '' COMMENT '账号id',
@@ -21457,10 +19840,8 @@ CREATE TABLE `lb_physiological_param_register_template` (
   KEY `account_id_index` (`account_id`) USING BTREE COMMENT '账号id索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康管理生理参数登记模板表';
 
--- ----------------------------
--- Table structure for lb_pillbox
--- ----------------------------
-DROP TABLE IF EXISTS `lb_pillbox`;
+
+-- Table: lb_pillbox
 CREATE TABLE `lb_pillbox` (
   `pillbox_id` varchar(32) NOT NULL COMMENT '主键',
   `area_id` varchar(32) DEFAULT NULL COMMENT '房间id',
@@ -21500,10 +19881,8 @@ CREATE TABLE `lb_pillbox` (
   PRIMARY KEY (`pillbox_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能药盒信息表';
 
--- ----------------------------
--- Table structure for lb_positioner
--- ----------------------------
-DROP TABLE IF EXISTS `lb_positioner`;
+
+-- Table: lb_positioner
 CREATE TABLE `lb_positioner` (
   `positioner_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -21567,10 +19946,8 @@ CREATE TABLE `lb_positioner` (
   KEY `idx_orgid` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定位器设备';
 
--- ----------------------------
--- Table structure for lb_pressure_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_pressure_record_statistics`;
+
+-- Table: lb_pressure_record_statistics
 CREATE TABLE `lb_pressure_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -21590,10 +19967,8 @@ CREATE TABLE `lb_pressure_record_statistics` (
   KEY `lb_pressure_record_statistics_update_time_IDX` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='压力记录统计表';
 
--- ----------------------------
--- Table structure for lb_pressure_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_pressure_report`;
+
+-- Table: lb_pressure_report
 CREATE TABLE `lb_pressure_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -21617,10 +19992,8 @@ CREATE TABLE `lb_pressure_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='压力报表';
 
--- ----------------------------
--- Table structure for lb_probably_location_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_probably_location_record`;
+
+-- Table: lb_probably_location_record
 CREATE TABLE `lb_probably_location_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `data` text COMMENT '接口返回内容',
@@ -21633,10 +20006,8 @@ CREATE TABLE `lb_probably_location_record` (
   PRIMARY KEY (`record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='粗定位记录';
 
--- ----------------------------
--- Table structure for lb_purchase_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_purchase_device`;
+
+-- Table: lb_purchase_device
 CREATE TABLE `lb_purchase_device` (
   `purchase_device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `device_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '设备类型 1 燃气探测器 2烟雾探测器 3 监护手表 4 求救定位器 5 血压计',
@@ -21655,10 +20026,8 @@ CREATE TABLE `lb_purchase_device` (
   PRIMARY KEY (`purchase_device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='入网设备表';
 
--- ----------------------------
--- Table structure for lb_quick_phrase
--- ----------------------------
-DROP TABLE IF EXISTS `lb_quick_phrase`;
+
+-- Table: lb_quick_phrase
 CREATE TABLE `lb_quick_phrase` (
   `quick_phrase_id` varchar(32) NOT NULL COMMENT '主键',
   `quick_code` varchar(32) DEFAULT '' COMMENT '快捷编码',
@@ -21675,10 +20044,8 @@ CREATE TABLE `lb_quick_phrase` (
   KEY `type` (`type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='快捷短语表';
 
--- ----------------------------
--- Table structure for lb_real_name_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_real_name_device`;
+
+-- Table: lb_real_name_device
 CREATE TABLE `lb_real_name_device` (
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'id',
   `company_name` varchar(32) NOT NULL DEFAULT '' COMMENT '厂商名称',
@@ -21696,10 +20063,8 @@ CREATE TABLE `lb_real_name_device` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='实名设备表';
 
--- ----------------------------
--- Table structure for lb_receive_alarm_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receive_alarm_device`;
+
+-- Table: lb_receive_alarm_device
 CREATE TABLE `lb_receive_alarm_device` (
   `device_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -21734,10 +20099,8 @@ CREATE TABLE `lb_receive_alarm_device` (
   KEY `iot_device_id` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='接警器设备';
 
--- ----------------------------
--- Table structure for lb_receive_alarm_participant
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receive_alarm_participant`;
+
+-- Table: lb_receive_alarm_participant
 CREATE TABLE `lb_receive_alarm_participant` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(64) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -21760,10 +20123,8 @@ CREATE TABLE `lb_receive_alarm_participant` (
   KEY `participant_id` (`org_id`,`care_object_id`,`participant_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接警参与人设置表';
 
--- ----------------------------
--- Table structure for lb_receive_alarm_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receive_alarm_record`;
+
+-- Table: lb_receive_alarm_record
 CREATE TABLE `lb_receive_alarm_record` (
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '接警对象标识',
   `alarm_id` varchar(32) NOT NULL DEFAULT '' COMMENT '报警标识',
@@ -21787,10 +20148,8 @@ CREATE TABLE `lb_receive_alarm_record` (
   KEY `alarm_id` (`alarm_id`,`receive_alarm_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='接警记录表';
 
--- ----------------------------
--- Table structure for lb_receive_alarm_set
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receive_alarm_set`;
+
+-- Table: lb_receive_alarm_set
 CREATE TABLE `lb_receive_alarm_set` (
   `receive_alarm_set_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) DEFAULT '' COMMENT '长者Id',
@@ -21816,10 +20175,8 @@ CREATE TABLE `lb_receive_alarm_set` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接警设置表';
 
--- ----------------------------
--- Table structure for lb_receive_level_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receive_level_config`;
+
+-- Table: lb_receive_level_config
 CREATE TABLE `lb_receive_level_config` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '设置对象标识',
@@ -21840,10 +20197,8 @@ CREATE TABLE `lb_receive_level_config` (
   KEY `terminal_type` (`object_id`,`terminal_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='接警级别配置表';
 
--- ----------------------------
--- Table structure for lb_receiver_address
--- ----------------------------
-DROP TABLE IF EXISTS `lb_receiver_address`;
+
+-- Table: lb_receiver_address
 CREATE TABLE `lb_receiver_address` (
   `receiver_address_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户',
@@ -21865,10 +20220,8 @@ CREATE TABLE `lb_receiver_address` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='收货地址表';
 
--- ----------------------------
--- Table structure for lb_region
--- ----------------------------
-DROP TABLE IF EXISTS `lb_region`;
+
+-- Table: lb_region
 CREATE TABLE `lb_region` (
   `region_id` int(11) NOT NULL COMMENT '主键',
   `region_name` varchar(32) DEFAULT '' COMMENT '区域名称',
@@ -21889,10 +20242,8 @@ CREATE TABLE `lb_region` (
   KEY `adcode` (`adcode`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='行政区域';
 
--- ----------------------------
--- Table structure for lb_region_boundary
--- ----------------------------
-DROP TABLE IF EXISTS `lb_region_boundary`;
+
+-- Table: lb_region_boundary
 CREATE TABLE `lb_region_boundary` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `adcode` varchar(128) NOT NULL COMMENT '行政区划编码',
@@ -21911,10 +20262,8 @@ CREATE TABLE `lb_region_boundary` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=393279896803280393 DEFAULT CHARSET=utf8mb4 COMMENT='行政区划边界信息表';
 
--- ----------------------------
--- Table structure for lb_region_combination
--- ----------------------------
-DROP TABLE IF EXISTS `lb_region_combination`;
+
+-- Table: lb_region_combination
 CREATE TABLE `lb_region_combination` (
   `id` int(11) NOT NULL COMMENT 'organization_type',
   `combination_id` varchar(255) DEFAULT '' COMMENT '组合地址ID集合',
@@ -21926,10 +20275,8 @@ CREATE TABLE `lb_region_combination` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_region_new
--- ----------------------------
-DROP TABLE IF EXISTS `lb_region_new`;
+
+-- Table: lb_region_new
 CREATE TABLE `lb_region_new` (
   `region_id` int(11) NOT NULL COMMENT '主键',
   `region_name` varchar(32) DEFAULT '' COMMENT '区域名称',
@@ -21949,10 +20296,8 @@ CREATE TABLE `lb_region_new` (
   KEY `adcode` (`adcode`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='行政区域(实时)';
 
--- ----------------------------
--- Table structure for lb_region_transit
--- ----------------------------
-DROP TABLE IF EXISTS `lb_region_transit`;
+
+-- Table: lb_region_transit
 CREATE TABLE `lb_region_transit` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `region_id` int(11) DEFAULT NULL COMMENT 'region_id',
@@ -21971,10 +20316,8 @@ CREATE TABLE `lb_region_transit` (
   KEY `parent_id` (`parent_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=46162 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='行政区域(天气)';
 
--- ----------------------------
--- Table structure for lb_remind_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_remind_task`;
+
+-- Table: lb_remind_task
 CREATE TABLE `lb_remind_task` (
   `task_id` varchar(32) NOT NULL COMMENT '主键',
   `task_content` varchar(64) DEFAULT '' COMMENT '任务内容',
@@ -21998,10 +20341,8 @@ CREATE TABLE `lb_remind_task` (
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='提醒任务表';
 
--- ----------------------------
--- Table structure for lb_report_show_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_report_show_config`;
+
+-- Table: lb_report_show_config
 CREATE TABLE `lb_report_show_config` (
   `report_type` tinyint(1) NOT NULL COMMENT '报告类型（流水类型）',
   `report_device_type` tinyint(1) NOT NULL COMMENT '上报设备类型',
@@ -22018,10 +20359,8 @@ CREATE TABLE `lb_report_show_config` (
   PRIMARY KEY (`report_type`,`report_device_type`,`device_iteration_number`,`show_item`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='统计报告显示配置表';
 
--- ----------------------------
--- Table structure for lb_role
--- ----------------------------
-DROP TABLE IF EXISTS `lb_role`;
+
+-- Table: lb_role
 CREATE TABLE `lb_role` (
   `role_id` varchar(64) NOT NULL COMMENT '主键',
   `role_name` varchar(32) DEFAULT '' COMMENT '名称',
@@ -22037,10 +20376,8 @@ CREATE TABLE `lb_role` (
   KEY `idx_org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色表';
 
--- ----------------------------
--- Table structure for lb_role_function
--- ----------------------------
-DROP TABLE IF EXISTS `lb_role_function`;
+
+-- Table: lb_role_function
 CREATE TABLE `lb_role_function` (
   `rf_id` varchar(64) NOT NULL COMMENT '角色权限唯一id',
   `role_id` varchar(64) DEFAULT '' COMMENT '角色id',
@@ -22055,10 +20392,8 @@ CREATE TABLE `lb_role_function` (
   KEY `idx_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_role_function67
--- ----------------------------
-DROP TABLE IF EXISTS `lb_role_function67`;
+
+-- Table: lb_role_function67
 CREATE TABLE `lb_role_function67` (
   `rf_id` varchar(64) NOT NULL COMMENT '角色权限唯一id',
   `role_id` varchar(64) DEFAULT '' COMMENT '角色id',
@@ -22072,10 +20407,8 @@ CREATE TABLE `lb_role_function67` (
   KEY `idx_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_role_route
--- ----------------------------
-DROP TABLE IF EXISTS `lb_role_route`;
+
+-- Table: lb_role_route
 CREATE TABLE `lb_role_route` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` varchar(64) NOT NULL,
@@ -22086,10 +20419,8 @@ CREATE TABLE `lb_role_route` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=35092 DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_schedule_task_cluster
--- ----------------------------
-DROP TABLE IF EXISTS `lb_schedule_task_cluster`;
+
+-- Table: lb_schedule_task_cluster
 CREATE TABLE `lb_schedule_task_cluster` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `task_name` varchar(64) DEFAULT NULL COMMENT '任务名称',
@@ -22104,10 +20435,8 @@ CREATE TABLE `lb_schedule_task_cluster` (
   KEY `lb_schedule_task_cluster_task_name_IDX` (`task_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务执行状态记录表';
 
--- ----------------------------
--- Table structure for lb_scheduled_task_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_scheduled_task_config`;
+
+-- Table: lb_scheduled_task_config
 CREATE TABLE `lb_scheduled_task_config` (
   `task_id` varchar(32) NOT NULL COMMENT '任务id',
   `task_cron` varchar(32) NOT NULL COMMENT '任务设置时间',
@@ -22120,10 +20449,8 @@ CREATE TABLE `lb_scheduled_task_config` (
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统计划任务设置表';
 
--- ----------------------------
--- Table structure for lb_server_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_server_config`;
+
+-- Table: lb_server_config
 CREATE TABLE `lb_server_config` (
   `server_config_id` varchar(32) NOT NULL COMMENT 'organization_type',
   `manufacturer` varchar(32) NOT NULL DEFAULT '' COMMENT '枚举字段 所属厂商',
@@ -22141,10 +20468,8 @@ CREATE TABLE `lb_server_config` (
   PRIMARY KEY (`server_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_server_version
--- ----------------------------
-DROP TABLE IF EXISTS `lb_server_version`;
+
+-- Table: lb_server_version
 CREATE TABLE `lb_server_version` (
   `version_code` varchar(255) DEFAULT NULL COMMENT '主键',
   `version_name` varchar(255) DEFAULT '' COMMENT '版本名称',
@@ -22170,10 +20495,8 @@ CREATE TABLE `lb_server_version` (
   PRIMARY KEY (`version_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_server_version_redemption
--- ----------------------------
-DROP TABLE IF EXISTS `lb_server_version_redemption`;
+
+-- Table: lb_server_version_redemption
 CREATE TABLE `lb_server_version_redemption` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `code` varchar(16) NOT NULL DEFAULT '' COMMENT '代码',
@@ -22189,10 +20512,8 @@ CREATE TABLE `lb_server_version_redemption` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='软件包兑换码';
 
--- ----------------------------
--- Table structure for lb_service_benefits
--- ----------------------------
-DROP TABLE IF EXISTS `lb_service_benefits`;
+
+-- Table: lb_service_benefits
 CREATE TABLE `lb_service_benefits` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '服务对象标识',
@@ -22210,10 +20531,8 @@ CREATE TABLE `lb_service_benefits` (
   KEY `object_id` (`object_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务权益表';
 
--- ----------------------------
--- Table structure for lb_service_payment_price
--- ----------------------------
-DROP TABLE IF EXISTS `lb_service_payment_price`;
+
+-- Table: lb_service_payment_price
 CREATE TABLE `lb_service_payment_price` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `payment_duration` tinyint(1) NOT NULL COMMENT '缴费时长（时长单位见描述）',
@@ -22229,10 +20548,8 @@ CREATE TABLE `lb_service_payment_price` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务缴费价目表';
 
--- ----------------------------
--- Table structure for lb_service_payment_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_service_payment_record`;
+
+-- Table: lb_service_payment_record
 CREATE TABLE `lb_service_payment_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '服务对象标识',
@@ -22256,10 +20573,8 @@ CREATE TABLE `lb_service_payment_record` (
   KEY `trade_order_id` (`trade_order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务缴费记录表';
 
--- ----------------------------
--- Table structure for lb_share_group
--- ----------------------------
-DROP TABLE IF EXISTS `lb_share_group`;
+
+-- Table: lb_share_group
 CREATE TABLE `lb_share_group` (
   `group_id` varchar(32) NOT NULL COMMENT '主键',
   `group_name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名字',
@@ -22272,10 +20587,8 @@ CREATE TABLE `lb_share_group` (
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_share_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_share_info`;
+
+-- Table: lb_share_info
 CREATE TABLE `lb_share_info` (
   `share_id` varchar(32) NOT NULL COMMENT '主键',
   `relative_phone` varchar(11) DEFAULT '' COMMENT '亲属电话',
@@ -22294,10 +20607,8 @@ CREATE TABLE `lb_share_info` (
   PRIMARY KEY (`share_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_shopper
--- ----------------------------
-DROP TABLE IF EXISTS `lb_shopper`;
+
+-- Table: lb_shopper
 CREATE TABLE `lb_shopper` (
   `shopper_id` varchar(64) NOT NULL DEFAULT '' COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户ID',
@@ -22320,10 +20631,8 @@ CREATE TABLE `lb_shopper` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商城用户信息表';
 
--- ----------------------------
--- Table structure for lb_sim
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sim`;
+
+-- Table: lb_sim
 CREATE TABLE `lb_sim` (
   `acc_num` varchar(64) NOT NULL COMMENT 'nb卡接入号',
   `iccid` varchar(64) DEFAULT '' COMMENT 'nb卡号',
@@ -22345,10 +20654,8 @@ CREATE TABLE `lb_sim` (
   KEY `lb_sim_operation_time_IDX` (`operation_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_sip_account
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_account`;
+
+-- Table: lb_sip_account
 CREATE TABLE `lb_sip_account` (
   `sip_account_id` varchar(64) NOT NULL COMMENT 'sip_account_id',
   `sip_account` varchar(32) DEFAULT '' COMMENT 'sip_account',
@@ -22370,10 +20677,8 @@ CREATE TABLE `lb_sip_account` (
   PRIMARY KEY (`sip_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='SIP账号信息表;';
 
--- ----------------------------
--- Table structure for lb_sip_call_history
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_call_history`;
+
+-- Table: lb_sip_call_history
 CREATE TABLE `lb_sip_call_history` (
   `call_history_id` varchar(32) NOT NULL COMMENT '主键',
   `sip_num` varchar(32) DEFAULT '' COMMENT 'sip账号',
@@ -22400,10 +20705,8 @@ CREATE TABLE `lb_sip_call_history` (
   PRIMARY KEY (`call_history_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_sip_proxy
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_proxy`;
+
+-- Table: lb_sip_proxy
 CREATE TABLE `lb_sip_proxy` (
   `proxy_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '代理唯一标识',
   `ice_enable` tinyint(1) DEFAULT NULL COMMENT 'ice开启 0 不开启/1开启',
@@ -22423,10 +20726,8 @@ CREATE TABLE `lb_sip_proxy` (
   PRIMARY KEY (`proxy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_sip_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_relation`;
+
+-- Table: lb_sip_relation
 CREATE TABLE `lb_sip_relation` (
   `sip_relation_id` varchar(64) NOT NULL COMMENT 'sip_relation_id',
   `sip_account_id` varchar(64) DEFAULT '' COMMENT 'sip主键',
@@ -22442,10 +20743,8 @@ CREATE TABLE `lb_sip_relation` (
   KEY `user_key` (`user_key`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='SIP账号绑定关系表;';
 
--- ----------------------------
--- Table structure for lb_sip_server
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_server`;
+
+-- Table: lb_sip_server
 CREATE TABLE `lb_sip_server` (
   `sip_server_id` int(11) NOT NULL COMMENT '主键',
   `server_ip` varchar(32) DEFAULT NULL COMMENT 'sip服务器ip',
@@ -22460,10 +20759,8 @@ CREATE TABLE `lb_sip_server` (
   PRIMARY KEY (`sip_server_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_sip_server_monitor_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sip_server_monitor_config`;
+
+-- Table: lb_sip_server_monitor_config
 CREATE TABLE `lb_sip_server_monitor_config` (
   `sip_server_monitor_id` int(11) NOT NULL COMMENT '主键',
   `server_ip` varchar(32) DEFAULT NULL COMMENT '服务器ip',
@@ -22472,10 +20769,8 @@ CREATE TABLE `lb_sip_server_monitor_config` (
   PRIMARY KEY (`sip_server_monitor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_slave_building
--- ----------------------------
-DROP TABLE IF EXISTS `lb_slave_building`;
+
+-- Table: lb_slave_building
 CREATE TABLE `lb_slave_building` (
   `slave_building_id` varchar(32) NOT NULL COMMENT '主键id',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -22498,10 +20793,8 @@ CREATE TABLE `lb_slave_building` (
   PRIMARY KEY (`slave_building_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='分机和楼栋信息的关系表';
 
--- ----------------------------
--- Table structure for lb_sleep_monitor_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sleep_monitor_device`;
+
+-- Table: lb_sleep_monitor_device
 CREATE TABLE `lb_sleep_monitor_device` (
   `device_id` varchar(32) NOT NULL DEFAULT '',
   `area_id` varchar(32) NOT NULL DEFAULT '',
@@ -22524,10 +20817,8 @@ CREATE TABLE `lb_sleep_monitor_device` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Table structure for lb_sleep_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sleep_record`;
+
+-- Table: lb_sleep_record
 CREATE TABLE `lb_sleep_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -22551,10 +20842,8 @@ CREATE TABLE `lb_sleep_record` (
   KEY `idx_iot_device_id_sleep_type_start_time` (`iot_device_id`,`sleep_type`,`start_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='睡眠记录表';
 
--- ----------------------------
--- Table structure for lb_sleep_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sleep_record_statistics`;
+
+-- Table: lb_sleep_record_statistics
 CREATE TABLE `lb_sleep_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -22571,10 +20860,8 @@ CREATE TABLE `lb_sleep_record_statistics` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='睡眠周期记录统计表';
 
--- ----------------------------
--- Table structure for lb_sleep_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sleep_report`;
+
+-- Table: lb_sleep_report
 CREATE TABLE `lb_sleep_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -22620,10 +20907,8 @@ CREATE TABLE `lb_sleep_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='睡眠报表';
 
--- ----------------------------
--- Table structure for lb_smart_bed
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smart_bed`;
+
+-- Table: lb_smart_bed
 CREATE TABLE `lb_smart_bed` (
   `smart_bed_id` varchar(32) NOT NULL COMMENT '主键',
   `device_number` varchar(32) NOT NULL DEFAULT '' COMMENT '设备号',
@@ -22644,10 +20929,8 @@ CREATE TABLE `lb_smart_bed` (
   PRIMARY KEY (`smart_bed_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能床';
 
--- ----------------------------
--- Table structure for lb_smart_bed_heath_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smart_bed_heath_info`;
+
+-- Table: lb_smart_bed_heath_info
 CREATE TABLE `lb_smart_bed_heath_info` (
   `heath_info_id` varchar(32) NOT NULL COMMENT '主键',
   `sleep_info_id` varchar(32) NOT NULL DEFAULT '' COMMENT '睡眠id',
@@ -22682,10 +20965,8 @@ CREATE TABLE `lb_smart_bed_heath_info` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能床长者健康数据';
 
--- ----------------------------
--- Table structure for lb_smart_bed_sleep_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smart_bed_sleep_info`;
+
+-- Table: lb_smart_bed_sleep_info
 CREATE TABLE `lb_smart_bed_sleep_info` (
   `sleep_info_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者id',
@@ -22721,10 +21002,8 @@ CREATE TABLE `lb_smart_bed_sleep_info` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能床长者睡眠信息';
 
--- ----------------------------
--- Table structure for lb_smart_device_csr
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smart_device_csr`;
+
+-- Table: lb_smart_device_csr
 CREATE TABLE `lb_smart_device_csr` (
   `smart_device_csr_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '客服id',
@@ -22742,10 +21021,8 @@ CREATE TABLE `lb_smart_device_csr` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小度坐席表';
 
--- ----------------------------
--- Table structure for lb_smart_device_csr_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smart_device_csr_config`;
+
+-- Table: lb_smart_device_csr_config
 CREATE TABLE `lb_smart_device_csr_config` (
   `config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -22764,10 +21041,8 @@ CREATE TABLE `lb_smart_device_csr_config` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='智能设备通话配置';
 
--- ----------------------------
--- Table structure for lb_smog_detector
--- ----------------------------
-DROP TABLE IF EXISTS `lb_smog_detector`;
+
+-- Table: lb_smog_detector
 CREATE TABLE `lb_smog_detector` (
   `smog_detector_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'id',
   `serial_num` int(11) DEFAULT '0' COMMENT '序号',
@@ -22815,10 +21090,8 @@ CREATE TABLE `lb_smog_detector` (
   KEY `imei` (`imei`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='烟雾探测器表';
 
--- ----------------------------
--- Table structure for lb_sms_template_v2
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sms_template_v2`;
+
+-- Table: lb_sms_template_v2
 CREATE TABLE `lb_sms_template_v2` (
   `id` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '',
   `code_num` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '模板代号(ali_template)',
@@ -22835,10 +21108,8 @@ CREATE TABLE `lb_sms_template_v2` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='短信模块信息';
 
--- ----------------------------
--- Table structure for lb_snore_record_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_snore_record_statistics`;
+
+-- Table: lb_snore_record_statistics
 CREATE TABLE `lb_snore_record_statistics` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者主键',
@@ -22855,10 +21126,8 @@ CREATE TABLE `lb_snore_record_statistics` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='打鼾周期记录统计表';
 
--- ----------------------------
--- Table structure for lb_speech_recognition_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_speech_recognition_record`;
+
+-- Table: lb_speech_recognition_record
 CREATE TABLE `lb_speech_recognition_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `iot_device_id` varchar(64) NOT NULL DEFAULT '' COMMENT '注册平台设备标识',
@@ -22876,10 +21145,8 @@ CREATE TABLE `lb_speech_recognition_record` (
   KEY `first_id` (`first_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='语音识别记录表';
 
--- ----------------------------
--- Table structure for lb_sphygmomanometer
--- ----------------------------
-DROP TABLE IF EXISTS `lb_sphygmomanometer`;
+
+-- Table: lb_sphygmomanometer
 CREATE TABLE `lb_sphygmomanometer` (
   `sphygmomanometer_id` varchar(32) NOT NULL COMMENT '主键',
   `mac` varchar(32) DEFAULT '' COMMENT 'mac地址',
@@ -22908,10 +21175,8 @@ CREATE TABLE `lb_sphygmomanometer` (
   PRIMARY KEY (`sphygmomanometer_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='血压计表';
 
--- ----------------------------
--- Table structure for lb_staff_device_manage
--- ----------------------------
-DROP TABLE IF EXISTS `lb_staff_device_manage`;
+
+-- Table: lb_staff_device_manage
 CREATE TABLE `lb_staff_device_manage` (
   `id` varchar(32) NOT NULL,
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -22928,10 +21193,8 @@ CREATE TABLE `lb_staff_device_manage` (
   KEY `idx_area_id` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工设备关联管理实体';
 
--- ----------------------------
--- Table structure for lb_static_resources
--- ----------------------------
-DROP TABLE IF EXISTS `lb_static_resources`;
+
+-- Table: lb_static_resources
 CREATE TABLE `lb_static_resources` (
   `resources_id` varchar(32) NOT NULL COMMENT '主键',
   `resources_name` varchar(32) NOT NULL DEFAULT '' COMMENT '资源名称',
@@ -22943,10 +21206,8 @@ CREATE TABLE `lb_static_resources` (
   PRIMARY KEY (`resources_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='静态资源表';
 
--- ----------------------------
--- Table structure for lb_statistics
--- ----------------------------
-DROP TABLE IF EXISTS `lb_statistics`;
+
+-- Table: lb_statistics
 CREATE TABLE `lb_statistics` (
   `statistics_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `device_id` varchar(64) NOT NULL COMMENT '设备Id',
@@ -22978,10 +21239,8 @@ CREATE TABLE `lb_statistics` (
   KEY `device_id` (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='统计信息表';
 
--- ----------------------------
--- Table structure for lb_step_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_step_report`;
+
+-- Table: lb_step_report
 CREATE TABLE `lb_step_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -23000,10 +21259,8 @@ CREATE TABLE `lb_step_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计步报表';
 
--- ----------------------------
--- Table structure for lb_steps_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_steps_record`;
+
+-- Table: lb_steps_record
 CREATE TABLE `lb_steps_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT 'care_object_id',
@@ -23025,10 +21282,8 @@ CREATE TABLE `lb_steps_record` (
   KEY `lb_steps_record_create_time_IDX` (`create_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_storage_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_storage_record`;
+
+-- Table: lb_storage_record
 CREATE TABLE `lb_storage_record` (
   `storage_id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL COMMENT '长者ID',
@@ -23041,12 +21296,10 @@ CREATE TABLE `lb_storage_record` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`storage_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=646 DEFAULT CHARSET=utf8mb4 COMMENT='一体机上传报告表';
+) ENGINE=InnoDB AUTO_INCREMENT=656 DEFAULT CHARSET=utf8mb4 COMMENT='一体机上传报告表';
 
--- ----------------------------
--- Table structure for lb_subsidy_type_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_subsidy_type_setting`;
+
+-- Table: lb_subsidy_type_setting
 CREATE TABLE `lb_subsidy_type_setting` (
   `setting_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -23068,10 +21321,8 @@ CREATE TABLE `lb_subsidy_type_setting` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='助餐补贴类型设置';
 
--- ----------------------------
--- Table structure for lb_subsidy_way_setting
--- ----------------------------
-DROP TABLE IF EXISTS `lb_subsidy_way_setting`;
+
+-- Table: lb_subsidy_way_setting
 CREATE TABLE `lb_subsidy_way_setting` (
   `way_setting_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -23085,10 +21336,8 @@ CREATE TABLE `lb_subsidy_way_setting` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='补贴方式设置';
 
--- ----------------------------
--- Table structure for lb_suit_aged_manage
--- ----------------------------
-DROP TABLE IF EXISTS `lb_suit_aged_manage`;
+
+-- Table: lb_suit_aged_manage
 CREATE TABLE `lb_suit_aged_manage` (
   `suit_aged_manage_id` varchar(32) NOT NULL COMMENT '主键',
   `suit_aged_name` varchar(64) NOT NULL COMMENT '适老改造项目名称',
@@ -23111,10 +21360,8 @@ CREATE TABLE `lb_suit_aged_manage` (
   KEY `org_id_IDX` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造项目（包）表';
 
--- ----------------------------
--- Table structure for lb_suit_aged_process_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_suit_aged_process_record`;
+
+-- Table: lb_suit_aged_process_record
 CREATE TABLE `lb_suit_aged_process_record` (
   `process_record_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构id',
@@ -23141,10 +21388,8 @@ CREATE TABLE `lb_suit_aged_process_record` (
   KEY `suit_aged_manage_id_IDX` (`suit_aged_manage_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='适老改造流程记录表';
 
--- ----------------------------
--- Table structure for lb_syn_del_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_syn_del_log`;
+
+-- Table: lb_syn_del_log
 CREATE TABLE `lb_syn_del_log` (
   `syn_del_log_id` varchar(32) NOT NULL COMMENT '自增主键',
   `org_id` varchar(50) DEFAULT NULL COMMENT '机构ID',
@@ -23157,10 +21402,8 @@ CREATE TABLE `lb_syn_del_log` (
   KEY `id_n_u_index` (`org_id`,`table_name`,`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='同步增量删除内容';
 
--- ----------------------------
--- Table structure for lb_synch_msg_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_synch_msg_record`;
+
+-- Table: lb_synch_msg_record
 CREATE TABLE `lb_synch_msg_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(32) NOT NULL DEFAULT '' COMMENT '长者标识',
@@ -23180,10 +21423,8 @@ CREATE TABLE `lb_synch_msg_record` (
   KEY `care_object_id` (`care_object_id`,`msg_category`,`msg_type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='馨刻消息记录表';
 
--- ----------------------------
--- Table structure for lb_table_view_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_table_view_config`;
+
+-- Table: lb_table_view_config
 CREATE TABLE `lb_table_view_config` (
   `id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `tab_type` varchar(128) NOT NULL DEFAULT '' COMMENT '表格类型',
@@ -23199,10 +21440,8 @@ CREATE TABLE `lb_table_view_config` (
   KEY `account_id_index` (`account_id`) USING BTREE COMMENT '账户id索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社区列表数据列显示配置表';
 
--- ----------------------------
--- Table structure for lb_tc_fallalarm_map
--- ----------------------------
-DROP TABLE IF EXISTS `lb_tc_fallalarm_map`;
+
+-- Table: lb_tc_fallalarm_map
 CREATE TABLE `lb_tc_fallalarm_map` (
   `map_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -23218,10 +21457,8 @@ CREATE TABLE `lb_tc_fallalarm_map` (
   KEY `iot_device_id` (`iot_device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='TC跌倒报警地图信息';
 
--- ----------------------------
--- Table structure for lb_tc_fallalarm_position
--- ----------------------------
-DROP TABLE IF EXISTS `lb_tc_fallalarm_position`;
+
+-- Table: lb_tc_fallalarm_position
 CREATE TABLE `lb_tc_fallalarm_position` (
   `position_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -23245,10 +21482,8 @@ CREATE TABLE `lb_tc_fallalarm_position` (
   KEY `event_id` (`event_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='TC跌倒报警坐标信息';
 
--- ----------------------------
--- Table structure for lb_temperature_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_temperature_report`;
+
+-- Table: lb_temperature_report
 CREATE TABLE `lb_temperature_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -23272,10 +21507,8 @@ CREATE TABLE `lb_temperature_report` (
   UNIQUE KEY `care_object_report_date_device_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='体温报表';
 
--- ----------------------------
--- Table structure for lb_temperature_sensor
--- ----------------------------
-DROP TABLE IF EXISTS `lb_temperature_sensor`;
+
+-- Table: lb_temperature_sensor
 CREATE TABLE `lb_temperature_sensor` (
   `temperature_sensor_id` varchar(32) NOT NULL COMMENT '主键',
   `serial_num` int(11) DEFAULT '0' COMMENT '序号',
@@ -23303,10 +21536,8 @@ CREATE TABLE `lb_temperature_sensor` (
   KEY `mac` (`mac`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='温湿度传感器';
 
--- ----------------------------
--- Table structure for lb_terminal
--- ----------------------------
-DROP TABLE IF EXISTS `lb_terminal`;
+
+-- Table: lb_terminal
 CREATE TABLE `lb_terminal` (
   `terminal_id` varchar(32) NOT NULL COMMENT '主键',
   `terminal_sn` varchar(32) DEFAULT '' COMMENT '序列号',
@@ -23322,10 +21553,8 @@ CREATE TABLE `lb_terminal` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='终端信息表;';
 
--- ----------------------------
--- Table structure for lb_terminal_csr_msg
--- ----------------------------
-DROP TABLE IF EXISTS `lb_terminal_csr_msg`;
+
+-- Table: lb_terminal_csr_msg
 CREATE TABLE `lb_terminal_csr_msg` (
   `msg_id` varchar(64) NOT NULL COMMENT '主键',
   `sender_account_id` varchar(64) DEFAULT '' COMMENT 'sender_account_id',
@@ -23341,10 +21570,8 @@ CREATE TABLE `lb_terminal_csr_msg` (
   PRIMARY KEY (`msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_third_party_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_third_party_area`;
+
+-- Table: lb_third_party_area
 CREATE TABLE `lb_third_party_area` (
   `id` varchar(32) NOT NULL,
   `area_id` varchar(32) NOT NULL DEFAULT '' COMMENT '区划id',
@@ -23361,10 +21588,8 @@ CREATE TABLE `lb_third_party_area` (
   KEY `idx_area_id` (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='三方对接区划表';
 
--- ----------------------------
--- Table structure for lb_third_party_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_third_party_device`;
+
+-- Table: lb_third_party_device
 CREATE TABLE `lb_third_party_device` (
   `third_party_device_id` varchar(32) NOT NULL COMMENT '主键',
   `imei` varchar(32) DEFAULT '' COMMENT '设备编号',
@@ -23404,10 +21629,8 @@ CREATE TABLE `lb_third_party_device` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='第三方应用设备';
 
--- ----------------------------
--- Table structure for lb_third_party_device_collect
--- ----------------------------
-DROP TABLE IF EXISTS `lb_third_party_device_collect`;
+
+-- Table: lb_third_party_device_collect
 CREATE TABLE `lb_third_party_device_collect` (
   `id` varchar(32) NOT NULL,
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -23429,10 +21652,8 @@ CREATE TABLE `lb_third_party_device_collect` (
   KEY `idx_device_id` (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='来邦第三方设备对接表';
 
--- ----------------------------
--- Table structure for lb_third_party_device_event
--- ----------------------------
-DROP TABLE IF EXISTS `lb_third_party_device_event`;
+
+-- Table: lb_third_party_device_event
 CREATE TABLE `lb_third_party_device_event` (
   `id` varchar(32) NOT NULL,
   `device_id` varchar(32) NOT NULL DEFAULT '' COMMENT '设备id',
@@ -23452,10 +21673,8 @@ CREATE TABLE `lb_third_party_device_event` (
   KEY `idx_org_id` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='第三方设备上报事件表';
 
--- ----------------------------
--- Table structure for lb_third_party_relation_id
--- ----------------------------
-DROP TABLE IF EXISTS `lb_third_party_relation_id`;
+
+-- Table: lb_third_party_relation_id
 CREATE TABLE `lb_third_party_relation_id` (
   `id` varchar(32) NOT NULL,
   `relation_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '关联类型 1-人员id ',
@@ -23471,10 +21690,8 @@ CREATE TABLE `lb_third_party_relation_id` (
   KEY `idx_lb_id` (`lb_id`,`relation_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='来邦-三方关联id表';
 
--- ----------------------------
--- Table structure for lb_timed_task
--- ----------------------------
-DROP TABLE IF EXISTS `lb_timed_task`;
+
+-- Table: lb_timed_task
 CREATE TABLE `lb_timed_task` (
   `task_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -23498,10 +21715,8 @@ CREATE TABLE `lb_timed_task` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务表';
 
--- ----------------------------
--- Table structure for lb_toilet_config_contact
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_config_contact`;
+
+-- Table: lb_toilet_config_contact
 CREATE TABLE `lb_toilet_config_contact` (
   `contact_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '配置id',
@@ -23515,13 +21730,12 @@ CREATE TABLE `lb_toilet_config_contact` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`contact_id`),
-  KEY `lb_toilet_config_contact_config_id_index` (`config_id`)
+  KEY `lb_toilet_config_contact_config_id_index` (`config_id`),
+  KEY `idx_object_id` (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='安装配置关联记录表';
 
--- ----------------------------
--- Table structure for lb_toilet_probe_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_probe_area`;
+
+-- Table: lb_toilet_probe_area
 CREATE TABLE `lb_toilet_probe_area` (
   `toilet_id` varchar(32) NOT NULL COMMENT '区域主键',
   `length` int(3) DEFAULT '40' COMMENT '区域长度',
@@ -23548,10 +21762,8 @@ CREATE TABLE `lb_toilet_probe_area` (
   KEY `lb_toilet_probe_area_device_id_index` (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='洗手间探测区域';
 
--- ----------------------------
--- Table structure for lb_toilet_probe_area_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_probe_area_config`;
+
+-- Table: lb_toilet_probe_area_config
 CREATE TABLE `lb_toilet_probe_area_config` (
   `config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '配置主键',
   `config_name` varchar(32) NOT NULL COMMENT '配置名称',
@@ -23592,10 +21804,8 @@ CREATE TABLE `lb_toilet_probe_area_config` (
   KEY `idx_device_iteration_number` (`device_iteration_number`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='洗手间探测区域配置表';
 
--- ----------------------------
--- Table structure for lb_toilet_report
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_report`;
+
+-- Table: lb_toilet_report
 CREATE TABLE `lb_toilet_report` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) NOT NULL DEFAULT '' COMMENT '看护对象',
@@ -23616,10 +21826,8 @@ CREATE TABLE `lb_toilet_report` (
   UNIQUE KEY `care_object_report_date_device_category_health_category` (`care_object_id`,`report_date`,`device_category`,`device_iteration_number`,`health_device_category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='入厕报表';
 
--- ----------------------------
--- Table structure for lb_toilet_shield_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_shield_area`;
+
+-- Table: lb_toilet_shield_area
 CREATE TABLE `lb_toilet_shield_area` (
   `area_id` varchar(32) NOT NULL COMMENT '屏蔽区域主键',
   `toilet_id` varchar(32) NOT NULL COMMENT '所属区域主键',
@@ -23635,10 +21843,8 @@ CREATE TABLE `lb_toilet_shield_area` (
   PRIMARY KEY (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='洗手间探测区域屏蔽区域';
 
--- ----------------------------
--- Table structure for lb_toilet_shield_area_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_toilet_shield_area_config`;
+
+-- Table: lb_toilet_shield_area_config
 CREATE TABLE `lb_toilet_shield_area_config` (
   `area_config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '屏蔽区域配置主键',
   `config_id` varchar(32) NOT NULL DEFAULT '' COMMENT '所属配置主键',
@@ -23661,10 +21867,8 @@ CREATE TABLE `lb_toilet_shield_area_config` (
   KEY `config_id` (`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='洗手间探测区域屏蔽区域模板表';
 
--- ----------------------------
--- Table structure for lb_token
--- ----------------------------
-DROP TABLE IF EXISTS `lb_token`;
+
+-- Table: lb_token
 CREATE TABLE `lb_token` (
   `token_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(128) DEFAULT '' COMMENT 'account_id',
@@ -23681,10 +21885,8 @@ CREATE TABLE `lb_token` (
   KEY `username` (`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_track_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_track_record`;
+
+-- Table: lb_track_record
 CREATE TABLE `lb_track_record` (
   `track_id` varchar(64) NOT NULL COMMENT '主键',
   `lat` varchar(32) DEFAULT '' COMMENT '纬度',
@@ -23707,10 +21909,8 @@ CREATE TABLE `lb_track_record` (
   KEY `care_object_id` (`care_object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_trade_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_trade_order`;
+
+-- Table: lb_trade_order
 CREATE TABLE `lb_trade_order` (
   `trade_order_id` varchar(32) NOT NULL COMMENT '主键',
   `prepay_id` varchar(64) DEFAULT '' COMMENT '预支付交易会话标识',
@@ -23729,10 +21929,8 @@ CREATE TABLE `lb_trade_order` (
   PRIMARY KEY (`trade_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='交易订单表';
 
--- ----------------------------
--- Table structure for lb_tutelage_call_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_tutelage_call_record`;
+
+-- Table: lb_tutelage_call_record
 CREATE TABLE `lb_tutelage_call_record` (
   `tutelage_call_record_id` bigint(20) NOT NULL,
   `phone` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号',
@@ -23755,10 +21953,8 @@ CREATE TABLE `lb_tutelage_call_record` (
   PRIMARY KEY (`tutelage_call_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='融合主机通话记录';
 
--- ----------------------------
--- Table structure for lb_update_error_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_update_error_record`;
+
+-- Table: lb_update_error_record
 CREATE TABLE `lb_update_error_record` (
   `record_id` varchar(32) NOT NULL DEFAULT '' COMMENT '主键',
   `account_name` varchar(64) DEFAULT '' COMMENT '用户名',
@@ -23776,10 +21972,8 @@ CREATE TABLE `lb_update_error_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='设备升级失败记录';
 
--- ----------------------------
--- Table structure for lb_upgrade_defeated_log
--- ----------------------------
-DROP TABLE IF EXISTS `lb_upgrade_defeated_log`;
+
+-- Table: lb_upgrade_defeated_log
 CREATE TABLE `lb_upgrade_defeated_log` (
   `upgrade_defeated_log_id` varchar(32) NOT NULL COMMENT '主键',
   `account_id` varchar(32) NOT NULL COMMENT '用户id',
@@ -23800,10 +21994,8 @@ CREATE TABLE `lb_upgrade_defeated_log` (
   KEY `account_id` (`account_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备升级失败日志表';
 
--- ----------------------------
--- Table structure for lb_upload_data_result
--- ----------------------------
-DROP TABLE IF EXISTS `lb_upload_data_result`;
+
+-- Table: lb_upload_data_result
 CREATE TABLE `lb_upload_data_result` (
   `id` varchar(32) NOT NULL COMMENT '主键ID',
   `platform_code` tinyint(4) NOT NULL DEFAULT '0' COMMENT '平台类型枚举 1 金民工程',
@@ -23830,10 +22022,8 @@ CREATE TABLE `lb_upload_data_result` (
   KEY `lb_local_id` (`local_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据上传结果表';
 
--- ----------------------------
--- Table structure for lb_upload_file_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_upload_file_record`;
+
+-- Table: lb_upload_file_record
 CREATE TABLE `lb_upload_file_record` (
   `id` varchar(32) NOT NULL,
   `file_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '文件类型 1-图片 2-音频 3-视频 4-文档',
@@ -23851,10 +22041,8 @@ CREATE TABLE `lb_upload_file_record` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='fastdfs上传文件记录';
 
--- ----------------------------
--- Table structure for lb_utility_data_care_object_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_utility_data_care_object_record`;
+
+-- Table: lb_utility_data_care_object_record
 CREATE TABLE `lb_utility_data_care_object_record` (
   `utility_data_care_object_id` varchar(32) NOT NULL COMMENT '主键',
   `utility_data_id` varchar(32) NOT NULL DEFAULT '' COMMENT '关联抄表记录表主键',
@@ -23873,10 +22061,8 @@ CREATE TABLE `lb_utility_data_care_object_record` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='长者水电费分摊记录表';
 
--- ----------------------------
--- Table structure for lb_utility_data_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_utility_data_record`;
+
+-- Table: lb_utility_data_record
 CREATE TABLE `lb_utility_data_record` (
   `utility_data_id` varchar(32) NOT NULL COMMENT '主键',
   `utility_data_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '抄表数据类型  1:水费 2:电费',
@@ -23899,10 +22085,8 @@ CREATE TABLE `lb_utility_data_record` (
   KEY `org_id_index` (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='水电费抄表记录表';
 
--- ----------------------------
--- Table structure for lb_vending_machine_device_ext_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_vending_machine_device_ext_info`;
+
+-- Table: lb_vending_machine_device_ext_info
 CREATE TABLE `lb_vending_machine_device_ext_info` (
   `device_id` varchar(64) NOT NULL COMMENT '设备主键',
   `open_door_min_amount` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '开门最低金额',
@@ -23911,13 +22095,12 @@ CREATE TABLE `lb_vending_machine_device_ext_info` (
   `update_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
+  `open_door_card_type` varchar(32) NOT NULL DEFAULT '/0/1/2/' COMMENT '允许开门的一卡通类型',
   PRIMARY KEY (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自动售卖机设备扩展信息表';
 
--- ----------------------------
--- Table structure for lb_version_upgrade_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_version_upgrade_record`;
+
+-- Table: lb_version_upgrade_record
 CREATE TABLE `lb_version_upgrade_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `device_id` varchar(32) DEFAULT NULL COMMENT '设备标识，设备mac，子女app帐号',
@@ -23933,10 +22116,8 @@ CREATE TABLE `lb_version_upgrade_record` (
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_video_area
--- ----------------------------
-DROP TABLE IF EXISTS `lb_video_area`;
+
+-- Table: lb_video_area
 CREATE TABLE `lb_video_area` (
   `area_id` varchar(32) NOT NULL COMMENT '主键',
   `area_name` varchar(100) NOT NULL COMMENT '区域名称',
@@ -23951,10 +22132,8 @@ CREATE TABLE `lb_video_area` (
   PRIMARY KEY (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管区域';
 
--- ----------------------------
--- Table structure for lb_video_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_video_config`;
+
+-- Table: lb_video_config
 CREATE TABLE `lb_video_config` (
   `video_config_id` varchar(32) NOT NULL COMMENT '主键',
   `title` varchar(100) NOT NULL COMMENT '标题设置',
@@ -23970,10 +22149,8 @@ CREATE TABLE `lb_video_config` (
   PRIMARY KEY (`video_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监控配置';
 
--- ----------------------------
--- Table structure for lb_video_device
--- ----------------------------
-DROP TABLE IF EXISTS `lb_video_device`;
+
+-- Table: lb_video_device
 CREATE TABLE `lb_video_device` (
   `video_device_id` varchar(32) NOT NULL COMMENT '主键',
   `device_id` varchar(32) NOT NULL COMMENT '设备序列号，主键',
@@ -24020,10 +22197,8 @@ CREATE TABLE `lb_video_device` (
   KEY `idx_dock_id` (`docking_platform_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频监管设备';
 
--- ----------------------------
--- Table structure for lb_video_resource
--- ----------------------------
-DROP TABLE IF EXISTS `lb_video_resource`;
+
+-- Table: lb_video_resource
 CREATE TABLE `lb_video_resource` (
   `video_resource_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构主键',
@@ -24039,10 +22214,8 @@ CREATE TABLE `lb_video_resource` (
   PRIMARY KEY (`video_resource_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='视频资源表';
 
--- ----------------------------
--- Table structure for lb_vip_price
--- ----------------------------
-DROP TABLE IF EXISTS `lb_vip_price`;
+
+-- Table: lb_vip_price
 CREATE TABLE `lb_vip_price` (
   `vip_price_id` varchar(64) NOT NULL COMMENT '主键',
   `type` int(2) DEFAULT '1' COMMENT '1:缴费1个月 3:缴费3个月 6:缴费6个月 12:缴费12个月',
@@ -24060,10 +22233,8 @@ CREATE TABLE `lb_vip_price` (
   PRIMARY KEY (`vip_price_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for lb_vital_sign_device_ext_info
--- ----------------------------
-DROP TABLE IF EXISTS `lb_vital_sign_device_ext_info`;
+
+-- Table: lb_vital_sign_device_ext_info
 CREATE TABLE `lb_vital_sign_device_ext_info` (
   `device_id` varchar(64) NOT NULL COMMENT '设备主键',
   `assist_device_category` smallint(6) NOT NULL DEFAULT '-1' COMMENT '协助设备种类(协助者)',
@@ -24075,10 +22246,8 @@ CREATE TABLE `lb_vital_sign_device_ext_info` (
   PRIMARY KEY (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='生命体征设备扩展信息表';
 
--- ----------------------------
--- Table structure for lb_voice_gateway
--- ----------------------------
-DROP TABLE IF EXISTS `lb_voice_gateway`;
+
+-- Table: lb_voice_gateway
 CREATE TABLE `lb_voice_gateway` (
   `gateway_id` varchar(32) NOT NULL COMMENT '网关id',
   `ip` varchar(32) NOT NULL DEFAULT '' COMMENT 'ip地址',
@@ -24099,10 +22268,8 @@ CREATE TABLE `lb_voice_gateway` (
   PRIMARY KEY (`gateway_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='语音网关';
 
--- ----------------------------
--- Table structure for lb_voice_serve_config
--- ----------------------------
-DROP TABLE IF EXISTS `lb_voice_serve_config`;
+
+-- Table: lb_voice_serve_config
 CREATE TABLE `lb_voice_serve_config` (
   `voice_serve_config_id` varchar(32) NOT NULL COMMENT '主键',
   `org_id` varchar(32) NOT NULL COMMENT '机构id',
@@ -24122,10 +22289,8 @@ CREATE TABLE `lb_voice_serve_config` (
   PRIMARY KEY (`voice_serve_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='阿里云语音服务信息';
 
--- ----------------------------
--- Table structure for lb_volume_growth
--- ----------------------------
-DROP TABLE IF EXISTS `lb_volume_growth`;
+
+-- Table: lb_volume_growth
 CREATE TABLE `lb_volume_growth` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(32) NOT NULL DEFAULT '' COMMENT '表名',
@@ -24136,10 +22301,8 @@ CREATE TABLE `lb_volume_growth` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='数据量增长表';
 
--- ----------------------------
--- Table structure for lb_volume_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_volume_record`;
+
+-- Table: lb_volume_record
 CREATE TABLE `lb_volume_record` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(128) NOT NULL DEFAULT '' COMMENT '表名',
@@ -24149,12 +22312,10 @@ CREATE TABLE `lb_volume_record` (
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `table_name` (`table_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2189116 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='数据量记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=2227000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='数据量记录表';
 
--- ----------------------------
--- Table structure for lb_volume_record99
--- ----------------------------
-DROP TABLE IF EXISTS `lb_volume_record99`;
+
+-- Table: lb_volume_record99
 CREATE TABLE `lb_volume_record99` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(32) NOT NULL DEFAULT '' COMMENT '表名',
@@ -24165,10 +22326,8 @@ CREATE TABLE `lb_volume_record99` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='数据量记录表';
 
--- ----------------------------
--- Table structure for lb_websocket_app
--- ----------------------------
-DROP TABLE IF EXISTS `lb_websocket_app`;
+
+-- Table: lb_websocket_app
 CREATE TABLE `lb_websocket_app` (
   `websocket_app_id` varchar(32) NOT NULL COMMENT '主键',
   `app_id` varchar(255) NOT NULL DEFAULT '' COMMENT '应用唯一标识',
@@ -24191,10 +22350,8 @@ CREATE TABLE `lb_websocket_app` (
   KEY `lb_websocket_app_app_id_IDX` (`app_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Table structure for lb_websocket_push_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_websocket_push_record`;
+
+-- Table: lb_websocket_push_record
 CREATE TABLE `lb_websocket_push_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '长者Id',
@@ -24217,10 +22374,8 @@ CREATE TABLE `lb_websocket_push_record` (
   KEY `create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='WebSocket推送记录表';
 
--- ----------------------------
--- Table structure for lb_wechat_order
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wechat_order`;
+
+-- Table: lb_wechat_order
 CREATE TABLE `lb_wechat_order` (
   `wechat_order_id` varchar(32) NOT NULL COMMENT '主键',
   `prepay_id` varchar(64) DEFAULT '' COMMENT 'prepay_id',
@@ -24240,10 +22395,8 @@ CREATE TABLE `lb_wechat_order` (
   PRIMARY KEY (`wechat_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Table structure for lb_wechat_push_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wechat_push_record`;
+
+-- Table: lb_wechat_push_record
 CREATE TABLE `lb_wechat_push_record` (
   `record_id` varchar(64) NOT NULL COMMENT '主键',
   `care_object_id` varchar(64) DEFAULT '' COMMENT '长者Id',
@@ -24263,10 +22416,8 @@ CREATE TABLE `lb_wechat_push_record` (
   KEY `record_type` (`record_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信推送记录表';
 
--- ----------------------------
--- Table structure for lb_wechat_relation
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wechat_relation`;
+
+-- Table: lb_wechat_relation
 CREATE TABLE `lb_wechat_relation` (
   `relation_id` varchar(32) NOT NULL COMMENT '主键',
   `phone` varchar(64) DEFAULT '' COMMENT 'app账号',
@@ -24280,10 +22431,8 @@ CREATE TABLE `lb_wechat_relation` (
   PRIMARY KEY (`relation_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='微信账号关联表';
 
--- ----------------------------
--- Table structure for lb_wifi_location_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wifi_location_record`;
+
+-- Table: lb_wifi_location_record
 CREATE TABLE `lb_wifi_location_record` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `iot_device_id` varchar(64) DEFAULT NULL COMMENT '设备id',
@@ -24300,10 +22449,8 @@ CREATE TABLE `lb_wifi_location_record` (
   KEY `create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='wifi定位调用记录表';
 
--- ----------------------------
--- Table structure for lb_wifi_position
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wifi_position`;
+
+-- Table: lb_wifi_position
 CREATE TABLE `lb_wifi_position` (
   `wifi_mac` varchar(32) NOT NULL COMMENT 'wifi地址',
   `wifi_name` varchar(32) NOT NULL DEFAULT '' COMMENT 'wifi名称',
@@ -24320,10 +22467,8 @@ CREATE TABLE `lb_wifi_position` (
   KEY `org_id` (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='WiFi定位表';
 
--- ----------------------------
--- Table structure for lb_work_order_bill_record
--- ----------------------------
-DROP TABLE IF EXISTS `lb_work_order_bill_record`;
+
+-- Table: lb_work_order_bill_record
 CREATE TABLE `lb_work_order_bill_record` (
   `record_id` varchar(32) NOT NULL COMMENT '主键',
   `serve_order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '服务订单id',
@@ -24344,10 +22489,8 @@ CREATE TABLE `lb_work_order_bill_record` (
   KEY `work_order_id_IDX` (`serve_order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='120工单账单记录';
 
--- ----------------------------
--- Table structure for lb_worker_node
--- ----------------------------
-DROP TABLE IF EXISTS `lb_worker_node`;
+
+-- Table: lb_worker_node
 CREATE TABLE `lb_worker_node` (
   `worker_node_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `host_name` varchar(64) NOT NULL COMMENT '主机host',
@@ -24359,12 +22502,10 @@ CREATE TABLE `lb_worker_node` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认：0-否 1-是',
   `is_init` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否初始：0-否 1-是',
   PRIMARY KEY (`worker_node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8314 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='分布式UID Generator生成策略依赖表';
+) ENGINE=InnoDB AUTO_INCREMENT=8370 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='分布式UID Generator生成策略依赖表';
 
--- ----------------------------
--- Table structure for lb_wwopen_authorize
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wwopen_authorize`;
+
+-- Table: lb_wwopen_authorize
 CREATE TABLE `lb_wwopen_authorize` (
   `authorize_id` varchar(32) NOT NULL COMMENT '授权主键',
   `suite_id` varchar(32) NOT NULL DEFAULT '' COMMENT '模板id',
@@ -24381,10 +22522,8 @@ CREATE TABLE `lb_wwopen_authorize` (
   KEY `suite_id_IDX` (`suite_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业授权方信息';
 
--- ----------------------------
--- Table structure for lb_wwopen_suite
--- ----------------------------
-DROP TABLE IF EXISTS `lb_wwopen_suite`;
+
+-- Table: lb_wwopen_suite
 CREATE TABLE `lb_wwopen_suite` (
   `suite_id` varchar(32) NOT NULL COMMENT '模板id',
   `suite_secret` varchar(255) NOT NULL DEFAULT '' COMMENT '模板Secret',
@@ -24398,431 +22537,3 @@ CREATE TABLE `lb_wwopen_suite` (
   PRIMARY KEY (`suite_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业微信模板信息';
 
--- ----------------------------
--- Procedure structure for exportHelpButton
--- ----------------------------
-DROP PROCEDURE IF EXISTS `exportHelpButton`;
-delimiter ;;
-CREATE PROCEDURE `exportHelpButton`(IN s_orgId VARCHAR(64),IN s_status INT(1), IN s_dumpEnergy INT(3), IN s_begin INT(8), IN s_total INT(8))
-BEGIN
-       SELECT
-				lo.org_name as orgName,
-        concat(ifnull(concat(lc.community_name, ' '),''),
-        ifnull(concat(build.building_name,'栋 '), ''),  
-        ifnull(concat(btn.area_name, '房 '), ''),
-        ifnull(concat(bed.bed_name, '床 '), '')) as bedNameStr,
-        btn.position_desc positionDesc,
-        btn.mac,
-        btn.imei,
-        if(btn.device_type in (40, 41, 42), '求救按钮', '') as deviceTypeName,
-        btn.dump_energy AS dumpEnergy,
-        FROM_UNIXTIME(btn.energy_check_time,'%Y-%m-%d %H:%i:%S') AS energyCheckTime,
-        btn.hardware_version hardwareVersion,
-        (case when   btn.status=0 then '离线' else '在线' end) as statusName 
-       FROM (
-         select  btn.bed_id, btn.area_id, btn.device_type,btn.status,btn.dump_energy,btn.position_desc ,btn.mac, btn.imei, btn.hardware_version,btn.energy_check_time,
-            area.org_id, area.floor_id, area.building_id, area.area_name
-            FROM lb_alarm_btn btn  force index(device_type)
-            INNER JOIN lb_area area ON btn.area_id = area.area_id and area.is_delete = 0    AND area.area_type in (1, 2, 5)  
-            where btn.device_type  in (40, 41, 42)  
-        )  btn       
-         LEFT JOIN lb_floor lf on lf.is_delete = 0 and lf.floor_id = btn.floor_id
-        LEFT JOIN lb_building build ON  build.is_delete = 0 and build.building_id = btn.building_id 
-        LEFT JOIN lb_area_bed bed ON  bed.is_delete=0 and  bed.area_bed_id = btn.bed_id 
-        LEFT JOIN lb_community lc on build.community_id=lc.community_id and lc.is_delete = 0
-        left join  lb_organization lo on  btn.org_id = lo.org_id
-        where 1=1
-            AND if(s_orgId is null, 1=1, btn.org_id = s_orgId)
-            AND (if(s_status is null, 1=1, btn.status = s_status) or if(s_dumpEnergy is null, 1=1,  btn.dump_energy  < 20 and btn.status=1))
-				ORDER BY btn.org_id, lc.community_name+1,build.building_name+1,btn.area_name+1,bed.bed_name+1
-				limit s_begin, s_total;
-	END
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for exportHelpButtonAndLifeDetector
--- ----------------------------
-DROP PROCEDURE IF EXISTS `exportHelpButtonAndLifeDetector`;
-delimiter ;;
-CREATE PROCEDURE `exportHelpButtonAndLifeDetector`(IN s_orgId VARCHAR(64),IN s_status INT(1), IN s_dumpEnergy INT(3), IN s_begin INT(8), IN s_total INT(8))
-BEGIN
-       SELECT
-				lo.org_name as orgName,
-        concat(ifnull(concat(lc.community_name, ' '),''),
-        ifnull(concat(build.building_name,'栋 '), ''),  
-        ifnull(concat(btn.area_name, '房 '), ''),
-        ifnull(concat(bed.bed_name, '床 '), '')) as bedNameStr,
-        btn.position_desc positionDesc,
-        btn.mac,
-        btn.imei,
-        if(btn.device_type in (40, 41, 42), '求救按钮', '') as deviceTypeName,
-        btn.dump_energy AS dumpEnergy,
-        FROM_UNIXTIME(btn.energy_check_time,'%Y-%m-%d %H:%i:%S') AS energyCheckTime,
-        btn.hardware_version hardwareVersion,
-        (case when   btn.status=0 then '离线' else '在线' end) as statusName 
-       FROM (
-         select  btn.bed_id, btn.area_id, btn.device_type,btn.status,btn.dump_energy,btn.position_desc ,btn.mac, btn.imei, btn.hardware_version,btn.energy_check_time,
-            area.org_id, area.floor_id, area.building_id, area.area_name
-            FROM lb_alarm_btn btn  force index(device_type)
-            INNER JOIN lb_area area ON btn.area_id = area.area_id and area.is_delete = 0    AND area.area_type in (1, 2, 5)  
-            where btn.device_type  in (40, 41, 42)  
-        )  btn       
-         LEFT JOIN lb_floor lf on lf.is_delete = 0 and lf.floor_id = btn.floor_id
-        LEFT JOIN lb_building build ON  build.is_delete = 0 and build.building_id = btn.building_id 
-        LEFT JOIN lb_area_bed bed ON  bed.is_delete=0 and  bed.area_bed_id = btn.bed_id 
-        LEFT JOIN lb_community lc on build.community_id=lc.community_id and lc.is_delete = 0
-        left join  lb_organization lo on  btn.org_id = lo.org_id
-        where 1=1
-            AND if(s_orgId is null, 1=1, btn.org_id = s_orgId)
-            AND (if(s_status is null, 1=1, btn.status = s_status) or if(s_dumpEnergy is null, 1=1,  btn.dump_energy  < 20 and btn.status=1))
-						
-			union all
-			
-			SELECT
-        lo.org_name as orgName,
-        concat(ifnull(concat(lc.community_name, ' '),''),
-        ifnull(concat(build.building_name,'栋 '), ''),  
-        ifnull(concat(area.area_name, '房 '), ''),
-        ifnull(concat(bed.bed_name, '床 '), '')) as bedNameStr,
-        re.position_desc AS positionDesc,
-        beacon.mac,
-        beacon.imei AS imei,
-        if(beacon.device_iteration_number='6', '生命探测器（通话版）', '生命探测器') as deviceTypeName,
-        beacon.dump_energy AS dumpEnergy,
-        FROM_UNIXTIME(beacon.energy_check_time,'%Y-%m-%d %H:%i:%S') AS energyCheckTime,
-        beacon.hardware_version hardwareVersion,
-        (case when   beacon.status=0 then '离线' else '在线' end) as statusName
-
-        FROM lb_beacon beacon
-        LEFT JOIN lb_beacon_position_re re ON beacon.position_re_id = re.position_re_id
-        INNER JOIN lb_area area ON beacon.area_id = area.area_id and area.is_delete = 0
-        LEFT JOIN lb_floor lf on lf.floor_id = area.floor_id and lf.is_delete = 0
-        LEFT JOIN lb_building build ON build.building_id = area.building_id AND build.is_delete = 0
-        LEFT JOIN lb_area_bed bed ON bed.area_bed_id = beacon.bed_id and bed.is_delete=0
-        LEFT JOIN lb_community lc on build.community_id=lc.community_id AND lc.is_delete = 0
-        LEFT JOIN lb_mainframe_area_re mainframeRe ON mainframeRe.area_id = beacon.area_id AND mainframeRe.is_delete = 0
-        LEFT JOIN lb_mainframe mainframe ON mainframe.mainframe_id = mainframeRe.mainframe_id AND mainframe.is_delete = 0
-        left join  lb_organization lo on  area.org_id = lo.org_id
-        
-        WHERE 1=1
-						AND if(s_orgId is null, 1=1, area.org_id = s_orgId)
-            AND beacon.device_type =2
-            AND area.area_type = 2
-            AND (if(s_status is null, 1=1, beacon.status = s_status) or if(s_dumpEnergy is null, 1=1,  beacon.dump_energy  < 20 and beacon.status=1))
-      ORDER BY orgName, bedNameStr
-
-			limit s_begin, s_total;
-	END
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for exportLifeDetector
--- ----------------------------
-DROP PROCEDURE IF EXISTS `exportLifeDetector`;
-delimiter ;;
-CREATE PROCEDURE `exportLifeDetector`(IN s_orgId VARCHAR(64),IN s_status INT(1), IN s_dumpEnergy INT(3), IN s_begin INT(8), IN s_total INT(8))
-BEGIN
-        SELECT
-        lo.org_name as orgName,
-        concat(ifnull(concat(lc.community_name, ' '),''),
-        ifnull(concat(build.building_name,'栋 '), ''),  
-        ifnull(concat(area.area_name, '房 '), ''),
-        ifnull(concat(bed.bed_name, '床 '), '')) as bedNameStr,
-        re.position_desc AS positionDesc,
-        beacon.mac,
-        beacon.imei AS imei,
-        if(beacon.device_iteration_number='6', '生命探测器（通话版）', '生命探测器') as deviceTypeName,
-        beacon.dump_energy AS dumpEnergy,
-        FROM_UNIXTIME(beacon.energy_check_time,'%Y-%m-%d %H:%i:%S') AS energyCheckTime,
-        beacon.hardware_version hardwareVersion,
-        (case when   beacon.status=0 then '离线' else '在线' end) as statusName
-
-        FROM lb_beacon beacon
-        LEFT JOIN lb_beacon_position_re re ON beacon.position_re_id = re.position_re_id
-        INNER JOIN lb_area area ON beacon.area_id = area.area_id and area.is_delete = 0
-        LEFT JOIN lb_floor lf on lf.floor_id = area.floor_id and lf.is_delete = 0
-        LEFT JOIN lb_building build ON build.building_id = area.building_id AND build.is_delete = 0
-        LEFT JOIN lb_area_bed bed ON bed.area_bed_id = beacon.bed_id and bed.is_delete=0
-        LEFT JOIN lb_community lc on build.community_id=lc.community_id AND lc.is_delete = 0
-        LEFT JOIN lb_mainframe_area_re mainframeRe ON mainframeRe.area_id = beacon.area_id AND mainframeRe.is_delete = 0
-        LEFT JOIN lb_mainframe mainframe ON mainframe.mainframe_id = mainframeRe.mainframe_id AND mainframe.is_delete = 0
-        left join  lb_organization lo on  area.org_id = lo.org_id
-        
-        WHERE 1=1
-						AND if(s_orgId is null, 1=1, area.org_id = s_orgId)
-            AND beacon.device_type =2
-            AND area.area_type = 2
-            AND (if(s_status is null, 1=1, beacon.status = s_status) or if(s_dumpEnergy is null, 1=1,  beacon.dump_energy  < 20 and beacon.status=1))
-        ORDER BY area.org_id,lc.community_name+1,build.building_name+1, area.area_name+1,bed.bed_name+1
-				limit s_begin, s_total;
-	END
-;;
-delimiter ;
-
--- ----------------------------
--- Function structure for fractionToDecimal
--- ----------------------------
-DROP FUNCTION IF EXISTS `fractionToDecimal`;
-delimiter ;;
-CREATE FUNCTION `fractionToDecimal`(`fraction_str` varchar(32))
- RETURNS decimal(10,4)
-BEGIN
-    DECLARE result DECIMAL(10,4);
-    DECLARE numerator DECIMAL(10,4);
-    DECLARE denominator DECIMAL(10,4);
-  
-    SET fraction_str = REPLACE(fraction_str, ' ', '');
-    
- 
-    IF fraction_str LIKE '%/%' THEN
-        SET numerator = CAST(SUBSTRING_INDEX(fraction_str, '/', 1) AS DECIMAL);
-        SET denominator = NULLIF(CAST(SUBSTRING_INDEX(fraction_str, '/', -1) AS DECIMAL), 0);
-        
-        IF denominator IS NULL OR denominator = 0 THEN
-            RETURN 0;
-        ELSE
-            SET result = numerator / denominator;
-        END IF;
-    ELSE
-        SET result = CAST(fraction_str AS DECIMAL);
-    END IF;
-    
-    RETURN result;
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Function structure for getChildrenRegion
--- ----------------------------
-DROP FUNCTION IF EXISTS `getChildrenRegion`;
-delimiter ;;
-CREATE FUNCTION `getChildrenRegion`(regionId int, selectTimes int)
- RETURNS mediumtext CHARSET utf8mb4
-BEGIN
-  DECLARE oTemp MEDIUMTEXT default '';
-  DECLARE oTempChild MEDIUMTEXT default '';
-  DECLARE sqlTimes INT default 1;
-
-  set oTempChild=regionId;
-  WHILE oTempChild IS NOT NULL
-  DO
-  IF sqlTimes<5-selectTimes THEN
-    SET oTemp = CONCAT(oTemp,',',oTempChild);
-    SET sqlTimes=sqlTimes+1;
-    SELECT GROUP_CONCAT(region_id) INTO oTempChild FROM lb_region WHERE FIND_IN_SET(parent_id,oTempChild) > 0;
-  ELSE
-    SET oTempChild = NULL;
-  END IF;
-  END WHILE;
-
-  RETURN oTemp;
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Function structure for getStrArrayStrOfindex
--- ----------------------------
-DROP FUNCTION IF EXISTS `getStrArrayStrOfindex`;
-delimiter ;;
-CREATE FUNCTION `getStrArrayStrOfindex`(str varchar(1024), split varchar(10), indexNum int)
- RETURNS varchar(1024) CHARSET utf8mb4
-BEGIN
-  DECLARE start int DEFAULT 1;
-  DECLARE next int DEFAULT 1;
-  DECLARE location int;
-
-  set str = trim(str);
-  set location = instr(str, split);
-  WHILE location <> 0 and indexNum > next
-  DO
-  set start = location + 1;
-  set next = next + 1;
-  set location = LOCATE(split, str, start);
-  END WHILE;
-  IF location = 0 
-  THEN
-  SET location = length(str) + 1;
-  RETURN substring(str, start, location - start);
-  ELSE
-  RETURN substring(str, start, location - start);
-  END IF;
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for procNbdatDelete
--- ----------------------------
-DROP PROCEDURE IF EXISTS `procNbdatDelete`;
-delimiter ;;
-CREATE PROCEDURE `procNbdatDelete`(OUT `result` mediumint)
-BEGIN
-DECLARE CONTINUE HANDLER FOR SQLWARNING,SQLEXCEPTION SET `result` = 0;
-
-START TRANSACTION;
-
-DELETE A FROM lb_location_care.lb_nb_data A,lb_nb_server.lb_nbdata_bak B WHERE A.id=B.id;
-
-IF `result` = 0 THEN
-ROLLBACK;
-ELSE
-SET `result` = 1;
-COMMIT;
-END IF;
-
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for update_schema
--- ----------------------------
-DROP PROCEDURE IF EXISTS `update_schema`;
-delimiter ;;
-CREATE PROCEDURE `update_schema`(OUT o_state INT)
-BEGIN
-CREATE INDEX idx_iot_device_id USING BTREE ON lb_location_care.lb_third_party_device (iot_device_id);
-
-ALTER TABLE lb_band ADD `wear_status` tinyint(1) DEFAULT NULL COMMENT '佩戴状态（0 未佩戴， 1 佩戴中）';
-ALTER TABLE lb_band ADD `motion_status` tinyint(1) DEFAULT NULL COMMENT '运动状态（0 静止， 1 活动，2 行走）';
-
-alter table lb_iot_device_track add map_area_id varchar(32) null comment '位置所属区域地图id';
-
-CREATE TABLE `lb_device_change_record` (
-  `record_id` varchar(32) NOT NULL COMMENT '主键',
-  `account_id` varchar(32) DEFAULT '' COMMENT '操作人id',
-  `imei` varchar(32) DEFAULT '' COMMENT 'imei',
-  `mac` varchar(32) DEFAULT '' COMMENT 'mac地址',
-  `create_time` bigint(20) DEFAULT '0' COMMENT '创建时间',
-  `update_time` bigint(20) DEFAULT '0' COMMENT '更新时间',
-  `action_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '记录类型（1 添加，2 解绑，3 换绑）',
-  `device_type` int(11) DEFAULT NULL COMMENT '设备类型',
-  `key_id` varchar(32) DEFAULT '' COMMENT '设备所属',
-  `last_key_id` varchar(32) DEFAULT '' COMMENT '操作前设备所属',
-  PRIMARY KEY (`record_id`),
-  KEY `account_id` (`account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='设备变更记录表';
-
-UPDATE lb_function set func_name = '主动关怀' WHERE func_code = '103667610599821839';
-UPDATE lb_function set func_name = '主动关怀' WHERE func_code = 'cms141';
-UPDATE lb_function set func_name = '综合信息展示大屏' WHERE func_code = 'cms14001';
-UPDATE lb_function set func_name = '长者信息统计' WHERE func_code = 'cms14003';
-UPDATE lb_function set func_name = '充值记录' WHERE func_code = 'cms13503';
-UPDATE lb_function set func_name = '代金券过期记录' WHERE func_code = 'cms13504';
-UPDATE lb_function set order_num = 2 WHERE func_code = 'cms13503';
-UPDATE lb_function set order_num = 3 WHERE func_code = 'cms13504';
-UPDATE lb_function set order_num = 4 WHERE func_code = 'cms13502';
-
-update lb_commdict set value='医院项目' where commdict_id=324;
-    update lb_commdict set value='医院项目' where commdict_id=330;
-		
-ALTER TABLE `lb_location_care`.`lb_band` ADD COLUMN `config_send_time` bigint(20) NULL DEFAULT 0 COMMENT '更新时间' AFTER `motion_status`;
-ALTER TABLE `lb_location_care`.`lb_band` ADD COLUMN `send_num` tinyint(3) NULL DEFAULT 1 COMMENT '更新次数' AFTER `config_send_time`;
-
-ALTER TABLE `lb_location_care`.`lb_positioner` ADD COLUMN `send_num` tinyint(3) NULL DEFAULT 1 COMMENT '更新次数' AFTER `power_shield_time`;
-ALTER TABLE `lb_location_care`.`lb_positioner` ADD COLUMN `config_send_time` bigint(20) NULL DEFAULT 0 COMMENT '更新时间' AFTER `send_num`;
-
-INSERT INTO `lb_location_care`.`lb_commdict_editable`(`type`, `key`, `value`, `create_time`, 
-`update_time`, `is_open`, `is_delete`, `org_id`, `order_num`, `is_editable`, `type_desc`) VALUES
- ('oneself_situation', '1', '自理正常', 0, 0, 1, 0, 'lonboncms', 0, 0, '自理能力');
- 
- ALTER TABLE lb_location_care.lb_iot_device_track MODIFY COLUMN track_open_id varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' NULL COMMENT '轨迹开启人id';
- 
-ALTER TABLE `lb_location_care`.`lb_region` DROP INDEX `parent_path`;
-ALTER TABLE `lb_location_care`.`lb_region` MODIFY COLUMN `has_child` tinyint(1) NULL DEFAULT 2 COMMENT '是否有子节点 1 是 2 否' AFTER `parent_id`;
-ALTER TABLE `lb_location_care`.`lb_region` ADD COLUMN `status` tinyint(1) NULL DEFAULT 0 COMMENT '更新状态（0 历史，1 新增，2 更新， 3 删除）' AFTER `chinese_initials`;
-ALTER TABLE `lb_location_care`.`lb_region` ADD INDEX `adcode`(`adcode`) USING BTREE;
- 
-update  lb_beacon set
-serial_num  = 1
-where serial_num  = 0
-and area_id in
-(
-select la.area_id
-from lb_area la
-inner join lb_organization lo on la.org_id = lo.org_id 
-where lo.org_type = 1
-);
-
-
-update  lb_alarm_btn set
-serial_num  = 1
-where serial_num  = 0
-and area_id in
-(
-select la.area_id
-from lb_area la
-inner join lb_organization lo on la.org_id = lo.org_id 
-where lo.org_type = 1
-);
-
-
-
-ALTER TABLE lb_location_care.lb_region DROP INDEX parent_path;
-CREATE INDEX adcode USING BTREE ON lb_location_care.lb_region (adcode);
-ALTER TABLE lb_location_care.lb_region MODIFY `has_child` tinyint(1) NOT NULL COMMENT '是否有子节点（1 是，2 否）';
-ALTER TABLE lb_location_care.lb_region ADD `status` tinyint(1) DEFAULT '1' COMMENT '更新状态（0 历史，1 新增，2 更新， 3 删除）';
-
-INSERT INTO lb_commdict (commdict_id, `type`, `key`, value, create_time, update_time, is_open) VALUES(5, 'cache_update_time', 'region', '行政区划缓存更新时间', unix_timestamp(now()), unix_timestamp(now()), 2);
-
-CREATE TABLE `lb_region_new` (
-  `region_id` int(11) DEFAULT NULL COMMENT '主键',
-  `region_name` varchar(32) DEFAULT '' COMMENT '区域名称',
-  `parent_path` varchar(255) DEFAULT NULL COMMENT '区域路径',
-  `parent_id` int(11) DEFAULT '0' COMMENT '父级区域',
-  `has_child` tinyint(1) DEFAULT '2' COMMENT '是否有子节点 1 是 2 否',
-  `adcode` int(11) DEFAULT '0' COMMENT '城市编码',
-  `center` varchar(32) DEFAULT '' COMMENT '区域中心点',
-  `create_time` bigint(20) DEFAULT '0' COMMENT '创建时间',
-  `update_time` bigint(20) DEFAULT '0' COMMENT '更新时间',
-  `level` tinyint(3) DEFAULT '0' COMMENT '级别',
-  `chinese_initials` varchar(32) DEFAULT '' COMMENT '简拼',
-  UNIQUE KEY `region_id` (`region_id`) USING BTREE,
-  KEY `parent_id` (`parent_id`) USING BTREE,
-  KEY `adcode` (`adcode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='行政区域(实时)';
-
-INSERT INTO lb_region_new (region_id, region_name, parent_path, parent_id, has_child, adcode, center, create_time, update_time, level, chinese_initials)  
-SELECT region_id, region_name, parent_path, parent_id, has_child, adcode, center, IFNULL(create_time, UNIX_TIMESTAMP(NOW())), IFNULL(update_time, UNIX_TIMESTAMP(NOW())), level, chinese_initials FROM lb_region; 
-
-ALTER TABLE `lb_location_care`.`lb_alarm_btn` MODIFY COLUMN `longitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '经度' AFTER `version`;
-
-ALTER TABLE `lb_location_care`.`lb_alarm_btn` MODIFY COLUMN `latitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '纬度' AFTER `longitude`;
-
-ALTER TABLE `lb_location_care`.`lb_area` MODIFY COLUMN `longitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '经度' AFTER `position_desc`;
-
-ALTER TABLE `lb_location_care`.`lb_area` MODIFY COLUMN `latitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '纬度' AFTER `longitude`;
-
-ALTER TABLE `lb_location_care`.`lb_beacon_position_re` MODIFY COLUMN `longitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '经度' AFTER `position_desc`;
-
-ALTER TABLE `lb_location_care`.`lb_beacon_position_re` MODIFY COLUMN `latitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '纬度' AFTER `longitude`;
-
-ALTER TABLE `lb_location_care`.`lb_cms_send_order` MODIFY COLUMN `status` tinyint(1) NULL DEFAULT 0 COMMENT '订单状态 0:等待接单 1:已关闭 2 已接单' AFTER `serve_provider_id`;
-
-ALTER TABLE `lb_location_care`.`lb_iot_device_track` MODIFY COLUMN `lat` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '纬度' AFTER `is_outdoor`;
-
-ALTER TABLE `lb_location_care`.`lb_iot_device_track` MODIFY COLUMN `lng` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '经度' AFTER `lat`;
-
-ALTER TABLE `lb_location_care`.`lb_iot_device_track` MODIFY COLUMN `lat_primitive` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '粗纬度' AFTER `device_type`;
-
-ALTER TABLE `lb_location_care`.`lb_iot_device_track` MODIFY COLUMN `lng_primitive` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0' COMMENT '粗经度' AFTER `lat_primitive`;
-
-ALTER TABLE `lb_location_care`.`lb_iot_device_track` MODIFY COLUMN `track_open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '轨迹开启人id' AFTER `care_object_id`;
-
-
- REPLACE INTO `lb_location_care`.`lb_function`(`func_id`, `type`, `func_name`, `parent_id`, `level`, `order_num`, `route`, `icon_path`, `description`, `is_allot`, `create_time`, `update_time`, `org_id`, `func_code`) VALUES ('10404', 0, '医院项目', '104', 2, 7, '/project/4', '', '移动输液项目', 1, 0, 0, '', '10404');
-REPLACE INTO `lb_location_care`.`lb_function`(`func_id`, `type`, `func_name`, `parent_id`, `level`, `order_num`, `route`, `icon_path`, `description`, `is_allot`, `create_time`, `update_time`, `org_id`, `func_code`) VALUES ('10708', 0, '守护服务申请', '107', 2, 6, '/billing/guardChange', '', '守护服务变更申请', 1, 0, 0, '', '10708');
-REPLACE  INTO `lb_location_care`.`lb_function`(`func_id`, `type`, `func_name`, `parent_id`, `level`, `order_num`, `route`, `icon_path`, `description`, `is_allot`, `create_time`, `update_time`, `org_id`, `func_code`) VALUES ('10709', 0, '守护服务申请记录', '107', 2, 7, '/billing/guardRecord', '', '守护服务审批记录', 1, 0, 0, '', '10709');
-
-
-  SET o_state=0;
-
-END
-;;
-delimiter ;
-
-SET FOREIGN_KEY_CHECKS = 1;
