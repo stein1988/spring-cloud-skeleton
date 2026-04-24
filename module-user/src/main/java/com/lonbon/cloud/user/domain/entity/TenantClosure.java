@@ -4,12 +4,10 @@ import com.easy.query.core.annotation.EntityProxy;
 import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
-import com.lonbon.cloud.base.service.Closure;
+import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 import java.util.UUID;
@@ -19,26 +17,12 @@ import java.util.UUID;
  */
 @Data
 @FieldNameConstants
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_tenant_closure", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy
-public class TenantClosure extends BaseEntity
-        implements ProxyEntityAvailable<TenantClosure, TenantClosureProxy>, Closure {
+public class TenantClosure extends ClosureEntity implements ProxyEntityAvailable<TenantClosure, TenantClosureProxy> {
 
-    /**
-     * 祖先租户ID
-     */
-    private UUID ancestorId;
-
-    /**
-     * 后代租户ID
-     */
-    private UUID descendantId;
-
-    /**
-     * 层级距离，取值>=0，不能为负数，0表示自身，ancestorId=descendantId，1表示直接后代
-     */
-    private Integer distance;
+    public TenantClosure(UUID ancestorId, UUID descendantId, Integer distance) {
+        super(ancestorId, descendantId, distance);
+    }
 }

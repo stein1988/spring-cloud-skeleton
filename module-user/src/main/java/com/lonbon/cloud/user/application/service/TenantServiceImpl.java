@@ -6,7 +6,7 @@ import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.repository.Repository;
 import com.lonbon.cloud.base.service.ClosureOperations;
-import com.lonbon.cloud.base.service.SimpleEntityService;
+import com.lonbon.cloud.base.service.EntityService;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.entity.TenantClosure;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TenantServiceImpl extends SimpleEntityService<Tenant, TenantProxy>
+public class TenantServiceImpl extends EntityService<Tenant, TenantProxy>
         implements TenantService, ClosureOperations<Tenant, TenantProxy, TenantClosure, TenantClosureProxy> {
 
     private final TenantClosureRepository closureRepository;

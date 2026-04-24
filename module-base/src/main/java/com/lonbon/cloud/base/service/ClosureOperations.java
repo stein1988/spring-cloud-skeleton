@@ -1,7 +1,11 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.expression.lambda.SQLActionExpression2;
+import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.AbstractProxyEntity;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.SQLSelectExpression;
+import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.exception.BusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
 import com.lonbon.cloud.base.repository.Repository;
@@ -46,9 +50,9 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & ClosureAvailable<U>,
-        TProxy extends AbstractProxyEntity<TProxy, T>, U extends ProxyEntityAvailable<U, UProxy> & Closure,
+        TProxy extends AbstractProxyEntity<TProxy, T>, U extends ClosureEntity & ProxyEntityAvailable<U, UProxy>,
         UProxy extends AbstractProxyEntity<UProxy, U>>
-        extends ClosureDependencyProvider<T, TProxy, U, UProxy>, ClosureService<T, TProxy, U, UProxy> {
+        extends ClosureService<T, TProxy, U, UProxy> {
 
     /**
      * 闭包表字段常量
@@ -64,6 +68,30 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
     String CLOSURE_DISTANCE = "distance";
 
     /**
+     * 获取闭包实体仓库
+     *
+     * @return 闭包仓库实例
+     */
+    Repository<U, UProxy> getClosureRepository();
+
+    /**
+     * 获取主实体仓库
+     *
+     * @return 主实体仓库实例
+     */
+    Repository<T, TProxy> getEntityRepository();
+
+    /**
+     * 创建闭包实体
+     *
+     * @param ancestorId   祖先节点ID
+     * @param descendantId 后代节点ID
+     * @param distance     距离（层级差）
+     * @return 闭包实体
+     */
+    U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
+
+    /**
      * 创建基础实体（不含闭包关系）
      * <p>
      * 该方法由实现类提供，用于调用父类 SimpleEntityService 的 createEntity 方法。
@@ -74,6 +102,20 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      * @return 创建的实体
      */
     T createBaseEntity(Object createDto);
+
+    /**
+     * 导航表达式，用于加载关联数据
+     *
+     * @return 导航表达式
+     */
+    SQLActionExpression2<IncludeContext, TProxy> navigate();
+
+    /**
+     * 设置父ID列的表达式
+     *
+     * @return 父ID列表达式
+     */
+    SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId();
 
     /**
      * 创建实体并构建闭包表关系

@@ -7,6 +7,7 @@ import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.StaffProfileProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
  * 职责：个人身份、联系方式、地址等隐私信息
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_staff_profile")
 @EntityProxy

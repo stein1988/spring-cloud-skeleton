@@ -7,6 +7,7 @@ import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.StaffAccountProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 员工账号与权限配置表
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_staff_account")
 @EntityProxy

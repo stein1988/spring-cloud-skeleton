@@ -7,6 +7,7 @@ import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.PermissionProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 权限
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_permission", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy

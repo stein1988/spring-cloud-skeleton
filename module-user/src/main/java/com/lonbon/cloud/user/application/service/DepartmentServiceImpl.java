@@ -6,7 +6,7 @@ import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.repository.Repository;
 import com.lonbon.cloud.base.service.ClosureOperations;
-import com.lonbon.cloud.base.service.SimpleEntityService;
+import com.lonbon.cloud.base.service.EntityService;
 import com.lonbon.cloud.user.domain.entity.Department;
 import com.lonbon.cloud.user.domain.entity.DepartmentClosure;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
@@ -28,23 +28,23 @@ import java.util.UUID;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see ClosureOperations
  * @see DepartmentService
+ * @since 1.0.0
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DepartmentServiceImpl extends SimpleEntityService<Department, DepartmentProxy>
-        implements DepartmentService, ClosureOperations<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
+public class DepartmentServiceImpl extends EntityService<Department, DepartmentProxy> implements DepartmentService,
+                                                                                                 ClosureOperations<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
 
     private final DepartmentClosureRepository closureRepository;
 
     /**
      * 构造部门服务实现
      *
-     * @param converter          DTO转换器
-     * @param repository         部门仓库
-     * @param closureRepository  部门闭包表仓库
+     * @param converter         DTO转换器
+     * @param repository        部门仓库
+     * @param closureRepository 部门闭包表仓库
      */
     public DepartmentServiceImpl(
             Converter converter, DepartmentRepository repository, DepartmentClosureRepository closureRepository) {

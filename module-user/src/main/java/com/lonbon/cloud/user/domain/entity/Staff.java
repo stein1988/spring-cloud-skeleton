@@ -9,6 +9,7 @@ import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.StaffProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ import java.time.LocalDate;
  * </p>
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_staff")
 @EntityProxy

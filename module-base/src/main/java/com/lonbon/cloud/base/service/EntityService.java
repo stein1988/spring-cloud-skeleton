@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 @Transactional(rollbackFor = Exception.class)
-public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TProxy>,
+public abstract class EntityService<T extends ProxyEntityAvailable<T, TProxy>,
         TProxy extends AbstractProxyEntity<TProxy, T>>
         implements Service<T, TProxy> {
 
@@ -60,7 +60,7 @@ public abstract class SimpleEntityService<T extends ProxyEntityAvailable<T, TPro
      * @param repository 数据仓库
      * @param entityType 实体类型
      */
-    public SimpleEntityService(Converter converter, Repository<T, TProxy> repository, Class<T> entityType) {
+    public EntityService(Converter converter, Repository<T, TProxy> repository, Class<T> entityType) {
         this.converter = converter;
         this.repository = repository;
         this.entityType = entityType;

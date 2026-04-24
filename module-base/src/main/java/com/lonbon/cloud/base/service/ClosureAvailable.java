@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public interface ClosureAvailable<T extends Closure> {
+public interface ClosureAvailable<T extends ClosureEntity> {
 
     UUID getId();
 

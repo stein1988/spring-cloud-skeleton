@@ -4,12 +4,10 @@ import com.easy.query.core.annotation.EntityProxy;
 import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
-import com.lonbon.cloud.base.service.Closure;
+import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 import java.util.UUID;
@@ -19,26 +17,13 @@ import java.util.UUID;
  */
 @Data
 @FieldNameConstants
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_department_closure", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
-public class DepartmentClosure extends BaseEntity
-        implements ProxyEntityAvailable<DepartmentClosure, DepartmentClosureProxy>, Closure {
+public class DepartmentClosure extends ClosureEntity
+        implements ProxyEntityAvailable<DepartmentClosure, DepartmentClosureProxy> {
 
-    /**
-     * 祖先部门ID
-     */
-    private UUID ancestorId;
-
-    /**
-     * 后代部门ID
-     */
-    private UUID descendantId;
-
-    /**
-     * 层级距离，取值>=0，不能为负数，0表示自身，ancestorId=descendantId，1表示直接后代
-     */
-    private Integer distance;
+    public DepartmentClosure(UUID ancestorId, UUID descendantId, Integer distance) {
+        super(ancestorId, descendantId, distance);
+    }
 }

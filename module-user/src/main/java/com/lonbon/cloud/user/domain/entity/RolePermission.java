@@ -7,6 +7,7 @@ import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.RolePermissionProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
  * </p>
  */
 @Data
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_role_permission", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
