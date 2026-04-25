@@ -2,17 +2,16 @@
   // 禁用对编译目录的文件监视、关闭自动保存、限制后台索引，让 Maven 能独占读写 target/ 等目录。
   // 避免 IntelliJ IDEA 编译失败
   // 1. 核心：释放文件锁（最重要）
-  "files.watcherExclude": {
-    "**/target/**": true,
-    "**/.idea/**": true,
-    "**/node_modules/**": true,
-    "**/.git/**": true
-  },
-  "search.exclude": {
-    "**/target": true,
-    "**/.idea": true
-  },
-  "files.autoSave": "off",
+  // "files.watcherExclude": {
+  //   "**/target/**": true,
+  //   "**/.idea/**": true,
+  //   "**/node_modules/**": true,
+  //   "**/.git/**": true
+  // },
+  // "search.exclude": {
+  //   "**/target": true,
+  //   "**/.idea": true
+  // },
 
   // 2. 关闭后台编译（关键）
   "java.compile.nullAnalysis.mode": "disabled",
@@ -21,5 +20,10 @@
   "java.configuration.updateBuildConfiguration": "disabled",
 
   // 4. 关闭 VSCode Java 自动构建（彻底不编译）
-  "java.autobuild.enabled": false
+  "java.autobuild.enabled": false,
+
+  // 5. 配置生成的源码路径（注解处理器生成的 proxy 类）
+  "java.project.sourcePaths": [
+    "**/target/generated-sources/annotations"
+  ]
 }
