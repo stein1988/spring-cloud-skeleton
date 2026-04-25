@@ -5,8 +5,9 @@ import com.easy.query.core.expression.lambda.SQLFuncExpression1;
 import com.easy.query.core.proxy.SQLSelectExpression;
 import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.repository.Repository;
-import com.lonbon.cloud.base.service.ClosureOperations;
-import com.lonbon.cloud.base.service.EntityService;
+import com.lonbon.cloud.base.service.ClosureExtension;
+import com.lonbon.cloud.base.service.ClosureOperation;
+import com.lonbon.cloud.base.service.EntityServiceImpl;
 import com.lonbon.cloud.user.domain.entity.Department;
 import com.lonbon.cloud.user.domain.entity.DepartmentClosure;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
@@ -24,18 +25,18 @@ import java.util.UUID;
  * 部门服务实现类
  * <p>
  * 提供部门的增删改查及层级关系管理功能。
- * 部门层级关系通过闭包表（{@link DepartmentClosure}）实现，支持多级部门结构。
+ * 部门层级关系通过闭包表实现，支持多级部门结构。
  * </p>
  *
  * @author lonbon
- * @see ClosureOperations
+ * @see ClosureExtension
  * @see DepartmentService
  * @since 1.0.0
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DepartmentServiceImpl extends EntityService<Department, DepartmentProxy> implements DepartmentService,
-                                                                                                 ClosureOperations<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
+public class DepartmentServiceImpl extends EntityServiceImpl<Department, DepartmentProxy> 
+    implements DepartmentService {
 
     private final DepartmentClosureRepository closureRepository;
 
@@ -53,27 +54,37 @@ public class DepartmentServiceImpl extends EntityService<Department, DepartmentP
     }
 
     @Override
-    public Repository<DepartmentClosure, DepartmentClosureProxy> getClosureRepository() {
-        return closureRepository;
-    }
+    public ClosureOperation<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> getClosureOperation() {
+        return new ClosureExtension<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy>() {
+            @Override
+            protected Repository<DepartmentClosure, DepartmentClosureProxy> getClosureRepository() {
+                return closureRepository;
+            }
 
-    @Override
-    public DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
-        return new DepartmentClosure(ancestorId, descendantId, distance);
-    }
+            @Override
+            protected Repository<Department, DepartmentProxy> getEntityRepository() {
+                return repository;
+            }
 
-    @Override
-    public Department createBaseEntity(Object createDto) {
-        return super.createEntity(createDto);
-    }
+            @Override
+            protected DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
+                return new DepartmentClosure(ancestorId, descendantId, distance);
+            }
 
-    @Override
-    public SQLActionExpression2<IncludeContext, DepartmentProxy> navigate() {
-        return (c, t) -> c.query(t.ancestors());
-    }
+            @Override
+            protected Department createBaseEntity(Object createDto) {
+                return DepartmentServiceImpl.this.createEntity(createDto);
+            }
 
-    @Override
-    public SQLFuncExpression1<DepartmentProxy, SQLSelectExpression> setColumnParentId() {
-        return DepartmentProxy::parentId;
+            @Override
+            public SQLActionExpression2<IncludeContext, DepartmentProxy> navigate() {
+                return (c, t) -> c.query(t.ancestors());
+            }
+
+            @Override
+            public SQLFuncExpression1<DepartmentProxy, SQLSelectExpression> setColumnParentId() {
+                return DepartmentProxy::parentId;
+            }
+        };
     }
 }

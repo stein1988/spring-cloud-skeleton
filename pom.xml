@@ -20,7 +20,6 @@
     <description>Demo project for Spring Boot</description>
 
     <modules>
-        <module>module-demo</module>
         <module>module-base</module>
         <module>module-user</module>
     </modules>

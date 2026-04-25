@@ -1,6 +1,6 @@
 package com.lonbon.cloud.user.application.service;
 
-import com.lonbon.cloud.base.service.EntityService;
+import com.lonbon.cloud.base.service.EntityServiceImpl;
 import com.lonbon.cloud.user.domain.entity.Role;
 import com.lonbon.cloud.user.domain.entity.proxy.RoleProxy;
 import com.lonbon.cloud.user.domain.repository.RoleRepository;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class RoleServiceImpl extends EntityService<Role, RoleProxy> implements RoleService {
+public class RoleServiceImpl extends EntityServiceImpl<Role, RoleProxy> implements RoleService {
     public RoleServiceImpl(Converter converter, RoleRepository repository) {
         super(converter, repository, Role.class);
     }

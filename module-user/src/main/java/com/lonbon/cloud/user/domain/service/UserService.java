@@ -1,6 +1,6 @@
 package com.lonbon.cloud.user.domain.service;
 
-import com.lonbon.cloud.base.service.Service;
+import com.lonbon.cloud.base.service.EntityService;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 
@@ -12,8 +12,8 @@ import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
  *
  * @author lonbon
  * @since 1.0.0
- * @see Service
+ * @see EntityService
  */
-public interface UserService extends Service<User, UserProxy> {
+public interface UserService extends EntityService<User, UserProxy> {
 
 }

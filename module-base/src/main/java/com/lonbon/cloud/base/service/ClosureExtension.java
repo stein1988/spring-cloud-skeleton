@@ -49,10 +49,10 @@ import java.util.stream.Collectors;
  * @author lonbon
  * @since 1.0.0
  */
-public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & ClosureAvailable<U>,
+public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy> & ClosureAvailable<U>,
         TProxy extends AbstractProxyEntity<TProxy, T>, U extends ClosureEntity & ProxyEntityAvailable<U, UProxy>,
         UProxy extends AbstractProxyEntity<UProxy, U>>
-        extends ClosureService<T, TProxy, U, UProxy> {
+        implements ClosureOperation<T, TProxy, U, UProxy> {
 
     /**
      * 闭包表字段常量
@@ -72,14 +72,14 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      *
      * @return 闭包仓库实例
      */
-    Repository<U, UProxy> getClosureRepository();
+    protected abstract Repository<U, UProxy> getClosureRepository();
 
     /**
      * 获取主实体仓库
      *
      * @return 主实体仓库实例
      */
-    Repository<T, TProxy> getEntityRepository();
+    protected abstract Repository<T, TProxy> getEntityRepository();
 
     /**
      * 创建闭包实体
@@ -89,7 +89,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      * @param distance     距离（层级差）
      * @return 闭包实体
      */
-    U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
+    protected abstract U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
 
     /**
      * 创建基础实体（不含闭包关系）
@@ -101,21 +101,21 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      * @param createDto 创建DTO对象
      * @return 创建的实体
      */
-    T createBaseEntity(Object createDto);
+    protected abstract T createBaseEntity(Object createDto);
 
     /**
      * 导航表达式，用于加载关联数据
      *
      * @return 导航表达式
      */
-    SQLActionExpression2<IncludeContext, TProxy> navigate();
+    protected abstract SQLActionExpression2<IncludeContext, TProxy> navigate();
 
     /**
      * 设置父ID列的表达式
      *
      * @return 父ID列表达式
      */
-    SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId();
+    protected abstract SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId();
 
     /**
      * 创建实体并构建闭包表关系
@@ -131,9 +131,9 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      * @param createDto 创建DTO对象
      * @return 创建的实体
      */
-    @Override
+    
     @Transactional(rollbackFor = Exception.class)
-    default T createEntity(Object createDto) {
+    public T createEntity(Object createDto) {
         T created = createBaseEntity(createDto);
         UUID id = created.getId();
 
@@ -172,7 +172,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    default List<T> getDirectChildren(UUID parentId) {
+    public List<T> getDirectChildren(UUID parentId) {
         List<U> childClosures = getClosureRepository().getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(parentId);
             u.anyColumn(DISTANCE).eq(1);
@@ -195,7 +195,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    default List<T> getDescendants(UUID parentId) {
+    public List<T> getDescendants(UUID parentId) {
         List<U> childClosures = getClosureRepository().getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(parentId);
             u.anyColumn(DISTANCE).gt(0);
@@ -218,7 +218,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    default Optional<T> getDirectParent(UUID childId) {
+    public Optional<T> getDirectParent(UUID childId) {
         List<U> parentClosures = getClosureRepository().getAll(u -> {
             u.anyColumn(DESCENDANT_ID).eq(childId);
             u.anyColumn(DISTANCE).eq(1);
@@ -241,7 +241,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    default List<T> getAllAncestors(UUID childId) {
+    public List<T> getAllAncestors(UUID childId) {
         List<U> ancestorClosures = getClosureRepository().getAll(u -> {
             u.anyColumn(DESCENDANT_ID).eq(childId);
             u.anyColumn(DISTANCE).gt(0);
@@ -265,7 +265,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    default T moveNode(UUID nodeId, UUID newParentId) {
+    public T moveNode(UUID nodeId, UUID newParentId) {
         T node = getEntityRepository().getById(nodeId).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Node not found, ID: " + nodeId));
 
@@ -307,9 +307,8 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      *
      * @param nodeId 节点ID
      */
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    default void deleteEntity(UUID nodeId) {
+    public void deleteEntity(UUID nodeId) {
         Repository<U, UProxy> closureRepo = getClosureRepository();
         Repository<T, TProxy> entityRepo = getEntityRepository();
 
@@ -344,7 +343,7 @@ public interface ClosureOperations<T extends ProxyEntityAvailable<T, TProxy> & C
      */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    default T getTree(UUID rootId) {
+    public T getTree(UUID rootId) {
         T root = getEntityRepository().getById(rootId, navigate(), false).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Root node not found, ID: " + rootId));
 
