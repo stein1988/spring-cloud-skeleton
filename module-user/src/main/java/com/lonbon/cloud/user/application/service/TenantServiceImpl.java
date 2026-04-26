@@ -26,27 +26,12 @@ import java.util.UUID;
 @Transactional(rollbackFor = Exception.class)
 public class TenantServiceImpl extends EntityServiceImpl<Tenant, TenantProxy> implements TenantService {
 
-    private final TenantClosureRepository closureRepository;
+    private final ClosureExtension<Tenant, TenantProxy, TenantClosure, TenantClosureProxy> closureExtension;
 
     public TenantServiceImpl(
             Converter converter, TenantRepository repository, TenantClosureRepository closureRepository) {
         super(converter, repository, Tenant.class);
-        this.closureRepository = closureRepository;
-    }
-
-    @Override
-    public ClosureOperation<Tenant, TenantProxy, TenantClosure, TenantClosureProxy> getClosureOperation() {
-        return new ClosureExtension<>() {
-            @Override
-            protected Repository<TenantClosure, TenantClosureProxy> getClosureRepository() {
-                return closureRepository;
-            }
-
-            @Override
-            protected Repository<Tenant, TenantProxy> getEntityRepository() {
-                return repository;
-            }
-
+        this.closureExtension = new ClosureExtension<>(repository, closureRepository, (c, t) -> c.query(t.ancestors()), TenantProxy::parentId) {
             @Override
             protected TenantClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
                 return new TenantClosure(ancestorId, descendantId, distance);
@@ -56,16 +41,11 @@ public class TenantServiceImpl extends EntityServiceImpl<Tenant, TenantProxy> im
             protected Tenant createBaseEntity(Object createDto) {
                 return TenantServiceImpl.this.createEntity(createDto);
             }
-
-            @Override
-            protected SQLActionExpression2<IncludeContext, TenantProxy> navigate() {
-                return (c, t) -> c.query(t.ancestors());
-            }
-
-            @Override
-            protected SQLFuncExpression1<TenantProxy, SQLSelectExpression> setColumnParentId() {
-                return TenantProxy::parentId;
-            }
         };
+    }
+
+    @Override
+    public ClosureOperation<Tenant, TenantProxy, TenantClosure, TenantClosureProxy> getClosureOperation() {
+        return closureExtension;
     }
 }

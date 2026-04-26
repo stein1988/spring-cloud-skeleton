@@ -67,19 +67,37 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
 
     String DISTANCE = ClosureEntity.Fields.distance;
 
-    /**
-     * 获取闭包实体仓库
-     *
-     * @return 闭包仓库实例
-     */
-    protected abstract Repository<U, UProxy> getClosureRepository();
 
     /**
-     * 获取主实体仓库
-     *
-     * @return 主实体仓库实例
+     * 主实体仓库
      */
-    protected abstract Repository<T, TProxy> getEntityRepository();
+    private final Repository<T, TProxy> entityRepository;
+
+    /**
+     * 闭包实体仓库
+     */
+    private final Repository<U, UProxy> closureRepository;
+
+    /**
+     * 导航表达式，用于加载关联数据
+     */
+    private final SQLActionExpression2<IncludeContext, TProxy> navigate;
+
+    /**
+     * 设置父ID列的表达式
+     */
+    private final SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId;
+
+    public ClosureExtension(Repository<T, TProxy> entityRepository, Repository<U, UProxy> closureRepository,
+                            SQLActionExpression2<IncludeContext, TProxy> navigateExpression,
+                            SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentIdExpression) {
+        this.entityRepository = entityRepository;
+        this.closureRepository = closureRepository;
+        this.navigate = navigateExpression;
+        this.setColumnParentId = setColumnParentIdExpression;
+    }
+
+
 
     /**
      * 创建闭包实体
@@ -103,19 +121,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      */
     protected abstract T createBaseEntity(Object createDto);
 
-    /**
-     * 导航表达式，用于加载关联数据
-     *
-     * @return 导航表达式
-     */
-    protected abstract SQLActionExpression2<IncludeContext, TProxy> navigate();
-
-    /**
-     * 设置父ID列的表达式
-     *
-     * @return 父ID列表达式
-     */
-    protected abstract SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId();
+    
 
     /**
      * 创建实体并构建闭包表关系
@@ -142,7 +148,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
 
         UUID parentId = created.getParentId();
         if (parentId != null) {
-            T parent = getEntityRepository().getById(parentId, navigate(), false).orElseThrow(
+            T parent = entityRepository.getById(parentId, navigate, false).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
                                                 "Parent entity not found, ID: " + parentId));
 
@@ -156,9 +162,8 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
             }
         }
 
-        Repository<U, UProxy> closureRepo = getClosureRepository();
         for (U closure : closures) {
-            closureRepo.insert(closure);
+            closureRepository.insert(closure);
         }
 
         return created;
@@ -173,7 +178,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<T> getDirectChildren(UUID parentId) {
-        List<U> childClosures = getClosureRepository().getAll(u -> {
+        List<U> childClosures = closureRepository.getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(parentId);
             u.anyColumn(DISTANCE).eq(1);
         });
@@ -184,7 +189,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
             return List.of();
         }
 
-        return getEntityRepository().getAllByIds(childIds);
+        return entityRepository.getAllByIds(childIds);
     }
 
     /**
@@ -196,7 +201,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<T> getDescendants(UUID parentId) {
-        List<U> childClosures = getClosureRepository().getAll(u -> {
+        List<U> childClosures = closureRepository.getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(parentId);
             u.anyColumn(DISTANCE).gt(0);
         });
@@ -207,7 +212,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
             return List.of();
         }
 
-        return getEntityRepository().getAllByIds(childIds);
+        return entityRepository.getAllByIds(childIds);
     }
 
     /**
@@ -219,7 +224,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Optional<T> getDirectParent(UUID childId) {
-        List<U> parentClosures = getClosureRepository().getAll(u -> {
+        List<U> parentClosures = closureRepository.getAll(u -> {
             u.anyColumn(DESCENDANT_ID).eq(childId);
             u.anyColumn(DISTANCE).eq(1);
         });
@@ -230,7 +235,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
 
         UUID parentId = parentClosures.getFirst().getAncestorId();
 
-        return getEntityRepository().getById(parentId);
+        return entityRepository.getById(parentId);
     }
 
     /**
@@ -242,7 +247,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<T> getAllAncestors(UUID childId) {
-        List<U> ancestorClosures = getClosureRepository().getAll(u -> {
+        List<U> ancestorClosures = closureRepository.getAll(u -> {
             u.anyColumn(DESCENDANT_ID).eq(childId);
             u.anyColumn(DISTANCE).gt(0);
         });
@@ -253,7 +258,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
             return List.of();
         }
 
-        return getEntityRepository().getAllByIds(ancestorIds);
+        return entityRepository.getAllByIds(ancestorIds);
     }
 
     /**
@@ -266,20 +271,19 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public T moveNode(UUID nodeId, UUID newParentId) {
-        T node = getEntityRepository().getById(nodeId).orElseThrow(
+        T node = entityRepository.getById(nodeId).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Node not found, ID: " + nodeId));
 
-        T newParent = getEntityRepository().getById(newParentId, navigate(), false).orElseThrow(
+        T newParent = entityRepository.getById(newParentId, navigate, false).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "New parent not found, ID: " + newParentId));
 
         if (isDescendant(nodeId, newParentId)) {
             throw new BusinessException(ErrorCode.INVALID_PARAMETER, "Cannot move node to its own descendant");
         }
 
-        Repository<U, UProxy> closureRepo = getClosureRepository();
-        List<U> nodeClosures = closureRepo.getAll(u -> u.anyColumn(DESCENDANT_ID).eq(nodeId));
+        List<U> nodeClosures = closureRepository.getAll(u -> u.anyColumn(DESCENDANT_ID).eq(nodeId));
         for (U closure : nodeClosures) {
-            closureRepo.delete(closure);
+            closureRepository.delete(closure);
         }
 
         List<U> newClosures = new ArrayList<>();
@@ -294,11 +298,11 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
         }
 
         for (U closure : newClosures) {
-            closureRepo.insert(closure);
+            closureRepository.insert(closure);
         }
 
         node.setParentId(newParentId);
-        getEntityRepository().update(node, setColumnParentId());
+        entityRepository.update(node, setColumnParentId);
         return node;
     }
 
@@ -309,10 +313,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteEntity(UUID nodeId) {
-        Repository<U, UProxy> closureRepo = getClosureRepository();
-        Repository<T, TProxy> entityRepo = getEntityRepository();
-
-        List<U> descendantClosures = closureRepo.getAll(u -> {
+        List<U> descendantClosures = closureRepository.getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(nodeId);
             u.anyColumn(DISTANCE).gt(0);
         });
@@ -321,17 +322,17 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
 
         ids.add(nodeId);
 
-        List<U> allClosures = closureRepo.getAll(u -> u.or(() -> {
+        List<U> allClosures = closureRepository.getAll(u -> u.or(() -> {
             u.anyColumn(ANCESTOR_ID).in(ids);
             u.anyColumn(DESCENDANT_ID).in(ids);
         }));
 
         for (U closure : allClosures) {
-            closureRepo.delete(closure);
+            closureRepository.delete(closure);
         }
 
         for (UUID id : ids) {
-            entityRepo.deleteById(id);
+            entityRepository.deleteById(id);
         }
     }
 
@@ -344,7 +345,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public T getTree(UUID rootId) {
-        T root = getEntityRepository().getById(rootId, navigate(), false).orElseThrow(
+        T root = entityRepository.getById(rootId, navigate, false).orElseThrow(
                 () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Root node not found, ID: " + rootId));
 
         getSubTree(root);
@@ -360,7 +361,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * @return 是否是后代
      */
     private boolean isDescendant(UUID nodeId, UUID ancestorId) {
-        List<U> closures = getClosureRepository().getAll(u -> {
+        List<U> closures = closureRepository.getAll(u -> {
             u.anyColumn(ANCESTOR_ID).eq(ancestorId);
             u.anyColumn(DESCENDANT_ID).eq(nodeId);
         });

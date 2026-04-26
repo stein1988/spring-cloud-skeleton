@@ -35,37 +35,15 @@ import java.util.UUID;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DepartmentServiceImpl extends EntityServiceImpl<Department, DepartmentProxy> 
+public class DepartmentServiceImpl extends EntityServiceImpl<Department, DepartmentProxy>
     implements DepartmentService {
 
-    private final DepartmentClosureRepository closureRepository;
+    private final ClosureExtension<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> closureExtension;
 
-    /**
-     * 构造部门服务实现
-     *
-     * @param converter         DTO转换器
-     * @param repository        部门仓库
-     * @param closureRepository 部门闭包表仓库
-     */
     public DepartmentServiceImpl(
             Converter converter, DepartmentRepository repository, DepartmentClosureRepository closureRepository) {
         super(converter, repository, Department.class);
-        this.closureRepository = closureRepository;
-    }
-
-    @Override
-    public ClosureOperation<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> getClosureOperation() {
-        return new ClosureExtension<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy>() {
-            @Override
-            protected Repository<DepartmentClosure, DepartmentClosureProxy> getClosureRepository() {
-                return closureRepository;
-            }
-
-            @Override
-            protected Repository<Department, DepartmentProxy> getEntityRepository() {
-                return repository;
-            }
-
+        this.closureExtension = new ClosureExtension<>(repository, closureRepository, (c, t) -> c.query(t.ancestors()), DepartmentProxy::parentId) {
             @Override
             protected DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
                 return new DepartmentClosure(ancestorId, descendantId, distance);
@@ -75,16 +53,11 @@ public class DepartmentServiceImpl extends EntityServiceImpl<Department, Departm
             protected Department createBaseEntity(Object createDto) {
                 return DepartmentServiceImpl.this.createEntity(createDto);
             }
-
-            @Override
-            public SQLActionExpression2<IncludeContext, DepartmentProxy> navigate() {
-                return (c, t) -> c.query(t.ancestors());
-            }
-
-            @Override
-            public SQLFuncExpression1<DepartmentProxy, SQLSelectExpression> setColumnParentId() {
-                return DepartmentProxy::parentId;
-            }
         };
+    }
+
+    @Override
+    public ClosureOperation<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> getClosureOperation() {
+        return closureExtension;
     }
 }
