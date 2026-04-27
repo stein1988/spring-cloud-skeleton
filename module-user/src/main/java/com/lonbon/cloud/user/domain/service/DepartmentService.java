@@ -1,8 +1,10 @@
 package com.lonbon.cloud.user.domain.service;
 
 import com.lonbon.cloud.base.service.ClosureService;
+import com.lonbon.cloud.base.service.EntityService;
 import com.lonbon.cloud.user.domain.entity.Department;
 import com.lonbon.cloud.user.domain.entity.DepartmentClosure;
+import com.lonbon.cloud.user.domain.entity.Permission;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentProxy;
 
@@ -17,6 +19,6 @@ import com.lonbon.cloud.user.domain.entity.proxy.DepartmentProxy;
  * @since 1.0.0
  * @see ClosureService
  */
-public interface DepartmentService extends ClosureService<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
+public interface DepartmentService extends EntityService<Department, DepartmentProxy>, ClosureService<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> {
 
 }

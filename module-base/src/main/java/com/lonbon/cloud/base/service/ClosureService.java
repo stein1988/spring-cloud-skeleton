@@ -17,55 +17,38 @@ import java.util.UUID;
  * @author lonbon
  * @since 1.0.0
  */
-public interface ClosureService<T, TProxy extends ProxyEntity<TProxy, T>, U, UProxy extends ProxyEntity<UProxy, U>>
-        extends Service<T, TProxy> {
+public interface ClosureService<T, TProxy extends ProxyEntity<TProxy, T>, U, UProxy extends ProxyEntity<UProxy, U>> 
+    extends ClosureOperation<T, TProxy, U, UProxy> {
+    
+    ClosureOperation<T, TProxy, U, UProxy> getClosureOperation();
+    
+    @Override
+    default List<T> getDirectChildren(UUID parentId) {
+        return getClosureOperation().getDirectChildren(parentId);
+    }
 
-    /**
-     * 查询直接子节点
-     *
-     * @param parentId 父节点ID
-     * @return 直接子节点列表
-     */
-    List<T> getDirectChildren(UUID parentId);
+    @Override
+    default List<T> getDescendants(UUID parentId) {
+        return getClosureOperation().getDescendants(parentId);
+    }
 
-    /**
-     * 查询所有后代节点（包括多级）
-     *
-     * @param parentId 父节点ID
-     * @return 所有后代节点列表
-     */
-    List<T> getDescendants(UUID parentId);
+    @Override
+    default Optional<T> getDirectParent(UUID childId) {
+        return getClosureOperation().getDirectParent(childId);
+    }
 
-    /**
-     * 查询直接父节点
-     *
-     * @param childId 子节点ID
-     * @return 直接父节点
-     */
-    Optional<T> getDirectParent(UUID childId);
+    @Override
+    default List<T> getAllAncestors(UUID childId) {
+        return getClosureOperation().getAllAncestors(childId);
+    }
 
-    /**
-     * 查询所有祖先节点
-     *
-     * @param childId 子节点ID
-     * @return 所有祖先节点列表
-     */
-    List<T> getAllAncestors(UUID childId);
+    @Override
+    default T moveNode(UUID nodeId, UUID newParentId) {
+        return getClosureOperation().moveNode(nodeId, newParentId);
+    }
 
-    /**
-     * 移动节点到新的父节点下
-     *
-     * @param nodeId      要移动的节点ID
-     * @param newParentId 新的父节点ID
-     * @return 移动后的节点
-     */
-    T moveNode(UUID nodeId, UUID newParentId);
-
-    /**
-     * 获取树状结构
-     *
-     * @param rootId 根节点ID
-     * @return 根节点（包含子节点）
-     */
-    T getTree(UUID rootId);
+    @Override
+    default T getTree(UUID rootId) {
+        return getClosureOperation().getTree(rootId);
+    }
 }

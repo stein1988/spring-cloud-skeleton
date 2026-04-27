@@ -1,6 +1,6 @@
 package com.lonbon.cloud.user.application.service;
 
-import com.lonbon.cloud.base.service.EntityService;
+import com.lonbon.cloud.base.service.EntityServiceImpl;
 import com.lonbon.cloud.user.domain.entity.Permission;
 import com.lonbon.cloud.user.domain.entity.proxy.PermissionProxy;
 import com.lonbon.cloud.user.domain.repository.PermissionRepository;
@@ -9,7 +9,7 @@ import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PermissionServiceImpl extends EntityService<Permission, PermissionProxy> implements PermissionService {
+public class PermissionServiceImpl extends EntityServiceImpl<Permission, PermissionProxy> implements PermissionService {
     public PermissionServiceImpl(Converter converter, PermissionRepository repository) {
         super(converter, repository, Permission.class);
     }
