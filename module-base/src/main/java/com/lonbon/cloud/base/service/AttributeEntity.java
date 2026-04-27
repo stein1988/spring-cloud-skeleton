@@ -1,15 +1,14 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.annotation.SaveKey;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -20,11 +19,14 @@ import java.util.UUID;
 @NullUnmarked
 public abstract class AttributeEntity extends BaseEntity {
 
-    private @NonNull UUID entityId;
+    private UUID entityId;
 
-    private @NonNull UUID attributeId;
+    private UUID attributeId;
 
-    private @NonNull String key;
+    @SaveKey
+    private String key;
+
+    private String value;
 
     private String stringValue;
 
@@ -32,7 +34,7 @@ public abstract class AttributeEntity extends BaseEntity {
 
     private Long longValue;
 
-    private BigDecimal decimalValue;
+//    private BigDecimal decimalValue;
 
     private Boolean booleanValue;
 }

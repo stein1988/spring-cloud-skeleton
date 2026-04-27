@@ -6,12 +6,14 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.AttributeEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.StaffProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 员工实体类
@@ -89,6 +91,10 @@ public class Staff extends BaseEntity implements ProxyEntityAvailable<Staff, Sta
      * TODO：后续可改为 Boolean 类型
      */
     private Integer isSuperior;
+
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            AttributeEntity.Fields.entityId)
+    private List<StaffAttribute> attributes;
 
     // ==================== 一对一关联扩展表 ====================
     /**

@@ -1,5 +1,6 @@
 package com.lonbon.cloud.base.service;
 
+import com.easy.query.core.annotation.EasyQueryTrack;
 import com.easy.query.core.expression.lambda.SQLActionExpression1;
 import com.easy.query.core.expression.lambda.SQLActionExpression2;
 import com.easy.query.core.expression.lambda.SQLFuncExpression1;
@@ -80,9 +81,10 @@ public abstract class EntityService<T extends ProxyEntityAvailable<T, TProxy>,
      * @return 创建的实体
      */
     @Override
+    @EasyQueryTrack
     public T createEntity(Object createDto) {
         T entity = converter.convert(createDto, entityType);
-        repository.insert(entity);
+        repository.save(entity);
         return entity;
     }
 

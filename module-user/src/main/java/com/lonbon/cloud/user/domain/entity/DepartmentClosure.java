@@ -8,6 +8,7 @@ import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.DepartmentClosureProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Table(value = "sys_department_closure", ignoreProperties = {BaseEntity.Fields.departmentId})
 @EntityProxy
 public class DepartmentClosure extends ClosureEntity

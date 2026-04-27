@@ -7,6 +7,7 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.AttributeEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.base.service.ClosureEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
@@ -107,6 +108,14 @@ public class Tenant extends BaseEntity
     @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
             ClosureEntity.Fields.ancestorId)
     private List<TenantClosure> descendants;
+
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            AttributeEntity.Fields.entityId)
+    private List<TenantAttribute> attributes;
+
+//    public static @Nullable SQLActionExpression2<IncludeContext, TenantProxy> getNavigate(String navigate) {
+//        return null;
+//    }
 }
 
 /**

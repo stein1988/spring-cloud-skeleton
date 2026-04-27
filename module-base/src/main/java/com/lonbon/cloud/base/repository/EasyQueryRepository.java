@@ -25,9 +25,9 @@ import java.util.function.Supplier;
  * 所有查询操作都通过{@link EasyEntityQuery}执行。
  * </p>
  *
- * @param <T>       实体类型
- * @param <TProxy>  实体代理类型
- * @param <TChain>  实体抓取器类型
+ * @param <T>      实体类型
+ * @param <TProxy> 实体代理类型
+ * @param <TChain> 实体抓取器类型
  * @author lonbon
  * @since 1.0.0
  */
@@ -127,9 +127,15 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
         easyEntityQuery.updatable(entityType).setColumns(columns).whereById(id).executeRows();
     }
 
+//    @Override
+//    public <S extends T> void save(S entity) {
+//        easyEntityQuery.insertable(entity).onConflictThen(o -> fetcherProvider.apply(o).allFields()).executeRows();
+//    }
+
     @Override
     public <S extends T> void save(S entity) {
-        easyEntityQuery.insertable(entity).onConflictThen(o -> fetcherProvider.apply(o).allFields()).executeRows();
+        // 只有 track + savable，才能实现聚合根保存
+        easyEntityQuery.savable(entity).executeCommand();
     }
 
     @Override
