@@ -116,16 +116,13 @@ public interface EntityService<T, TProxy extends ProxyEntity<TProxy, T>> {
      * 根据给定的ID获取实体，可指定导航属性名称列表用于关联查询，以及是否开启实体追踪。
      * </p>
      *
-     * @param createDto 创建DTO
-     * @return 创建的实体
+     * @param id       实体的唯一标识符
+     * @param navigate 导航属性名称列表，用于关联查询
+     * @param tracking 是否开启实体追踪
+     * @return 包含实体的 Optional，如果未找到则为 Optional.empty()
+     * @throws IllegalArgumentException 如果 id 为 null
      */
-    @Override
-    @EasyQueryTrack
-    public T createEntity(Object createDto) {
-        T entity = converter.convert(createDto, entityType);
-        repository.save(entity);
-        return entity;
-    }
+    Optional<T> getEntityById(UUID id, List<String> navigate, boolean tracking);
 
     /**
      * 根据条件获取单个实体。
