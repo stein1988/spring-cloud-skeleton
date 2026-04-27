@@ -54,9 +54,9 @@ public abstract class EntityServiceImpl<T extends ProxyEntityAvailable<T, TProxy
     protected final Class<T> entityType;
 
     /**
-     * 插件列表，用于扩展实体服务功能
+     * 拦截器列表，用于扩展实体服务功能
      */
-    // protected final List<EntityServicePlugin> plugins;
+    protected List<EntityServiceInterceptor<T>> interceptors = List.of();
 
     /**
      * 构造简单实体服务
@@ -87,7 +87,13 @@ public abstract class EntityServiceImpl<T extends ProxyEntityAvailable<T, TProxy
     @Override
     public T createEntity(Object createDto) {
         T entity = converter.convert(createDto, entityType);
+        for (EntityServiceInterceptor<T> interceptor : interceptors) {
+            interceptor.preCreate(entity);
+        }
         repository.insert(entity);
+        for (EntityServiceInterceptor<T> interceptor : interceptors) {
+            interceptor.postCreate(entity);
+        }
         return entity;
     }
 

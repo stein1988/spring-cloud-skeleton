@@ -1,10 +1,5 @@
 package com.lonbon.cloud.user.application.service;
 
-import com.easy.query.core.expression.lambda.SQLActionExpression2;
-import com.easy.query.core.expression.lambda.SQLFuncExpression1;
-import com.easy.query.core.proxy.SQLSelectExpression;
-import com.easy.query.core.proxy.sql.include.IncludeContext;
-import com.lonbon.cloud.base.repository.Repository;
 import com.lonbon.cloud.base.service.ClosureExtension;
 import com.lonbon.cloud.base.service.ClosureOperation;
 import com.lonbon.cloud.base.service.EntityServiceImpl;
@@ -35,23 +30,18 @@ import java.util.UUID;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DepartmentServiceImpl extends EntityServiceImpl<Department, DepartmentProxy>
-    implements DepartmentService {
+public class DepartmentServiceImpl extends EntityServiceImpl<Department, DepartmentProxy> implements DepartmentService {
 
     private final ClosureExtension<Department, DepartmentProxy, DepartmentClosure, DepartmentClosureProxy> closureExtension;
 
     public DepartmentServiceImpl(
             Converter converter, DepartmentRepository repository, DepartmentClosureRepository closureRepository) {
         super(converter, repository, Department.class);
-        this.closureExtension = new ClosureExtension<>(repository, closureRepository, (c, t) -> c.query(t.ancestors()), DepartmentProxy::parentId) {
+        this.closureExtension = new ClosureExtension<>(repository, closureRepository, (c, t) -> c.query(t.ancestors()),
+                                                       DepartmentProxy::parentId) {
             @Override
             protected DepartmentClosure createClosure(UUID ancestorId, UUID descendantId, Integer distance) {
                 return new DepartmentClosure(ancestorId, descendantId, distance);
-            }
-
-            @Override
-            protected Department createBaseEntity(Object createDto) {
-                return DepartmentServiceImpl.this.createEntity(createDto);
             }
         };
     }

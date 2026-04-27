@@ -4,9 +4,11 @@ import com.easy.query.core.annotation.Column;
 import com.easy.query.core.annotation.EntityProxy;
 import com.easy.query.core.annotation.Navigate;
 import com.easy.query.core.annotation.Table;
+import com.easy.query.core.enums.CascadeTypeEnum;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
+import com.lonbon.cloud.base.service.AttributeAvailable;
 import com.lonbon.cloud.base.service.AttributeEntity;
 import com.lonbon.cloud.base.service.ClosureAvailable;
 import com.lonbon.cloud.base.service.ClosureEntity;
@@ -39,7 +41,8 @@ import java.util.UUID;
 @Table(value = "sys_tenant", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy
 public class Tenant extends BaseEntity
-        implements ProxyEntityAvailable<Tenant, TenantProxy>, ClosureAvailable<@NonNull TenantClosure> {
+        implements ProxyEntityAvailable<Tenant, TenantProxy>, ClosureAvailable<@NonNull TenantClosure>,
+                   AttributeAvailable<@NonNull TenantAttribute> {
 
     /**
      * 类型
@@ -109,8 +112,8 @@ public class Tenant extends BaseEntity
             ClosureEntity.Fields.ancestorId)
     private List<TenantClosure> descendants;
 
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
-            AttributeEntity.Fields.entityId)
+    @Navigate(value = RelationTypeEnum.OneToMany, cascade = CascadeTypeEnum.DELETE, selfProperty =
+            BaseEntity.Fields.id, targetProperty = AttributeEntity.Fields.entityId)
     private List<TenantAttribute> attributes;
 
 //    public static @Nullable SQLActionExpression2<IncludeContext, TenantProxy> getNavigate(String navigate) {

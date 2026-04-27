@@ -1,5 +1,6 @@
 package com.lonbon.cloud.base.repository;
 
+import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.api.proxy.entity.select.EntityQueryable;
 import com.easy.query.core.exception.EasyQuerySingleMoreElementException;
 import com.easy.query.core.exception.EasyQuerySingleNotNullException;
@@ -46,6 +47,8 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * @throws IllegalArgumentException 如果给定的 {@literal entity} 为 {@literal null}
      */
     <S extends T> void insert(S entity);
+
+    void insert(Collection<T> entities);
 
     /**
      * 更新给定的实体。
@@ -111,6 +114,9 @@ public interface Repository<T, TProxy extends ProxyEntity<TProxy, T>> {
      * @throws OptimisticLockingFailureException 当至少一个实体使用乐观锁并且版本属性与持久化存储中的值不同时
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+
+    EasyEntityQuery getEasyEntityQuery();
+
 
     /**
      * 获取实体查询对象，用于构建复杂的查询条件。

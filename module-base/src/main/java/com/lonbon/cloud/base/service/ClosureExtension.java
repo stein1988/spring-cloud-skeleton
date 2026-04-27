@@ -52,8 +52,24 @@ import java.util.stream.Collectors;
 public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy> & ClosureAvailable<U>,
         TProxy extends AbstractProxyEntity<TProxy, T>, U extends ClosureEntity & ProxyEntityAvailable<U, UProxy>,
         UProxy extends AbstractProxyEntity<UProxy, U>>
-        implements ClosureOperation<T, TProxy, U, UProxy> {
+        implements ClosureOperation<T, TProxy, U, UProxy>, EntityServiceInterceptor<T> {
 
+    /**
+     * 主实体仓库
+     */
+    private final Repository<T, TProxy> entityRepository;
+    /**
+     * 闭包实体仓库
+     */
+    private final Repository<U, UProxy> closureRepository;
+    /**
+     * 导航表达式，用于加载关联数据
+     */
+    private final SQLActionExpression2<IncludeContext, TProxy> navigate;
+    /**
+     * 设置父ID列的表达式
+     */
+    private final SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId;
     /**
      * 闭包表字段常量
      * <p>
@@ -62,41 +78,18 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * </p>
      */
     String ANCESTOR_ID = ClosureEntity.Fields.ancestorId;
-
     String DESCENDANT_ID = ClosureEntity.Fields.descendantId;
-
     String DISTANCE = ClosureEntity.Fields.distance;
 
-
-    /**
-     * 主实体仓库
-     */
-    private final Repository<T, TProxy> entityRepository;
-
-    /**
-     * 闭包实体仓库
-     */
-    private final Repository<U, UProxy> closureRepository;
-
-    /**
-     * 导航表达式，用于加载关联数据
-     */
-    private final SQLActionExpression2<IncludeContext, TProxy> navigate;
-
-    /**
-     * 设置父ID列的表达式
-     */
-    private final SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentId;
-
-    public ClosureExtension(Repository<T, TProxy> entityRepository, Repository<U, UProxy> closureRepository,
-                            SQLActionExpression2<IncludeContext, TProxy> navigateExpression,
-                            SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentIdExpression) {
+    public ClosureExtension(
+            Repository<T, TProxy> entityRepository, Repository<U, UProxy> closureRepository,
+            SQLActionExpression2<IncludeContext, TProxy> navigateExpression,
+            SQLFuncExpression1<TProxy, SQLSelectExpression> setColumnParentIdExpression) {
         this.entityRepository = entityRepository;
         this.closureRepository = closureRepository;
         this.navigate = navigateExpression;
         this.setColumnParentId = setColumnParentIdExpression;
     }
-
 
 
     /**
@@ -108,23 +101,9 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * @return 闭包实体
      */
     protected abstract U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
-
-    /**
-     * 创建基础实体（不含闭包关系）
-     * <p>
-     * 该方法由实现类提供，用于调用父类 SimpleEntityService 的 createEntity 方法。
-     * 通常实现为：{@code return super.createEntity(createDto);}
-     * </p>
-     *
-     * @param createDto 创建DTO对象
-     * @return 创建的实体
-     */
-    protected abstract T createBaseEntity(Object createDto);
-
     
-
     /**
-     * 创建实体并构建闭包表关系
+     * 创建实体之后，构建闭包表关系
      * <p>
      * 闭包表（Closure Table）是一种存储树形结构层次关系的模式。
      * 每条闭包记录包含：祖先节点ID、后代节点ID、距离（层次差）。
@@ -133,20 +112,15 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * - A到B的距离为1
      * - A到C的距离为2
      * - B到C的距离为1
-     *
-     * @param createDto 创建DTO对象
-     * @return 创建的实体
      */
-    
-    @Transactional(rollbackFor = Exception.class)
-    public T createEntity(Object createDto) {
-        T created = createBaseEntity(createDto);
-        UUID id = created.getId();
+    @Override
+    public void postCreate(T entity) {
+        UUID id = entity.getId();
 
         List<U> closures = new ArrayList<>();
         closures.add(createClosure(id, id, 0));
 
-        UUID parentId = created.getParentId();
+        UUID parentId = entity.getParentId();
         if (parentId != null) {
             T parent = entityRepository.getById(parentId, navigate, false).orElseThrow(
                     () -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
@@ -165,8 +139,6 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
         for (U closure : closures) {
             closureRepository.insert(closure);
         }
-
-        return created;
     }
 
     /**
@@ -381,4 +353,6 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
             getSubTree(child);
         }
     }
+
+
 }

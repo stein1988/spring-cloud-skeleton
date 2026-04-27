@@ -113,6 +113,11 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
     }
 
     @Override
+    public void insert(Collection<T> entities) {
+        easyEntityQuery.insertable(entities).batch().executeRows();
+    }
+
+    @Override
     public <S extends T> void update(S entity) {
         easyEntityQuery.updatable(entity).executeRows();
     }
@@ -144,6 +149,11 @@ public abstract class EasyQueryRepository<T extends ProxyEntityAvailable<T, TPro
             save(entity);
         }
         return entities;
+    }
+
+    @Override
+    public EasyEntityQuery getEasyEntityQuery() {
+        return easyEntityQuery;
     }
 
     @Override

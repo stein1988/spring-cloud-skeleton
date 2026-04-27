@@ -1,9 +1,12 @@
 package com.lonbon.cloud.user.domain.service;
 
+import com.lonbon.cloud.base.service.AttributeService;
 import com.lonbon.cloud.base.service.ClosureService;
 import com.lonbon.cloud.base.service.EntityService;
 import com.lonbon.cloud.user.domain.entity.Tenant;
+import com.lonbon.cloud.user.domain.entity.TenantAttribute;
 import com.lonbon.cloud.user.domain.entity.TenantClosure;
+import com.lonbon.cloud.user.domain.entity.proxy.TenantAttributeProxy;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantClosureProxy;
 import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
 
@@ -15,9 +18,11 @@ import com.lonbon.cloud.user.domain.entity.proxy.TenantProxy;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see ClosureService
+ * @since 1.0.0
  */
-public interface TenantService extends EntityService<Tenant, TenantProxy>, ClosureService<Tenant, TenantProxy, TenantClosure, TenantClosureProxy> {
+public interface TenantService extends EntityService<Tenant, TenantProxy>,
+                                       ClosureService<Tenant, TenantProxy, TenantClosure, TenantClosureProxy>,
+                                       AttributeService<Tenant, TenantProxy, TenantAttribute, TenantAttributeProxy> {
 
 }
