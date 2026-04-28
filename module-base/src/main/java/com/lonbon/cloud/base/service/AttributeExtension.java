@@ -29,7 +29,7 @@ public abstract class AttributeExtension<T extends ProxyEntityAvailable<T, TProx
     @Override
     public void postCreate(T entity) {
         List<A> attributes = entity.getAttributes();
-        if (attributes.isEmpty()) {
+        if (attributes == null || attributes.isEmpty()) {
             return;
         }
 

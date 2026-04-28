@@ -15,9 +15,7 @@ import com.lonbon.cloud.base.repository.Repository;
 import io.github.linpeilie.Converter;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -56,7 +54,12 @@ public abstract class EntityServiceImpl<T extends ProxyEntityAvailable<T, TProxy
     /**
      * 拦截器列表，用于扩展实体服务功能
      */
-    protected List<EntityServiceInterceptor<T>> interceptors = List.of();
+    protected final List<EntityServiceInterceptor<T>> interceptors = new ArrayList<>();
+
+    /**
+     * 拦截器是否已初始化的标志
+     */
+    private volatile boolean interceptorsInitialized = false;
 
     /**
      * 构造简单实体服务
@@ -69,6 +72,54 @@ public abstract class EntityServiceImpl<T extends ProxyEntityAvailable<T, TProxy
         this.converter = converter;
         this.repository = repository;
         this.entityType = entityType;
+    }
+
+    /**
+     * 确保拦截器已初始化
+     * <p>
+     * 使用懒加载方式，在第一次需要拦截器时进行收集。
+     * 此时子类已完全构造完成，可以通过反射获取所有实现了EntityServiceInterceptor的字段。
+     * </p>
+     */
+    private void ensureInterceptorsInitialized() {
+        if (!interceptorsInitialized) {
+            synchronized (this) {
+                if (!interceptorsInitialized) {
+                    collectInterceptors();
+                    interceptorsInitialized = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * 收集子类中实现了EntityServiceInterceptor的字段
+     */
+    private void collectInterceptors() {
+        Class<?> currentClass = this.getClass();
+        while (currentClass != EntityServiceImpl.class && currentClass != Object.class) {
+            for (var field : currentClass.getDeclaredFields()) {
+                if (EntityServiceInterceptor.class.isAssignableFrom(field.getType())) {
+                    try {
+                        field.setAccessible(true);
+                        Object value = field.get(this);
+                        if (value != null) {
+                            @SuppressWarnings("unchecked")
+                            EntityServiceInterceptor<T> interceptor = (EntityServiceInterceptor<T>) value;
+                            interceptors.add(interceptor);
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException("Failed to collect interceptor from field: " + field.getName(), e);
+                    }
+                }
+            }
+            currentClass = currentClass.getSuperclass();
+        }
+    }
+
+    public List<EntityServiceInterceptor<T>> getInterceptors() {
+        ensureInterceptorsInitialized();
+        return interceptors;
     }
 
     public Repository<T, TProxy> getEntityRepository() {
@@ -87,6 +138,7 @@ public abstract class EntityServiceImpl<T extends ProxyEntityAvailable<T, TProxy
     @Override
     public T createEntity(Object createDto) {
         T entity = converter.convert(createDto, entityType);
+        List<EntityServiceInterceptor<T>> interceptors = getInterceptors();
         for (EntityServiceInterceptor<T> interceptor : interceptors) {
             interceptor.preCreate(entity);
         }

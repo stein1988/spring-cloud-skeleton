@@ -9,6 +9,7 @@ import com.easy.query.core.proxy.sql.include.IncludeContext;
 import com.lonbon.cloud.base.exception.BusinessException;
 import com.lonbon.cloud.base.exception.ErrorCode;
 import com.lonbon.cloud.base.repository.Repository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import java.util.stream.Collectors;
  * @author lonbon
  * @since 1.0.0
  */
+@Slf4j
 public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy> & ClosureAvailable<U>,
         TProxy extends AbstractProxyEntity<TProxy, T>, U extends ClosureEntity & ProxyEntityAvailable<U, UProxy>,
         UProxy extends AbstractProxyEntity<UProxy, U>>
@@ -101,7 +103,7 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * @return 闭包实体
      */
     protected abstract U createClosure(UUID ancestorId, UUID descendantId, Integer distance);
-    
+
     /**
      * 创建实体之后，构建闭包表关系
      * <p>
@@ -116,6 +118,10 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
     @Override
     public void postCreate(T entity) {
         UUID id = entity.getId();
+        if (id == null) {
+            log.error("entity id is null when post create entity: {}", entity);
+            return;
+        }
 
         List<U> closures = new ArrayList<>();
         closures.add(createClosure(id, id, 0));
@@ -346,8 +352,13 @@ public abstract class ClosureExtension<T extends ProxyEntityAvailable<T, TProxy>
      * @param parent 父节点
      */
     private void getSubTree(T parent) {
+        UUID id = parent.getId();
+        if (id == null) {
+            log.error("entity id is null when getting subtree for node: {}", parent);
+            return;
+        }
 
-        List<T> children = getDirectChildren(parent.getId());
+        List<T> children = getDirectChildren(id);
 
         for (T child : children) {
             getSubTree(child);

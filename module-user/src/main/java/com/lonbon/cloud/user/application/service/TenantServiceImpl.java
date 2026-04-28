@@ -15,7 +15,6 @@ import io.github.linpeilie.Converter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,7 +38,6 @@ public class TenantServiceImpl extends EntityServiceImpl<Tenant, TenantProxy> im
         };
         this.attributeExtension = new AttributeExtension<>(repository, attributeRepository) {
         };
-        this.interceptors = List.of(this.closureExtension, this.attributeExtension);
     }
 
     @Override

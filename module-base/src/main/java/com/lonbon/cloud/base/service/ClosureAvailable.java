@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface ClosureAvailable<T extends ClosureEntity> {
 
-    UUID getId();
+    @Nullable UUID getId();
 
     @Nullable UUID getParentId();
 
