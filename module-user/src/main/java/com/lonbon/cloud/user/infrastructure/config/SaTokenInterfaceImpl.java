@@ -5,19 +5,18 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.lonbon.cloud.base.satoken.LoginUser;
 import com.lonbon.cloud.user.domain.service.PermissionService;
 import com.lonbon.cloud.user.domain.service.RoleService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class SaTokenInterfaceImpl implements StpInterface {
 
-    @Resource
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Resource
-    private PermissionService permissionService;
+    private final PermissionService permissionService;
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {

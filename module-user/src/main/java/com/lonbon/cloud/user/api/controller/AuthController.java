@@ -9,8 +9,8 @@ import com.lonbon.cloud.user.domain.dto.RefreshTokenRequest;
 import com.lonbon.cloud.user.domain.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
@@ -23,10 +23,10 @@ import java.security.KeyPair;
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "鉴权", description = "鉴权操作")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Resource
-    private AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     @Operation(summary = "登录", description = "用户名密码登陆")

@@ -8,8 +8,8 @@ import com.lonbon.cloud.user.domain.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +33,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/departments")
 @Tag(name = "部门", description = "部门操作")
+@RequiredArgsConstructor
 public class DepartmentController {
 
     /**
      * 部门服务
      */
-    @Resource
-    private DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     /**
      * 创建部门

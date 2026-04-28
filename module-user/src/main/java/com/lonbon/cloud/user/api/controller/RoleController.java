@@ -7,8 +7,8 @@ import com.lonbon.cloud.user.domain.entity.Role;
 import com.lonbon.cloud.user.domain.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/roles")
 @Tag(name = "角色", description = "角色操作")
+@RequiredArgsConstructor
 public class RoleController {
 
-    @Resource
-    private RoleService roleService;
+    private final RoleService roleService;
 
     @PostMapping
     @Operation(summary = "创建", description = "创建角色")

@@ -8,8 +8,8 @@ import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,20 +25,20 @@ import java.util.UUID;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see UserService
+ * @since 1.0.0
  */
 @Slf4j
 @RestController
 @RequestMapping("/users")
 @Tag(name = "用户", description = "用户操作")
+@RequiredArgsConstructor
 public class UserController {
 
     /**
      * 用户服务
      */
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * 创建用户

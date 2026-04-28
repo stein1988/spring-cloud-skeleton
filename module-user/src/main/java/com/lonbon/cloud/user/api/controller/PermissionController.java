@@ -7,8 +7,8 @@ import com.lonbon.cloud.user.domain.entity.Permission;
 import com.lonbon.cloud.user.domain.service.PermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/permissions")
 @Tag(name = "权限", description = "权限操作")
+@RequiredArgsConstructor
 public class PermissionController {
 
-    @Resource
-    private PermissionService permissionService;
+    private final PermissionService permissionService;
 
     @PostMapping
     @Operation(summary = "创建", description = "创建权限")

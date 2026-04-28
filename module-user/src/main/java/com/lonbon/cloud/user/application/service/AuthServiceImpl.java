@@ -15,7 +15,7 @@ import com.lonbon.cloud.user.domain.entity.UserTenant;
 import com.lonbon.cloud.user.domain.entity.proxy.UserProxy;
 import com.lonbon.cloud.user.domain.service.*;
 import io.github.linpeilie.Converter;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +26,18 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private TenantService tenantService;
+    private final TenantService tenantService;
 
-    @Resource
-    private UserTenantService userTenantService;
+    private final UserTenantService userTenantService;
 
-    @Resource
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Resource
-    private Converter converter;
+    private final Converter converter;
 
     @Override
     public LoginResponse login(LoginRequest request) {

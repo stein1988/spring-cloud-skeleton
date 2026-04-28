@@ -11,8 +11,8 @@ import com.lonbon.cloud.user.domain.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +36,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/tenants")
 @Tag(name = "租户", description = "租户操作")
+@RequiredArgsConstructor
 public class TenantController {
 
     /**
      * 租户服务
      */
-    @Resource
-    private TenantService tenantService;
+    private final TenantService tenantService;
 
     /**
      * 创建租户
