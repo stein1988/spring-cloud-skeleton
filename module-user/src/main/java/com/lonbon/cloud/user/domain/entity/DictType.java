@@ -20,9 +20,7 @@ import java.util.List;
 @EntityProxy
 public class DictType extends BaseEntity implements ProxyEntityAvailable<DictType, DictTypeProxy> {
 
-    private String categoryCode;
-
-    private String code;
+    private String categoryId;
 
     private String name;
 
@@ -31,6 +29,7 @@ public class DictType extends BaseEntity implements ProxyEntityAvailable<DictTyp
     /**
      * 下属的字典选项
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = Fields.code, targetProperty = DictItem.Fields.typeCode)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            DictItem.Fields.typeId)
     private List<DictItem> items;
 }

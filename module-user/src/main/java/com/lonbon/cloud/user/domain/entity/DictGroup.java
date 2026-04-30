@@ -20,18 +20,16 @@ import java.util.List;
 @EntityProxy
 public class DictGroup extends BaseEntity implements ProxyEntityAvailable<DictGroup, DictGroupProxy> {
 
-    private String code;
-
     private String name;
 
     private String description;
 
-    private String parentCode;
+    private String parentId;
 
     /**
      * 下属的字典分类
      */
-    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = Fields.code, targetProperty =
-            DictType.Fields.categoryCode)
+    @Navigate(value = RelationTypeEnum.OneToMany, selfProperty = BaseEntity.Fields.id, targetProperty =
+            DictType.Fields.categoryId)
     private List<DictType> types;
 }

@@ -5,6 +5,7 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import com.lonbon.cloud.user.domain.entity.proxy.DictItemProxy;
+import com.lonbon.cloud.user.domain.value_object.DictItemStyle;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -16,11 +17,13 @@ import lombok.experimental.FieldNameConstants;
 @EntityProxy
 public class DictItem extends BaseEntity implements ProxyEntityAvailable<DictItem, DictItemProxy> {
 
-    private String typeCode;
+    private String typeId;
 
     private String code;
 
     private String name;
 
     private String description;
+
+    private DictItemStyle style;
 }
