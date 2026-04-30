@@ -6,7 +6,7 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.lonbon.cloud.base.entity.BaseEntity;
-import com.lonbon.cloud.user.domain.entity.proxy.DictCategoryProxy;
+import com.lonbon.cloud.user.domain.entity.proxy.DictGroupProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -16,9 +16,9 @@ import java.util.List;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_dict_category", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
+@Table(value = "sys_dict_group", ignoreProperties = {BaseEntity.Fields.tenantId, BaseEntity.Fields.departmentId})
 @EntityProxy
-public class DictCategory extends BaseEntity implements ProxyEntityAvailable<DictCategory, DictCategoryProxy> {
+public class DictGroup extends BaseEntity implements ProxyEntityAvailable<DictGroup, DictGroupProxy> {
 
     private String code;
 
