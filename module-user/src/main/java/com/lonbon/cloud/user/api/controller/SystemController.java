@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/system")
-@Tag(name = "系统", description = "系统级操作，谨慎使用")
 @RequiredArgsConstructor
+@Tag(name = "系统", description = "系统级操作，谨慎使用")
 public class SystemController {
 
     private final SystemService systemService;

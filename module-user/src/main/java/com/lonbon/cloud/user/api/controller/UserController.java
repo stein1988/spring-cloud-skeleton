@@ -1,8 +1,8 @@
 package com.lonbon.cloud.user.api.controller;
 
 import com.lonbon.cloud.base.response.Response;
-import com.lonbon.cloud.user.domain.dto.UserCreateDTO;
-import com.lonbon.cloud.user.domain.dto.UserUpdateDTO;
+import com.lonbon.cloud.user.domain.dto.user.CreateDTO;
+import com.lonbon.cloud.user.domain.dto.user.UpdateDTO;
 import com.lonbon.cloud.user.domain.entity.User;
 import com.lonbon.cloud.user.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,8 +31,8 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/users")
-@Tag(name = "用户", description = "用户操作")
 @RequiredArgsConstructor
+@Tag(name = "用户", description = "用户操作")
 public class UserController {
 
     /**
@@ -48,7 +48,7 @@ public class UserController {
      */
     @PostMapping
     @Operation(summary = "创建", description = "创建用户")
-    public Response<UUID> create(@RequestBody @Validated @NotNull UserCreateDTO user) {
+    public Response<UUID> create(@RequestBody @Validated @NotNull CreateDTO user) {
         User createdUser = userService.createEntity(user);
         return Response.success(createdUser.getId(), "User created successfully");
     }
@@ -75,7 +75,7 @@ public class UserController {
      */
     @PostMapping("/{id}/update")
     @Operation(summary = "更新", description = "更新用户")
-    public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated UserUpdateDTO user) {
+    public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated UpdateDTO user) {
         userService.updateEntity(id, user);
         return Response.success(id, "User updated successfully");
     }

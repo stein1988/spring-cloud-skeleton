@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.domain.dto;
+package com.lonbon.cloud.user.domain.dto.tenant;
 
 
 import com.lonbon.cloud.user.domain.entity.Tenant;
@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @AutoMapper(target = Tenant.class, reverseConvertGenerate = false)
 @Data
-public class TenantUpdateDTO {
+public class UpdateDTO {
 
 
     private String name;

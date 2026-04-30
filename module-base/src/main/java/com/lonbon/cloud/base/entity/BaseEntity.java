@@ -51,10 +51,10 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     protected UUID departmentId;
 
     /**
-     * 预设数据标志：是否是系统预设数据，默认值为false
+     * 系统预设数据标志：是否是系统预设数据，默认值为false
      */
-    @Column(comment = "是否为预设数据")
-    protected Boolean isPreset;
+    @Column(comment = "是否为系统预设数据")
+    protected Boolean isSystem;
 
     /**
      * 逻辑删除标志：是否删除，默认值为false
@@ -70,40 +70,40 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @Column(comment = "删除时间")
     @UpdateIgnore
-    protected OffsetDateTime deleteTime;
+    protected OffsetDateTime deletedAt;
 
     /**
      * 删除人ID
      */
     @Column(comment = "删除人ID")
     @UpdateIgnore
-    protected UUID deleteBy;
+    protected UUID deletedBy;
 
     /**
      * 创建时间，UTC时间戳
      */
     @Column(comment = "创建时间", nullable = false, dbDefault = "NOW()")
     @UpdateIgnore
-    protected OffsetDateTime createTime;
+    protected OffsetDateTime createdAt;
 
     /**
      * 创建人ID
      */
     @Column(comment = "创建人ID")
     @UpdateIgnore
-    protected UUID createBy;
+    protected UUID createdBy;
 
     /**
      * 更新时间，UTC时间戳
      */
     @Column(comment = "更新时间", nullable = false, dbDefault = "NOW()")
-    protected OffsetDateTime updateTime;
+    protected OffsetDateTime updatedAt;
 
     /**
      * 更新人ID
      */
     @Column(comment = "更新人ID")
-    protected UUID updateBy;
+    protected UUID updatedBy;
 
     /**
      * 版本号，用于乐观锁，默认值为0，每更新一次+1

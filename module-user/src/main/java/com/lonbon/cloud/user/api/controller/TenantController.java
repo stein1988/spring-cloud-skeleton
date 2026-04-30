@@ -3,9 +3,9 @@ package com.lonbon.cloud.user.api.controller;
 import com.lonbon.cloud.base.dto.PageResult;
 import com.lonbon.cloud.base.dto.Pageable;
 import com.lonbon.cloud.base.response.Response;
-import com.lonbon.cloud.user.domain.dto.TenantCreateDTO;
-import com.lonbon.cloud.user.domain.dto.TenantQueryDTO;
-import com.lonbon.cloud.user.domain.dto.TenantUpdateDTO;
+import com.lonbon.cloud.user.domain.dto.tenant.CreateDTO;
+import com.lonbon.cloud.user.domain.dto.tenant.QueryDTO;
+import com.lonbon.cloud.user.domain.dto.tenant.UpdateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import com.lonbon.cloud.user.domain.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,14 +29,14 @@ import java.util.UUID;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see TenantService
+ * @since 1.0.0
  */
 @Slf4j
 @RestController
 @RequestMapping("/tenants")
-@Tag(name = "租户", description = "租户操作")
 @RequiredArgsConstructor
+@Tag(name = "租户", description = "租户操作")
 public class TenantController {
 
     /**
@@ -52,7 +52,7 @@ public class TenantController {
      */
     @PostMapping
     @Operation(summary = "创建", description = "创建租户")
-    public Response<UUID> create(@RequestBody @Validated @NotNull TenantCreateDTO tenant) {
+    public Response<UUID> create(@RequestBody @Validated @NotNull CreateDTO tenant) {
         Tenant createdTenant = tenantService.createEntity(tenant);
         return Response.success(createdTenant.getId(), "Tenant created successfully");
     }
@@ -79,7 +79,7 @@ public class TenantController {
      */
     @PostMapping("/{id}/update")
     @Operation(summary = "更新", description = "更新租户")
-    public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated TenantUpdateDTO tenant) {
+    public Response<UUID> update(@PathVariable("id") UUID id, @RequestBody @Validated UpdateDTO tenant) {
         tenantService.updateEntity(id, tenant);
         return Response.success(id, "Tenant updated successfully");
     }
@@ -108,7 +108,7 @@ public class TenantController {
      */
     @GetMapping()
     @Operation(summary = "分页查询", description = "分页查询租户")
-    public Response<PageResult<Tenant>> getTenants(TenantQueryDTO query, Pageable pageable) {
+    public Response<PageResult<Tenant>> getTenants(QueryDTO query, Pageable pageable) {
         log.info("query: {}, pageable: {}", query, pageable);
         PageResult<Tenant> tenants = tenantService.getPaginationEntities(query, pageable);
         return Response.success(tenants);
@@ -175,9 +175,7 @@ public class TenantController {
      */
     @PostMapping("/{id}/move")
     @Operation(summary = "移动租户", description = "将租户移动到新的父租户下")
-    public Response<UUID> moveNode(
-            @PathVariable("id") UUID id,
-            @RequestParam("newParentId") UUID newParentId) {
+    public Response<UUID> moveNode(@PathVariable("id") UUID id, @RequestParam("newParentId") UUID newParentId) {
         Tenant moved = tenantService.moveNode(id, newParentId);
         return Response.success(moved.getId(), "Tenant moved successfully");
     }

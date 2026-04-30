@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.domain.dto;
+package com.lonbon.cloud.user.domain.dto.user;
 
 
 import com.lonbon.cloud.user.domain.entity.User;
@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @AutoMapper(target = User.class, reverseConvertGenerate = false)
 @Data
-public class UserCreateDTO {
+public class CreateDTO {
 
 
     /**

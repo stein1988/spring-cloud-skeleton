@@ -55,19 +55,19 @@ public class DefaultEntityInterceptor
         OffsetDateTime now = OffsetDateTime.now();
         UUID currentUserId = null;
 
-        if (baseEntity.getCreateTime() == null) {
-            baseEntity.setCreateTime(now);
+        if (baseEntity.getCreatedAt() == null) {
+            baseEntity.setCreatedAt(now);
         }
-        if (baseEntity.getCreateBy() == null) {
+        if (baseEntity.getCreatedBy() == null) {
             currentUserId = getCurrentUserId(currentUserId);
-            baseEntity.setCreateBy(currentUserId);
+            baseEntity.setCreatedBy(currentUserId);
         }
-        if (baseEntity.getUpdateTime() == null) {
-            baseEntity.setUpdateTime(now);
+        if (baseEntity.getUpdatedAt() == null) {
+            baseEntity.setUpdatedAt(now);
         }
-        if (baseEntity.getUpdateBy() == null) {
+        if (baseEntity.getUpdatedBy() == null) {
             currentUserId = getCurrentUserId(currentUserId);
-            baseEntity.setUpdateBy(currentUserId);
+            baseEntity.setUpdatedBy(currentUserId);
         }
         if (baseEntity.getTenantId() == null) {
             baseEntity.setTenantId(getCurrentTenantId());
@@ -82,8 +82,8 @@ public class DefaultEntityInterceptor
             Class<?> entityClass, EntityUpdateExpressionBuilder entityUpdateExpressionBuilder, Object entity) {
         BaseEntity baseEntity = (BaseEntity) entity;
 
-        baseEntity.setUpdateTime(OffsetDateTime.now());
-        baseEntity.setUpdateBy(getCurrentUserId(null));
+        baseEntity.setUpdatedAt(OffsetDateTime.now());
+        baseEntity.setUpdatedBy(getCurrentUserId(null));
     }
 
     /**

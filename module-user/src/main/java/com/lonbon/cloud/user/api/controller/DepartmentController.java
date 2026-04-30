@@ -26,14 +26,14 @@ import java.util.UUID;
  * </p>
  *
  * @author lonbon
- * @since 1.0.0
  * @see DepartmentService
+ * @since 1.0.0
  */
 @Slf4j
 @RestController
 @RequestMapping("/departments")
-@Tag(name = "部门", description = "部门操作")
 @RequiredArgsConstructor
+@Tag(name = "部门", description = "部门操作")
 public class DepartmentController {
 
     /**
@@ -70,7 +70,7 @@ public class DepartmentController {
     /**
      * 更新部门
      *
-     * @param id        部门ID
+     * @param id         部门ID
      * @param department 部门更新DTO
      * @return 更新成功的部门ID
      */
@@ -169,9 +169,7 @@ public class DepartmentController {
      */
     @PostMapping("/{id}/move")
     @Operation(summary = "移动部门", description = "将部门移动到新的父部门下")
-    public Response<UUID> moveNode(
-            @PathVariable("id") UUID id,
-            @RequestParam("newParentId") UUID newParentId) {
+    public Response<UUID> moveNode(@PathVariable("id") UUID id, @RequestParam("newParentId") UUID newParentId) {
         Department moved = departmentService.moveNode(id, newParentId);
         return Response.success(moved.getId(), "Department moved successfully");
     }

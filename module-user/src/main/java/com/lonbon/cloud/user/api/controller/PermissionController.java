@@ -20,8 +20,8 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/permissions")
-@Tag(name = "权限", description = "权限操作")
 @RequiredArgsConstructor
+@Tag(name = "权限", description = "权限操作")
 public class PermissionController {
 
     private final PermissionService permissionService;

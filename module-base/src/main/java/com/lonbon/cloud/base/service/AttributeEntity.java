@@ -1,6 +1,5 @@
 package com.lonbon.cloud.base.service;
 
-import com.easy.query.core.annotation.SaveKey;
 import com.lonbon.cloud.base.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +22,6 @@ public abstract class AttributeEntity extends BaseEntity {
 
     private UUID attributeId;
 
-    @SaveKey
     private String key;
 
     private String value;

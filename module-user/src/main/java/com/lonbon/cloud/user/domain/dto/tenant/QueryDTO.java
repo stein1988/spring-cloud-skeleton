@@ -1,4 +1,4 @@
-package com.lonbon.cloud.user.domain.dto;
+package com.lonbon.cloud.user.domain.dto.tenant;
 
 
 import com.easy.query.core.annotation.EasyWhereCondition;
@@ -16,7 +16,7 @@ import org.springdoc.core.annotations.ParameterObject;
  */
 @ParameterObject
 @Data
-public class TenantQueryDTO {
+public class QueryDTO {
 
     @EasyWhereCondition(type = EasyWhereCondition.Condition.EQUAL)
     @Schema(description = "名称，精确查询")

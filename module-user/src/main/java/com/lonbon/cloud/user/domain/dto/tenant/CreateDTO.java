@@ -1,6 +1,7 @@
-package com.lonbon.cloud.user.domain.dto;
+package com.lonbon.cloud.user.domain.dto.tenant;
 
 
+import com.lonbon.cloud.user.domain.dto.AttributeCreateDTO;
 import com.lonbon.cloud.user.domain.entity.Tenant;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @AutoMapper(target = Tenant.class, reverseConvertGenerate = false)
 @Data
-public class TenantCreateDTO {
+public class CreateDTO {
 
 
     /**
@@ -44,6 +45,6 @@ public class TenantCreateDTO {
      */
     private UUID parentId;
 
-    
+
     private List<AttributeCreateDTO> attributes;
 }

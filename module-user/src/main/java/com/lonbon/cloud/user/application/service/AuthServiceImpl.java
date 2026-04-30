@@ -84,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
             // 超级管理员不需要判定和租户的关系，任何租户都能进入
             // 如果没有当前租户ID，查找最早创建的租户，设置为当前租户，并登录
             if (user.getCurrentTenantId() == null) {
-                Tenant tenant = tenantService.getFirstEntity(t -> t.isDefault().eq(true), t -> t.createTime().asc())
+                Tenant tenant = tenantService.getFirstEntity(t -> t.isDefault().eq(true), t -> t.createdAt().asc())
                                              .orElseThrow(() -> new RuntimeException("default tenant not found"));
 
                 user.setCurrentTenantId(tenant.getId());
